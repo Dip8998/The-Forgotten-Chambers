@@ -84,7 +84,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -152,9 +152,9 @@ TextureImporter:
         x: 19
         y: 15
         width: 19
-        height: 22
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -168,81 +168,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Punch 64x64_1
-      rect:
-        serializedVersion: 2
-        x: 24
-        y: 36
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 667970169b78f4da0800000000000000
-      internalID: -5958394551721289882
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player Punch 64x64_2
-      rect:
-        serializedVersion: 2
-        x: 85
-        y: 34
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4c7393523e6928040800000000000000
-      internalID: 4648443667726022596
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player Punch 64x64_3
-      rect:
-        serializedVersion: 2
-        x: 149
-        y: 34
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2bda8560b39a8bd60800000000000000
-      internalID: 7906255216823545266
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Punch 64x64_4
       rect:
         serializedVersion: 2
         x: 209
         y: 15
         width: 21
-        height: 21
+        height: 29
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -256,28 +190,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Punch 64x64_5
-      rect:
-        serializedVersion: 2
-        x: 214
-        y: 35
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b6d6e1d8f5a31f2e0800000000000000
-      internalID: -2093828169686684309
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Punch 64x64_6
       rect:
         serializedVersion: 2
@@ -286,7 +198,7 @@ TextureImporter:
         width: 43
         height: 25
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -308,7 +220,7 @@ TextureImporter:
         width: 31
         height: 23
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -330,7 +242,7 @@ TextureImporter:
         width: 22
         height: 27
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -352,7 +264,7 @@ TextureImporter:
         width: 15
         height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -372,9 +284,9 @@ TextureImporter:
         x: 80
         y: 15
         width: 22
-        height: 20
+        height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -394,9 +306,9 @@ TextureImporter:
         x: 144
         y: 15
         width: 22
-        height: 20
+        height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -413,7 +325,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: ff2262c9f756b5f4fa6a49a767d56c5a
     internalID: 0
     vertices: []
     indices: 
@@ -422,7 +334,15 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Player Punch 64x64_0: -3265511694173517792
+      Player Punch 64x64_10: -3448787175358288976
+      Player Punch 64x64_11: 418967443538332138
+      Player Punch 64x64_4: -5437086216529083779
+      Player Punch 64x64_6: 2760074175503823497
+      Player Punch 64x64_7: 3628804719239001658
+      Player Punch 64x64_8: 7137891975270234453
+      Player Punch 64x64_9: 5625896990181949946
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

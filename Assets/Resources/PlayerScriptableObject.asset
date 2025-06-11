@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: PlayerScriptableObject
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 4763981773313067328, guid: e02d2ff5f691ced499d14037da904f48, type: 3}
-  playerMovementSpeed: 5
+  playerMovementSpeed: 10
+  playerJumpForce: 15
   playerMaxHealth: 100

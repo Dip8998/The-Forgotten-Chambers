@@ -7,6 +7,8 @@ namespace ForgottonChambers.Player
     {
         public PlayerView playerPrefab;
         public float playerMovementSpeed;
+        public float playerJumpForce;
+        public float playerSlideSpeed;
         public int playerMaxHealth;
     }
 }
