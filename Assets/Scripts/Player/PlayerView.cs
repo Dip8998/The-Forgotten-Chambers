@@ -8,7 +8,7 @@ namespace ForgottonChambers.Player
         [SerializeField] private float groundCheckRadius = 0.2f;
         [SerializeField] private LayerMask groundLayer;
 
-        private Animator playerAnimator;
+        public Animator playerAnimator {  get; private set; }
 
         private PlayerController playerController;
 
@@ -58,6 +58,14 @@ namespace ForgottonChambers.Player
                         playerAnimator.SetTrigger("Punch3");
                         break;
                 }
+            }
+        }
+
+        public void PlayAirSpinAnimation()
+        {
+            if (playerAnimator != null)
+            {
+                playerAnimator.SetTrigger("AirSpin");
             }
         }
 

@@ -100,7 +100,7 @@ AnimationClip:
   - time: 0.75
     functionName: OnPunchAnimationEnd
     data: 
-    objectReferenceParameter: {fileID: 2908003249114103679, guid: e02d2ff5f691ced499d14037da904f48, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

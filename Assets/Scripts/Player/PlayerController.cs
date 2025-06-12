@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace ForgottonChambers.Player
 {
@@ -8,10 +7,16 @@ namespace ForgottonChambers.Player
         private PlayerScriptableObject playerScriptableObject;
         private PlayerView playerView;
         private Rigidbody2D rb2D;
+
         private float comboTimer = 0f;
-        private float comboResetTime = 2f; 
+        private float comboResetTime = 2f;
         private int comboIndex = 0;
+
         private bool isPunching = false;
+        private bool doubleJump = false;
+
+        private float jumpBufferTime = 0.1f;
+        private float jumpBufferCounter = 0f;
 
         public PlayerController(PlayerScriptableObject playerScriptableObject)
         {
@@ -26,28 +31,55 @@ namespace ForgottonChambers.Player
             playerView.SetPlayerController(this);
         }
 
-        public void FixedUpdatePlayer()=> UpdateMovement();
+        public void UpdatePlayer()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+                jumpBufferCounter = jumpBufferTime;
 
-        public void UpdatePlayer() => UpdateCombat();
+            UpdateCombat();
+        }
 
-        private void UpdateMovement()
+        public void FixedUpdatePlayer()
         {
             if (isPunching)
                 return;
 
-            float hMove = Input.GetAxisRaw("Horizontal");
-            bool jump = Input.GetKey(KeyCode.Space);
-            bool isCrouchWalk = Input.GetKey(KeyCode.DownArrow) && hMove != 0;
+            UpdateMovement();
 
-            PlayerMovement(hMove, jump, isCrouchWalk);
-            PlayerJump(jump);
+            if (jumpBufferCounter > 0)
+            {
+                HandleJump();
+                jumpBufferCounter = 0f;
+            }
+
+            jumpBufferCounter -= Time.fixedDeltaTime;
         }
 
-        private void PlayerJump(bool jump)
+        private void UpdateMovement()
         {
-            if(jump && IsGrounded())
+            float horizontalInput = Input.GetAxisRaw("Horizontal");
+            bool isCrouchWalking = Input.GetKey(KeyCode.DownArrow) && horizontalInput != 0;
+
+            Vector2 velocity = rb2D.linearVelocity;
+            velocity.x = horizontalInput * playerScriptableObject.playerMovementSpeed;
+            rb2D.linearVelocity = velocity;
+
+            playerView.SetPlayerAnimation(horizontalInput, !IsGrounded(), isCrouchWalking);
+            SetPlayerScale(horizontalInput);
+        }
+
+        private void HandleJump()
+        {
+            if (IsGrounded())
             {
                 rb2D.linearVelocity = new Vector2(rb2D.linearVelocity.x, playerScriptableObject.playerJumpForce);
+                doubleJump = true;
+            }
+            else if (doubleJump)
+            {
+                rb2D.linearVelocity = new Vector2(rb2D.linearVelocity.x, playerScriptableObject.playerDoubleJumpForce);
+                doubleJump = false;
+                playerView.PlayAirSpinAnimation();
             }
         }
 
@@ -76,28 +108,12 @@ namespace ForgottonChambers.Player
             }
         }
 
-        private void PlayerMovement(float hMove, bool jump, bool isCrouchWalking)
-        {
-            Vector2 velocity = rb2D.linearVelocity;
-            velocity.x = hMove * playerScriptableObject.playerMovementSpeed;
-            rb2D.linearVelocity = velocity;
-
-            playerView.SetPlayerAnimation(hMove, !IsGrounded(), isCrouchWalking);
-            SetPlayerScale(hMove);
-        }
-
         private void SetPlayerScale(float moveSpeed)
         {
-            Vector2 scale = playerView.transform.localScale;
+            if (moveSpeed == 0) return;
 
-            if (moveSpeed < 0)
-            {
-                scale.x = -1f * Mathf.Abs(scale.x);
-            }
-            else if (moveSpeed > 0)
-            {
-                scale.x = Mathf.Abs(scale.x);
-            }
+            Vector2 scale = playerView.transform.localScale;
+            scale.x = moveSpeed > 0 ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
             playerView.transform.localScale = scale;
         }
 
