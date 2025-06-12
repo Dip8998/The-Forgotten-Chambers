@@ -32,13 +32,14 @@ namespace ForgottonChambers.Player
             playerController?.FixedUpdatePlayer();
         }
 
-        public void SetPlayerAnimation(float moveSpeed, bool isJumping, bool isCrouchWalking)
+        public void SetPlayerAnimation(float moveSpeed, bool isJumping, bool isCrouchWalking, bool isCrouchIdle)
         {
             if (playerAnimator != null)
             {
                 playerAnimator.SetFloat("RunSpeed", Mathf.Abs(moveSpeed));
                 playerAnimator.SetBool("Jump", isJumping);
                 playerAnimator.SetBool("CrouchWalk", isCrouchWalking);
+                playerAnimator.SetBool("CrouchIdle", isCrouchIdle);
             }
         }
 

@@ -59,12 +59,14 @@ namespace ForgottonChambers.Player
         {
             float horizontalInput = Input.GetAxisRaw("Horizontal");
             bool isCrouchWalking = Input.GetKey(KeyCode.DownArrow) && horizontalInput != 0;
+            bool isCrouchIdle = Input.GetKey(KeyCode.DownArrow) && horizontalInput == 0;
+
 
             Vector2 velocity = rb2D.linearVelocity;
             velocity.x = horizontalInput * playerScriptableObject.playerMovementSpeed;
             rb2D.linearVelocity = velocity;
 
-            playerView.SetPlayerAnimation(horizontalInput, !IsGrounded(), isCrouchWalking);
+            playerView.SetPlayerAnimation(horizontalInput, !IsGrounded(), isCrouchWalking, isCrouchIdle);
             SetPlayerScale(horizontalInput);
         }
 
