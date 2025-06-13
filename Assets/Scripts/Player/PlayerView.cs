@@ -1,3 +1,4 @@
+﻿using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 namespace ForgottonChambers.Player
@@ -36,29 +37,24 @@ namespace ForgottonChambers.Player
         {
             if (playerAnimator != null)
             {
+                if (playerAnimator.GetBool("Jump") != isJumping)
+                    Debug.Log($"🔄 Jump Set To: {isJumping} in state: {playerController?.StateMachine?.ToString()}");
+
                 playerAnimator.SetFloat("RunSpeed", Mathf.Abs(moveSpeed));
-                playerAnimator.SetBool("Jump", isJumping);
+
+                if (playerAnimator.GetBool("Jump") != isJumping)
+                    playerAnimator.SetBool("Jump", isJumping);
+
                 playerAnimator.SetBool("CrouchWalk", isCrouchWalking);
                 playerAnimator.SetBool("CrouchIdle", isCrouchIdle);
             }
         }
 
-        public void PlayPunchAnimation(int punchIndex)
+        public void PlayPunchAnimation()
         {
             if (playerAnimator != null)
             {
-                switch (punchIndex)
-                {
-                    case 1:
-                        playerAnimator.SetTrigger("Punch1");
-                        break;
-                    case 2:
-                        playerAnimator.SetTrigger("Punch2");
-                        break;
-                    case 3:
-                        playerAnimator.SetTrigger("Punch3");
-                        break;
-                }
+                playerAnimator.SetTrigger("Punch");
             }
         }
 
@@ -77,6 +73,9 @@ namespace ForgottonChambers.Player
 
 
         public bool IsGrounded() => Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+        public bool IsFalling() => playerAnimator.GetComponent<Rigidbody2D>().linearVelocity.y < 0 && !IsGrounded();
+
 
         private void OnDrawGizmos()
         {

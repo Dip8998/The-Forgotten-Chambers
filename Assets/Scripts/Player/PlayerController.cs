@@ -1,27 +1,29 @@
-using UnityEngine;
+﻿using UnityEngine;
+using ForgottonChambers.StateMachine;
 
 namespace ForgottonChambers.Player
 {
     public class PlayerController
     {
-        private PlayerScriptableObject playerScriptableObject;
-        private PlayerView playerView;
+        public PlayerScriptableObject playerScriptableObject {  get; private set; }
+        public PlayerView playerView { get; private set; }
+        public PlayerStateMachine StateMachine { get; private set; }
+        public PlayerInputHandler InputHandler { get; private set; }
         private Rigidbody2D rb2D;
 
-        private float comboTimer = 0f;
-        private float comboResetTime = 2f;
-        private int comboIndex = 0;
-
         private bool isPunching = false;
-        private bool doubleJump = false;
+        public bool IsPunching => isPunching;
 
-        private float jumpBufferTime = 0.1f;
-        private float jumpBufferCounter = 0f;
+        private bool doubleJump = false;
+        public bool CanDoubleJump => doubleJump;
 
         public PlayerController(PlayerScriptableObject playerScriptableObject)
         {
             this.playerScriptableObject = playerScriptableObject;
             InitializePlayerView();
+            InputHandler = new PlayerInputHandler();
+            StateMachine = new PlayerStateMachine(this);
+            StateMachine.Initialize(PlayerState.Idle);
         }
 
         private void InitializePlayerView()
@@ -33,84 +35,45 @@ namespace ForgottonChambers.Player
 
         public void UpdatePlayer()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-                jumpBufferCounter = jumpBufferTime;
-
-            UpdateCombat();
+            InputHandler.UpdateInputs();
+            StateMachine.UpdateState();
         }
 
         public void FixedUpdatePlayer()
         {
-            if (isPunching)
-                return;
-
-            UpdateMovement();
-
-            if (jumpBufferCounter > 0)
-            {
-                HandleJump();
-                jumpBufferCounter = 0f;
-            }
-
-            jumpBufferCounter -= Time.fixedDeltaTime;
+           StateMachine.FixedUpdateState();
         }
 
-        private void UpdateMovement()
+        public void ApplyMovement(float horizontalInput)
         {
-            float horizontalInput = Input.GetAxisRaw("Horizontal");
-            bool isCrouchWalking = Input.GetKey(KeyCode.DownArrow) && horizontalInput != 0;
-            bool isCrouchIdle = Input.GetKey(KeyCode.DownArrow) && horizontalInput == 0;
-
-
             Vector2 velocity = rb2D.linearVelocity;
             velocity.x = horizontalInput * playerScriptableObject.playerMovementSpeed;
             rb2D.linearVelocity = velocity;
-
-            playerView.SetPlayerAnimation(horizontalInput, !IsGrounded(), isCrouchWalking, isCrouchIdle);
-            SetPlayerScale(horizontalInput);
         }
 
-        private void HandleJump()
+        public void ApplyJumpForce(float force)
         {
-            if (IsGrounded())
-            {
-                rb2D.linearVelocity = new Vector2(rb2D.linearVelocity.x, playerScriptableObject.playerJumpForce);
-                doubleJump = true;
-            }
-            else if (doubleJump)
-            {
-                rb2D.linearVelocity = new Vector2(rb2D.linearVelocity.x, playerScriptableObject.playerDoubleJumpForce);
-                doubleJump = false;
-                playerView.PlayAirSpinAnimation();
-            }
+            rb2D.linearVelocity = new Vector2(rb2D.linearVelocity.x, force);
+            InputHandler.ResetJumpBuffer();
         }
 
-        private void UpdateCombat()
+        public void SetPunching(bool punching)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                comboIndex++;
-
-                if (comboIndex > 3)
-                    comboIndex = 1;
-
-                playerView.PlayPunchAnimation(comboIndex);
-                comboTimer = 0f;
-                isPunching = true;
-            }
-
-            if (comboIndex > 0)
-            {
-                comboTimer += Time.deltaTime;
-                if (comboTimer > comboResetTime)
-                {
-                    comboIndex = 0;
-                    comboTimer = 0f;
-                }
-            }
+            isPunching = punching;
         }
 
-        private void SetPlayerScale(float moveSpeed)
+        
+        public void ResetDoubleJumpAbility()
+        {
+            doubleJump = true;
+        }
+
+        public void DisableDoubleJumpAbility()
+        {
+            doubleJump = false;
+        }
+
+        public void SetPlayerScale(float moveSpeed)
         {
             if (moveSpeed == 0) return;
 
@@ -119,11 +82,6 @@ namespace ForgottonChambers.Player
             playerView.transform.localScale = scale;
         }
 
-        public void SetPunching(bool punching)
-        {
-            isPunching = punching;
-        }
-
-        private bool IsGrounded() => playerView.IsGrounded();
+        public bool IsGrounded() => playerView.IsGrounded();
     }
 }
