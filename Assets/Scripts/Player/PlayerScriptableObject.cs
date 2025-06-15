@@ -9,6 +9,7 @@ namespace ForgottonChambers.Player
         public float playerMovementSpeed;
         public float playerJumpForce;
         public float playerDoubleJumpForce;
+        public float playerCrouchMovementSpeed;
         public int playerMaxHealth;
     }
 }

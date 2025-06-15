@@ -34,7 +34,7 @@ namespace ForgottonChambers.Player
         public void FixedUpdateState()
         {
             float horizontalInput = playerController.InputHandler.MoveInput;
-            playerController.ApplyMovement(horizontalInput * 0.5f);
+            playerController.ApplyMovement(horizontalInput * playerController.playerScriptableObject.playerCrouchMovementSpeed);
             playerController.playerView.SetPlayerAnimation(horizontalInput, false, true, false);
             playerController.SetPlayerScale(horizontalInput);
         }

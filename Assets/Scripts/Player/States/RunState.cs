@@ -16,7 +16,7 @@ namespace ForgottonChambers.Player
 
         public void OnStateEnter()
         {
-
+            playerController.playerView.SetPlayerAnimation(playerController.InputHandler.MoveInput, false, false, false);
         }
 
         public void UpdateState()
@@ -43,9 +43,8 @@ namespace ForgottonChambers.Player
         {
             float horizontalInput = playerController.InputHandler.MoveInput;
             playerController.ApplyMovement(horizontalInput);
-            playerController.playerView.SetPlayerAnimation(horizontalInput, false, false, false);
             playerController.SetPlayerScale(horizontalInput);
-
+            playerController.playerView.SetPlayerAnimation(horizontalInput, false, false, false);
         }
 
         public void OnStateExit() { }

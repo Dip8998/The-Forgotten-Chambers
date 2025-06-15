@@ -34,7 +34,7 @@ namespace ForgottonChambers.Player
                 playerStateMachine.ChangeState(PlayerState.Crouching);
             }
             else if (playerController.InputHandler.PunchInputDown)
-            { 
+            {
                 playerStateMachine.ChangeState(PlayerState.Punch);
             }
         }

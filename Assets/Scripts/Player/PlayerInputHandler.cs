@@ -12,11 +12,14 @@ namespace ForgottonChambers.Player
         private float jumpBufferTime = 0.1f;
         private float jumpBufferCounter = 0f;
 
+        public bool PunchInputHeld { get; private set; }
+
         public void UpdateInputs()
         {
-            MoveInput = UnityEngine.Input.GetAxisRaw("Horizontal");
-            CrouchInputHeld = UnityEngine.Input.GetKey(KeyCode.DownArrow);
-            PunchInputDown = UnityEngine.Input.GetMouseButtonDown(0);
+            MoveInput = Input.GetAxisRaw("Horizontal");
+            CrouchInputHeld = Input.GetKey(KeyCode.DownArrow);
+            PunchInputDown = Input.GetMouseButtonDown(0);
+            PunchInputHeld = Input.GetMouseButton(0);
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -26,6 +29,7 @@ namespace ForgottonChambers.Player
             {
                 jumpBufferCounter -= Time.deltaTime;
             }
+
             JumpInputDown = (jumpBufferCounter > 0);
         }
 

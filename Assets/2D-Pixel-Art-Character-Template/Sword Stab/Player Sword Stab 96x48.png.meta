@@ -78,7 +78,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -101,7 +101,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -146,9 +146,9 @@ TextureImporter:
         x: 37
         y: 7
         width: 22
-        height: 22
+        height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -162,37 +162,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Sword Stab 96x48_1
-      rect:
-        serializedVersion: 2
-        x: 44
-        y: 28
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a0e5f4ed284677040800000000000000
-      internalID: 4645292053894225418
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Sword Stab 96x48_2
       rect:
         serializedVersion: 2
         x: 130
         y: 7
         width: 22
-        height: 21
+        height: 29
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -206,28 +184,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Sword Stab 96x48_3
-      rect:
-        serializedVersion: 2
-        x: 138
-        y: 26
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 491926cea19f13f80800000000000000
-      internalID: -8128441958396685932
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Sword Stab 96x48_4
       rect:
         serializedVersion: 2
@@ -236,7 +192,7 @@ TextureImporter:
         width: 23
         height: 27
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -258,7 +214,7 @@ TextureImporter:
         width: 23
         height: 27
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -280,7 +236,7 @@ TextureImporter:
         width: 54
         height: 23
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -302,7 +258,7 @@ TextureImporter:
         width: 54
         height: 23
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -316,37 +272,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Sword Stab 96x48_8
-      rect:
-        serializedVersion: 2
-        x: 626
-        y: 25
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 684c34298cc7dd9c0800000000000000
-      internalID: -3900824501343763322
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Sword Stab 96x48_9
       rect:
         serializedVersion: 2
         x: 613
         y: 7
         width: 39
-        height: 20
+        height: 27
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -363,7 +297,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 4b316610fdce05c44b8fd163cf56c376
     internalID: 0
     vertices: []
     indices: 
@@ -372,7 +306,17 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Player Sword Stab 96x48_0: 4661208832251774292
+      Player Sword Stab 96x48_1: 4645292053894225418
+      Player Sword Stab 96x48_2: -3002138240834869839
+      Player Sword Stab 96x48_3: -8128441958396685932
+      Player Sword Stab 96x48_4: -1847232795752203903
+      Player Sword Stab 96x48_5: -5732418113725227913
+      Player Sword Stab 96x48_6: 8925545257664592915
+      Player Sword Stab 96x48_7: 6343909700024957237
+      Player Sword Stab 96x48_8: -3900824501343763322
+      Player Sword Stab 96x48_9: 54281275661510042
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

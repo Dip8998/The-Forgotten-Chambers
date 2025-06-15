@@ -9,7 +9,8 @@ namespace ForgottonChambers.Player
         [SerializeField] private float groundCheckRadius = 0.2f;
         [SerializeField] private LayerMask groundLayer;
 
-        public Animator playerAnimator {  get; private set; }
+
+        public Animator playerAnimator { get; private set; }
 
         private PlayerController playerController;
 
@@ -68,6 +69,7 @@ namespace ForgottonChambers.Player
 
         public void OnPunchAnimationEnd()
         {
+            Debug.Log("OnPunchAnimationEnd Fire!");
             playerController.SetPunching(false);
         }
 
@@ -76,6 +78,16 @@ namespace ForgottonChambers.Player
 
         public bool IsFalling() => playerAnimator.GetComponent<Rigidbody2D>().linearVelocity.y < 0 && !IsGrounded();
 
+        public void SetHasSword(bool hasSword)
+        {
+            playerController.SetHasSword(hasSword); 
+        }
+
+
+        public void PlaySwordAttack()
+        {
+            playerAnimator.SetTrigger("SwordStab");
+        }
 
         private void OnDrawGizmos()
         {

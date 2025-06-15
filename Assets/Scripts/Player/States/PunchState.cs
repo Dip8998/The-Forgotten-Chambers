@@ -7,7 +7,6 @@ namespace ForgottonChambers.Player
     {
         private PlayerController playerController;
         private PlayerStateMachine playerStateMachine;
-        private bool animationTriggered = false;
 
         public PunchState(PlayerController playerController, PlayerStateMachine playerStateMachine)
         {
@@ -17,41 +16,49 @@ namespace ForgottonChambers.Player
 
         public void OnStateEnter()
         {
-            animationTriggered = true;
-
-            playerController.playerView.PlayPunchAnimation();
             playerController.SetPunching(true);
+
+            Debug.Log("Entered PunchState.");
+            Debug.Log($"HasSword: {playerController.HasSword}");
+            
+            if (playerController.HasSword)
+                playerController.playerView.PlaySwordAttack();
+            else
+                playerController.playerView.PlayPunchAnimation();
         }
 
         public void UpdateState()
         {
-            if (animationTriggered && !playerController.IsPunching)
+            if (!playerController.IsPunching)
             {
-                animationTriggered = false;
+                EndPunch();
+            }
+        }
 
-                if (playerController.IsGrounded())
-                {
-                    float moveInput = playerController.InputHandler.MoveInput;
-                    playerStateMachine.ChangeState(moveInput != 0 ? PlayerState.Run : PlayerState.Idle);
-                }
-                else
-                {
-                    playerStateMachine.ChangeState(PlayerState.Jump);
-                }
+        private void EndPunch()
+        {
+            playerController.SetPunching(false);
+            if (playerController.IsGrounded())
+            {
+                float move = playerController.InputHandler.MoveInput;
+                playerStateMachine.ChangeState(move != 0 ? PlayerState.Run : PlayerState.Idle);
+            }
+            else
+            {
+                playerStateMachine.ChangeState(PlayerState.Jump);
             }
         }
 
         public void FixedUpdateState()
         {
-            float horizontalInput = playerController.InputHandler.MoveInput;
-            playerController.ApplyMovement(horizontalInput * 0.2f);
-            playerController.SetPlayerScale(horizontalInput);
+            float moveInput = playerController.InputHandler.MoveInput;
+            playerController.ApplyMovement(moveInput * 0f);
+            playerController.SetPlayerScale(moveInput);
         }
 
         public void OnStateExit()
         {
             playerController.SetPunching(false);
-            animationTriggered = false;
         }
     }
 }

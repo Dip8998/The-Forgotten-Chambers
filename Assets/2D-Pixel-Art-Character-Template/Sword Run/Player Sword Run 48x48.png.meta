@@ -81,7 +81,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -151,7 +151,7 @@ TextureImporter:
         width: 26
         height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -171,9 +171,9 @@ TextureImporter:
         x: 57
         y: 11
         width: 29
-        height: 22
+        height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -187,37 +187,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Sword Run 48x48_2
-      rect:
-        serializedVersion: 2
-        x: 71
-        y: 30
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c1be4c690abc5de90800000000000000
-      internalID: -7001466155092874468
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Sword Run 48x48_3
       rect:
         serializedVersion: 2
         x: 104
         y: 7
         width: 27
-        height: 24
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -231,28 +209,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Sword Run 48x48_4
-      rect:
-        serializedVersion: 2
-        x: 119
-        y: 30
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6e82b9e25a93a7b80800000000000000
-      internalID: -8396335173664560922
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Sword Run 48x48_5
       rect:
         serializedVersion: 2
@@ -261,7 +217,7 @@ TextureImporter:
         width: 23
         height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -283,7 +239,7 @@ TextureImporter:
         width: 28
         height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -305,7 +261,7 @@ TextureImporter:
         width: 29
         height: 36
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -325,9 +281,9 @@ TextureImporter:
         x: 296
         y: 7
         width: 32
-        height: 30
+        height: 33
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -341,28 +297,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Sword Run 48x48_9
-      rect:
-        serializedVersion: 2
-        x: 310
-        y: 30
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 983a87937bbfba7e0800000000000000
-      internalID: -1753030865568881783
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Sword Run 48x48_10
       rect:
         serializedVersion: 2
@@ -371,7 +305,7 @@ TextureImporter:
         width: 24
         height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -388,7 +322,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 9148e69cb218ae446bf1441894d87970
     internalID: 0
     vertices: []
     indices: 
@@ -397,7 +331,15 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Player Sword Run 48x48_0: -4264848026063475136
+      Player Sword Run 48x48_1: -8914172602624559260
+      Player Sword Run 48x48_10: 1230332063238639635
+      Player Sword Run 48x48_3: 2162048161086064515
+      Player Sword Run 48x48_5: -3319568464287422662
+      Player Sword Run 48x48_6: -3022922086271165861
+      Player Sword Run 48x48_7: 1541882120131592429
+      Player Sword Run 48x48_8: -8031951077730256564
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

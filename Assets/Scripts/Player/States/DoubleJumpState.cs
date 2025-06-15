@@ -30,6 +30,7 @@ namespace ForgottonChambers.Player
             {
                 playerStateMachine.ChangeState(PlayerState.Punch);
             }
+
         }
 
         public void FixedUpdateState()

@@ -16,4 +16,5 @@ MonoBehaviour:
   playerMovementSpeed: 10
   playerJumpForce: 15
   playerDoubleJumpForce: 12
+  playerCrouchMovementSpeed: 0.5
   playerMaxHealth: 100

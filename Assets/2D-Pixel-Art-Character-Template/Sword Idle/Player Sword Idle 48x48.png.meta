@@ -99,7 +99,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -167,9 +167,9 @@ TextureImporter:
         x: 13
         y: 7
         width: 22
-        height: 22
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -183,50 +183,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Sword Idle 48x48_1
-      rect:
-        serializedVersion: 2
-        x: 20
-        y: 28
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fc370d4077f8a9920800000000000000
-      internalID: 2997866243313136591
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player Sword Idle 48x48_2
-      rect:
-        serializedVersion: 2
-        x: 68
-        y: 26
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: bbd4ed3deef977bb0800000000000000
-      internalID: -4938302618282865221
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Sword Idle 48x48_3
       rect:
         serializedVersion: 2
@@ -235,7 +191,7 @@ TextureImporter:
         width: 22
         height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -257,7 +213,7 @@ TextureImporter:
         width: 22
         height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -279,7 +235,7 @@ TextureImporter:
         width: 22
         height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -293,37 +249,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Sword Idle 48x48_6
-      rect:
-        serializedVersion: 2
-        x: 260
-        y: 26
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fc268132ec7bf9500800000000000000
-      internalID: 405244587466580687
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Sword Idle 48x48_7
       rect:
         serializedVersion: 2
         x: 301
         y: 7
         width: 22
-        height: 22
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -337,37 +271,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Sword Idle 48x48_8
-      rect:
-        serializedVersion: 2
-        x: 308
-        y: 28
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f5bfdcb8b96e16030800000000000000
-      internalID: 3486321142301326175
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Sword Idle 48x48_9
       rect:
         serializedVersion: 2
         x: 349
         y: 7
         width: 22
-        height: 23
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -381,37 +293,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Sword Idle 48x48_10
-      rect:
-        serializedVersion: 2
-        x: 356
-        y: 29
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b70233dfa9408aba0800000000000000
-      internalID: -6077602633417023365
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Sword Idle 48x48_11
       rect:
         serializedVersion: 2
         x: 397
         y: 7
         width: 22
-        height: 23
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -425,37 +315,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Sword Idle 48x48_12
-      rect:
-        serializedVersion: 2
-        x: 404
-        y: 29
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f6c8dfee9f59431f0800000000000000
-      internalID: -1066062311090975633
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Sword Idle 48x48_13
       rect:
         serializedVersion: 2
         x: 445
         y: 7
         width: 22
-        height: 23
+        height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -469,37 +337,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Sword Idle 48x48_14
-      rect:
-        serializedVersion: 2
-        x: 452
-        y: 29
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3c214b002ca6192d0800000000000000
-      internalID: -3273718072653638973
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Player Sword Idle 48x48_15
       rect:
         serializedVersion: 2
         x: 61
         y: 7
         width: 22
-        height: 20
+        height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -519,9 +365,9 @@ TextureImporter:
         x: 253
         y: 7
         width: 22
-        height: 20
+        height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -538,7 +384,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: cfd74a17838ccb94c95193c87ec3fe4c
     internalID: 0
     vertices: []
     indices: 
@@ -547,7 +393,24 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Player Sword Idle 48x48_0: 4910931697729812194
+      Player Sword Idle 48x48_1: 2997866243313136591
+      Player Sword Idle 48x48_10: -6077602633417023365
+      Player Sword Idle 48x48_11: -8218479045361914352
+      Player Sword Idle 48x48_12: -1066062311090975633
+      Player Sword Idle 48x48_13: 5111820246026042156
+      Player Sword Idle 48x48_14: -3273718072653638973
+      Player Sword Idle 48x48_15: -1305177618372451444
+      Player Sword Idle 48x48_16: 6660997261534717173
+      Player Sword Idle 48x48_2: -4938302618282865221
+      Player Sword Idle 48x48_3: -2180114551739571447
+      Player Sword Idle 48x48_4: 6028588971390400559
+      Player Sword Idle 48x48_5: 4446632827236324328
+      Player Sword Idle 48x48_6: 405244587466580687
+      Player Sword Idle 48x48_7: 8405157985730778187
+      Player Sword Idle 48x48_8: 3486321142301326175
+      Player Sword Idle 48x48_9: 5524093345125309853
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

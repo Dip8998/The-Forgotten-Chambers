@@ -9,6 +9,7 @@ namespace ForgottonChambers.Player
         public PlayerView playerView { get; private set; }
         public PlayerStateMachine StateMachine { get; private set; }
         public PlayerInputHandler InputHandler { get; private set; }
+       
         private Rigidbody2D rb2D;
 
         private bool isPunching = false;
@@ -16,6 +17,9 @@ namespace ForgottonChambers.Player
 
         private bool doubleJump = false;
         public bool CanDoubleJump => doubleJump;
+
+        private bool hasSword;
+        public bool HasSword => hasSword;
 
         public PlayerController(PlayerScriptableObject playerScriptableObject)
         {
@@ -57,12 +61,17 @@ namespace ForgottonChambers.Player
             InputHandler.ResetJumpBuffer();
         }
 
+        public void SetHasSword(bool value)
+        {
+            hasSword = value;
+            playerView.playerAnimator.SetBool("HasSword", hasSword);
+        }
+
         public void SetPunching(bool punching)
         {
             isPunching = punching;
         }
 
-        
         public void ResetDoubleJumpAbility()
         {
             doubleJump = true;
