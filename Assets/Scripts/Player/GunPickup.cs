@@ -2,14 +2,15 @@ using UnityEngine;
 
 namespace ForgottonChambers.Player
 {
-    public class SwordPickup : MonoBehaviour
+    public class GunPickup : MonoBehaviour
     {
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.TryGetComponent(out PlayerView player))
+            if(collision.TryGetComponent(out PlayerView player))
             {
-                Destroy(gameObject); 
+                Destroy(this.gameObject);
             }
         }
     }
 }
+

@@ -1,33 +1,66 @@
-﻿using UnityEngine;
-using ForgottonChambers.StateMachine;
+﻿using ForgottonChambers.Player.ForgottonChambers.Player;
+using Unity.VisualScripting;
+using UnityEngine;
 
 namespace ForgottonChambers.Player
 {
     public class PlayerController
     {
-        public PlayerScriptableObject playerScriptableObject {  get; private set; }
-        public PlayerView playerView { get; private set; }
+        #region State Variables
         public PlayerStateMachine StateMachine { get; private set; }
+        public PlayerIdleState IdleState { get; private set; }
+        public PlayerMoveState MoveState { get; private set; }
+        private PlayerScriptableObject playerScriptableObject;
+        #endregion
+
+        #region Components
         public PlayerInputHandler InputHandler { get; private set; }
-       
         private Rigidbody2D rb2D;
+        #endregion
 
-        private bool isPunching = false;
-        public bool IsPunching => isPunching;
+        #region Player ref
+        public PlayerView playerView { get; private set; }
+        #endregion
 
-        private bool doubleJump = false;
-        public bool CanDoubleJump => doubleJump;
+        #region Vector Variables
+        private Vector2 workSpace;
+        public Vector2 CurrentVelocity { get; private set; }
+        #endregion
 
-        private bool hasSword;
-        public bool HasSword => hasSword;
-
+        #region Unity Callback Setter functions 
         public PlayerController(PlayerScriptableObject playerScriptableObject)
         {
             this.playerScriptableObject = playerScriptableObject;
-            InitializePlayerView();
+            StateMachine = new PlayerStateMachine();
             InputHandler = new PlayerInputHandler();
-            StateMachine = new PlayerStateMachine(this);
-            StateMachine.Initialize(PlayerState.Idle);
+
+            InitializePlayerView();
+            InitializePlayerState();
+        }
+
+        public void SetStartPlayer()
+        {
+            StateMachine.InitializeState(IdleState);
+        }
+
+        public void SetUpdatePlayer()
+        {
+            InputHandler.UpdateInputs();
+            CurrentVelocity = rb2D.linearVelocity;
+            StateMachine.currentState.OnUpdate();
+        }
+
+        public void SetFixedUpdatePlayer()
+        {
+            StateMachine.currentState.OnFixedUpdate();
+        }
+        #endregion
+
+        #region Initialization of State and Player functions 
+        private void InitializePlayerState()
+        {
+            IdleState = new PlayerIdleState(this, StateMachine, playerScriptableObject, "idle");
+            MoveState = new PlayerMoveState(this, StateMachine, playerScriptableObject, "move");
         }
 
         private void InitializePlayerView()
@@ -36,53 +69,18 @@ namespace ForgottonChambers.Player
             rb2D = playerView.GetComponent<Rigidbody2D>();
             playerView.SetPlayerController(this);
         }
+        #endregion
 
-        public void UpdatePlayer()
+        #region Setters functions
+        public void SetVelocity(float velocity)
         {
-            InputHandler.UpdateInputs();
-            StateMachine.UpdateState();
+            workSpace.Set(velocity, CurrentVelocity.y);
+            rb2D.linearVelocity = workSpace;
+            CurrentVelocity = workSpace;
+            SetPlayerScale(velocity);
         }
 
-        public void FixedUpdatePlayer()
-        {
-           StateMachine.FixedUpdateState();
-        }
-
-        public void ApplyMovement(float horizontalInput)
-        {
-            Vector2 velocity = rb2D.linearVelocity;
-            velocity.x = horizontalInput * playerScriptableObject.playerMovementSpeed;
-            rb2D.linearVelocity = velocity;
-        }
-
-        public void ApplyJumpForce(float force)
-        {
-            rb2D.linearVelocity = new Vector2(rb2D.linearVelocity.x, force);
-            InputHandler.ResetJumpBuffer();
-        }
-
-        public void SetHasSword(bool value)
-        {
-            hasSword = value;
-            playerView.playerAnimator.SetBool("HasSword", hasSword);
-        }
-
-        public void SetPunching(bool punching)
-        {
-            isPunching = punching;
-        }
-
-        public void ResetDoubleJumpAbility()
-        {
-            doubleJump = true;
-        }
-
-        public void DisableDoubleJumpAbility()
-        {
-            doubleJump = false;
-        }
-
-        public void SetPlayerScale(float moveSpeed)
+        private void SetPlayerScale(float moveSpeed)
         {
             if (moveSpeed == 0) return;
 
@@ -90,7 +88,6 @@ namespace ForgottonChambers.Player
             scale.x = moveSpeed > 0 ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
             playerView.transform.localScale = scale;
         }
-
-        public bool IsGrounded() => playerView.IsGrounded();
+        #endregion
     }
 }

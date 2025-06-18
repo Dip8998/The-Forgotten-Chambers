@@ -1,0 +1,37 @@
+using UnityEngine;
+
+namespace ForgottonChambers.Player
+{
+    public class PlayerIdleState : PlayerGroundedState
+    {
+        public PlayerIdleState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+        {
+        }
+
+        public override void OnFixedUpdate()
+        {
+            base.OnFixedUpdate();
+        }
+
+        public override void OnStateEnter()
+        {
+            base.OnStateEnter();
+            player.SetVelocity(0);
+        }
+
+        public override void OnStateExit()
+        {
+            base.OnStateExit();
+        }
+
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+
+            if(input != 0)
+            {
+                stateMachine.ChangeState(player.MoveState);
+            }
+        }
+    }
+}
