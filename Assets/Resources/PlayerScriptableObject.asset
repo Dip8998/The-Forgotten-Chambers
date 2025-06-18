@@ -17,4 +17,6 @@ MonoBehaviour:
   playerJumpForce: 15
   playerDoubleJumpForce: 12
   playerCrouchMovementSpeed: 0.5
+  coyoteTime: 0.2
   playerMaxHealth: 100
+  amountOfJumps: 2

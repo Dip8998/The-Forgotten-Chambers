@@ -8,6 +8,7 @@ namespace ForgottonChambers.Player
         protected PlayerController player;
         protected PlayerStateMachine stateMachine;
         protected PlayerScriptableObject playerData;
+        protected bool isAnimationFinished;
 
         protected float startTime;
 
@@ -25,6 +26,7 @@ namespace ForgottonChambers.Player
         {
             startTime = Time.time;
             player.playerView.playerAnimator.SetBool(animBoolName, true);
+            isAnimationFinished = false; 
         }
 
         public virtual void OnStateExit()
@@ -41,6 +43,10 @@ namespace ForgottonChambers.Player
         {
 
         }
+
+        public virtual void AnimationTrigger() { }
+
+        public virtual void AnimationFinishTrigger() => isAnimationFinished = true;
     }
 }
     

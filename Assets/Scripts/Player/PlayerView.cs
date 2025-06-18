@@ -33,6 +33,11 @@ namespace ForgottonChambers.Player
             this.playerController = playerController;
         }
 
+        public void OnAnimationFinished()
+        {
+            playerController.AnimationFinishedTrigger();
+        }
+
         public bool IsGrounded() => Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
         private void OnDrawGizmos()

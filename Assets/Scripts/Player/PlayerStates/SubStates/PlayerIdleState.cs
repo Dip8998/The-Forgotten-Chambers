@@ -16,7 +16,7 @@ namespace ForgottonChambers.Player
         public override void OnStateEnter()
         {
             base.OnStateEnter();
-            player.SetVelocity(0);
+            player.SetVelocityX(0);
         }
 
         public override void OnStateExit()
@@ -28,7 +28,7 @@ namespace ForgottonChambers.Player
         {
             base.OnUpdate();
 
-            if(input != 0)
+            if(moveInput != 0)
             {
                 stateMachine.ChangeState(player.MoveState);
             }

@@ -27,9 +27,9 @@ namespace ForgottonChambers.Player
         {
             base.OnUpdate();
 
-            player.SetVelocity(playerData.playerMovementSpeed * input);
+            player.SetVelocityX(playerData.playerMovementSpeed * moveInput);
 
-            if (input == 0)
+            if (moveInput == 0)
             {
                 stateMachine.ChangeState(player.IdleState);
             }

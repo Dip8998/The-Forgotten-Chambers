@@ -4,7 +4,8 @@ namespace ForgottonChambers.Player
 {
     public class PlayerGroundedState : PlayerState
     {
-        protected float input;
+        protected float moveInput;
+        private bool jumpInput;
 
         public PlayerGroundedState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
         {
@@ -18,6 +19,7 @@ namespace ForgottonChambers.Player
         public override void OnStateEnter()
         {
             base.OnStateEnter();
+            player.JumpState.ResetAmountJumpsLeft();
         }
 
         public override void OnStateExit()
@@ -28,7 +30,18 @@ namespace ForgottonChambers.Player
         public override void OnUpdate()
         {
             base.OnUpdate();
-            input = player.InputHandler.MoveInput;
+            moveInput = player.InputHandler.MoveInput;
+            jumpInput = player.InputHandler.JumpInput;
+
+            if(jumpInput && player.JumpState.CanJump())
+            {
+                stateMachine.ChangeState(player.JumpState);
+            }
+            else if(!player.CheckIsGround())
+            {
+                player.AirState.StartCoyoteTime();
+                stateMachine.ChangeState(player.AirState);
+            }
         }
     }
 }

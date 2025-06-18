@@ -10,6 +10,9 @@ namespace ForgottonChambers.Player
         public PlayerStateMachine StateMachine { get; private set; }
         public PlayerIdleState IdleState { get; private set; }
         public PlayerMoveState MoveState { get; private set; }
+        public PlayerJumpState JumpState { get; private set; }
+        public PlayerInAirState AirState { get; private set; }
+        public PlayerLandState LandState { get; private set; }
         private PlayerScriptableObject playerScriptableObject;
         #endregion
 
@@ -61,6 +64,9 @@ namespace ForgottonChambers.Player
         {
             IdleState = new PlayerIdleState(this, StateMachine, playerScriptableObject, "idle");
             MoveState = new PlayerMoveState(this, StateMachine, playerScriptableObject, "move");
+            JumpState = new PlayerJumpState(this, StateMachine, playerScriptableObject, "inAir");
+            AirState = new PlayerInAirState(this, StateMachine, playerScriptableObject, "inAir");
+            LandState = new PlayerLandState(this, StateMachine, playerScriptableObject, "land");
         }
 
         private void InitializePlayerView()
@@ -72,12 +78,19 @@ namespace ForgottonChambers.Player
         #endregion
 
         #region Setters functions
-        public void SetVelocity(float velocity)
+        public void SetVelocityX(float velocity)
         {
             workSpace.Set(velocity, CurrentVelocity.y);
             rb2D.linearVelocity = workSpace;
             CurrentVelocity = workSpace;
             SetPlayerScale(velocity);
+        }
+
+        public void SetVelocityY(float velocity)
+        {
+            workSpace.Set(CurrentVelocity.x, velocity);
+            rb2D.linearVelocity = workSpace;
+            CurrentVelocity = workSpace;
         }
 
         private void SetPlayerScale(float moveSpeed)
@@ -88,6 +101,21 @@ namespace ForgottonChambers.Player
             scale.x = moveSpeed > 0 ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
             playerView.transform.localScale = scale;
         }
+        #endregion
+
+        #region Check functions
+        public bool CheckIsGround()
+        {
+            return playerView.IsGrounded();
+        }
+        #endregion
+
+        #region Other Functions
+
+        public void AnimationTrigger() => StateMachine.currentState.AnimationTrigger();
+
+        public void AnimationFinishedTrigger() => StateMachine.currentState.AnimationFinishTrigger();
+
         #endregion
     }
 }
