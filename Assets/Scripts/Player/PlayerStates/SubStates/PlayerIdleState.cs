@@ -28,7 +28,7 @@ namespace ForgottonChambers.Player
         {
             base.OnUpdate();
 
-            if(moveInput != 0)
+            if(moveInput != 0 && !isExitingState)
             {
                 stateMachine.ChangeState(player.MoveState);
             }

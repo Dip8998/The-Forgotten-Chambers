@@ -19,6 +19,9 @@ MonoBehaviour:
   playerCrouchMovementSpeed: 0.5
   playerWallSlideSpeed: 3
   playerWallClimbSpeed: 3
+  playerWallJumpSpeed: 20
+  playerWallJumpTime: 0.4
+  playerWallJumpAngle: {x: 1, y: 2}
   coyoteTime: 0.2
   playerMaxHealth: 100
   amountOfJumps: 2

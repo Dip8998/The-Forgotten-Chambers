@@ -81,7 +81,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -149,9 +149,9 @@ TextureImporter:
         x: 10
         y: 3
         width: 22
-        height: 27
+        height: 35
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -165,37 +165,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player jump left 48x48-sheet_1
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 29
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 336620748a123f140800000000000000
-      internalID: 4752179038435567155
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: player jump left 48x48-sheet_2
       rect:
         serializedVersion: 2
         x: 59
         y: 3
         width: 21
-        height: 27
+        height: 36
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -209,37 +187,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player jump left 48x48-sheet_3
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 29
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 637a59015e6fa1ee0800000000000000
-      internalID: -1289446879602038986
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: player jump left 48x48-sheet_4
       rect:
         serializedVersion: 2
         x: 106
         y: 8
         width: 22
-        height: 22
+        height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -253,37 +209,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player jump left 48x48-sheet_5
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 29
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8133f22714bdf8e70800000000000000
-      internalID: 9119748844583596824
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: player jump left 48x48-sheet_6
       rect:
         serializedVersion: 2
         x: 151
         y: 8
         width: 27
-        height: 24
+        height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -297,37 +231,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player jump left 48x48-sheet_7
-      rect:
-        serializedVersion: 2
-        x: 161
-        y: 29
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5c979b061e219b8c0800000000000000
-      internalID: -3983131636232783419
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: player jump left 48x48-sheet_8
       rect:
         serializedVersion: 2
         x: 199
         y: 8
         width: 27
-        height: 24
+        height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -341,28 +253,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player jump left 48x48-sheet_9
-      rect:
-        serializedVersion: 2
-        x: 209
-        y: 29
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 06ea9a47559113060800000000000000
-      internalID: 6931349156320095840
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: player jump left 48x48-sheet_10
       rect:
         serializedVersion: 2
@@ -371,7 +261,7 @@ TextureImporter:
         width: 26
         height: 36
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -388,7 +278,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 944460732887e9d449618fc037fe6b6b
     internalID: 0
     vertices: []
     indices: 
@@ -397,7 +287,18 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      player jump left 48x48-sheet_0: -3955658652205596403
+      player jump left 48x48-sheet_1: 4752179038435567155
+      player jump left 48x48-sheet_10: -4602207072643131913
+      player jump left 48x48-sheet_2: -6825385565569687792
+      player jump left 48x48-sheet_3: -1289446879602038986
+      player jump left 48x48-sheet_4: -4895705434486312942
+      player jump left 48x48-sheet_5: 9119748844583596824
+      player jump left 48x48-sheet_6: -8275679897676003348
+      player jump left 48x48-sheet_7: -3983131636232783419
+      player jump left 48x48-sheet_8: -6662518601181071915
+      player jump left 48x48-sheet_9: 6931349156320095840
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

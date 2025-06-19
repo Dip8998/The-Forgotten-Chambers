@@ -31,7 +31,7 @@ namespace ForgottonChambers.Player
 
             player.SetVelocityX(playerData.playerMovementSpeed * moveInput);
 
-            if (moveInput == 0)
+            if (moveInput == 0 && !isExitingState)
             {
                 stateMachine.ChangeState(player.IdleState);
             }

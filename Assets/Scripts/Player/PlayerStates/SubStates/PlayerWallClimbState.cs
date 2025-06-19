@@ -13,9 +13,12 @@ namespace ForgottonChambers.Player
             base.OnUpdate();
             player.SetVelocityY(playerData.playerWallClimbSpeed);
 
-            if(yInput != 1)
+            if(!isExitingState)
             {
-                stateMachine.ChangeState(player.WallGrabState); 
+                if (yInput != 1)
+                {
+                    stateMachine.ChangeState(player.WallGrabState);
+                }
             }
         }
     }

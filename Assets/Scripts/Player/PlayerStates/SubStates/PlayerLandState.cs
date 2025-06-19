@@ -11,14 +11,17 @@ namespace ForgottonChambers.Player
         public override void OnUpdate()
         {
             base.OnUpdate();
-
-            if(moveInput != 0)
+            
+            if(!isExitingState)
             {
-                stateMachine.ChangeState(player.MoveState);
-            }
-            else if (isAnimationFinished)
-            {
-                stateMachine.ChangeState(player.IdleState);
+                if (moveInput != 0)
+                {
+                    stateMachine.ChangeState(player.MoveState);
+                }
+                else if (isAnimationFinished)
+                {
+                    stateMachine.ChangeState(player.IdleState);
+                }
             }
         }
     }

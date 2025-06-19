@@ -9,6 +9,7 @@ namespace ForgottonChambers.Player
         protected PlayerStateMachine stateMachine;
         protected PlayerScriptableObject playerData;
         protected bool isAnimationFinished;
+        protected bool isExitingState;
 
         protected float startTime;
 
@@ -27,11 +28,13 @@ namespace ForgottonChambers.Player
             startTime = Time.time;
             player.playerView.playerAnimator.SetBool(animBoolName, true);
             isAnimationFinished = false; 
+            isExitingState = false;
         }
 
         public virtual void OnStateExit()
         {
             player.playerView.playerAnimator.SetBool(animBoolName, false);
+            isExitingState = true;
         }
 
         public virtual void OnUpdate()

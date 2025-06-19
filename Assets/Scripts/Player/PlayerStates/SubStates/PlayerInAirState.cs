@@ -8,6 +8,8 @@ namespace ForgottonChambers.Player
         private bool jumpInput;
         private bool grabInput;
         private bool coyoteTime;
+        private bool wallJumpCoyoteTime;
+        private float startWallJumpCoyoteTime;
 
         public PlayerInAirState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
         {
@@ -33,6 +35,7 @@ namespace ForgottonChambers.Player
             base.OnUpdate();
 
             CheckCoyoteTime();
+            CheckWallCoyoteTime();
 
             xInput = player.InputHandler.MoveInput;
             jumpInput = player.InputHandler.JumpInput;
@@ -42,11 +45,17 @@ namespace ForgottonChambers.Player
             {
                 stateMachine.ChangeState(player.LandState);
             }
-            else if(jumpInput && player.JumpState.CanJump())
+            else if(jumpInput && (player.CheckIsWall() || player.CheckIsWallBack() || wallJumpCoyoteTime))
             {
-                stateMachine.ChangeState(player.JumpState); 
+                StopWallCoyoteTime();
+                player.WallJumpState.DetermineWallJumpDirection(player.CheckIsWall());
+                stateMachine.ChangeState(player.WallJumpState);
             }
-            else if(player.CheckIsWall() && grabInput)
+            else if (jumpInput && player.JumpState.CanJump())
+            {
+                stateMachine.ChangeState(player.JumpState);
+            }
+            else if (player.CheckIsWall() && grabInput)
             {
                 stateMachine.ChangeState(player.WallGrabState);
             }
@@ -70,6 +79,24 @@ namespace ForgottonChambers.Player
             }
         }
 
+        private void CheckWallCoyoteTime()
+        {
+            if (wallJumpCoyoteTime && Time.time > startWallJumpCoyoteTime + playerData.coyoteTime)
+            {
+                wallJumpCoyoteTime = false;
+                player.JumpState.DecreaseAmountOfJumpsLeft();
+            }
+        }
+
         public void StartCoyoteTime() => coyoteTime = true; 
+
+        public void StartWallCoyoteTime()
+        {
+            wallJumpCoyoteTime = true;
+            startWallJumpCoyoteTime = Time.time;
+        }
+
+        public void StopWallCoyoteTime() => wallJumpCoyoteTime = false;
+
     }
 }

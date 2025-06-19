@@ -46,6 +46,9 @@ namespace ForgottonChambers.Player
 
         public bool IsTouchingWall() => Physics2D.Raycast(wallCheck.position, Vector2.right * playerController.FacingDirection, wallCheckDistance, wallLayer);
 
+        public bool IsTouchingWallBack() => Physics2D.Raycast(wallCheck.position, Vector2.right * -playerController.FacingDirection, wallCheckDistance, wallLayer);
+
+
         private void OnDrawGizmos()
         {
             if (groundCheck != null)

@@ -41,15 +41,19 @@ namespace ForgottonChambers.Player
         {
             base.OnUpdate();
 
-            HoldPosition();
 
-            if (yInput > 0)
+            if (!isExitingState)
             {
-                stateMachine.ChangeState(player.WallClimbState);
-            }
-            else if(yInput < 0 || !grabInput)
-            {
-                stateMachine.ChangeState(player.WallSlideState);
+                HoldPosition();
+
+                if (yInput > 0)
+                {
+                    stateMachine.ChangeState(player.WallClimbState);
+                }
+                else if (yInput < 0 || !grabInput)
+                {
+                    stateMachine.ChangeState(player.WallSlideState);
+                }
             }
         }
 

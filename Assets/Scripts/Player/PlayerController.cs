@@ -16,6 +16,7 @@ namespace ForgottonChambers.Player
         public PlayerWallSlideState WallSlideState { get; private set; }
         public PlayerWallGrabState WallGrabState { get; private set; }
         public PlayerWallClimbState WallClimbState { get; private set; }
+        public PlayerWallJumpState WallJumpState { get; private set; }
         private PlayerScriptableObject playerScriptableObject;
         #endregion
 
@@ -52,7 +53,6 @@ namespace ForgottonChambers.Player
         {
             FacingDirection = 1;
             StateMachine.InitializeState(IdleState);
-            Debug.Log("<color=magenta>PlayerController.SetStartPlayer() called!</color>");
         }
 
         public void SetUpdatePlayer()
@@ -79,6 +79,7 @@ namespace ForgottonChambers.Player
             WallSlideState = new PlayerWallSlideState(this, StateMachine, playerScriptableObject, "wallSlide");
             WallGrabState = new PlayerWallGrabState(this, StateMachine, playerScriptableObject, "wallGrab");
             WallClimbState = new PlayerWallClimbState(this, StateMachine, playerScriptableObject, "wallClimb");
+            WallJumpState = new PlayerWallJumpState(this, StateMachine, playerScriptableObject, "inAir");
         }
 
         private void InitializePlayerView()
@@ -104,6 +105,14 @@ namespace ForgottonChambers.Player
             CurrentVelocity = workSpace;
         }
 
+        public void SetVelocity(float velocity, Vector2 angle, int dir)
+        {
+            angle.Normalize();
+            workSpace.Set(angle.x * velocity * dir, angle.y * velocity);
+            rb2D.linearVelocity = workSpace;
+            CurrentVelocity = workSpace;
+        }
+
         #endregion
 
         #region Check functions
@@ -119,6 +128,8 @@ namespace ForgottonChambers.Player
         public bool CheckIsGround() => playerView.IsGrounded();
 
         public bool CheckIsWall() => playerView.IsTouchingWall();
+
+        public bool CheckIsWallBack() => playerView.IsTouchingWallBack();
 
         #endregion
 
