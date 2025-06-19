@@ -29,7 +29,7 @@ namespace ForgottonChambers.Player
         public override void OnUpdate()
         {
             base.OnUpdate();
-            if (isAbilityDone )
+            if (isAbilityDone)
             {
                 if(player.CheckIsGround() && player.CurrentVelocity.y < 0.01f)
                 {

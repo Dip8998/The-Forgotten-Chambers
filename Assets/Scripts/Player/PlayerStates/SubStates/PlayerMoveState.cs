@@ -27,6 +27,8 @@ namespace ForgottonChambers.Player
         {
             base.OnUpdate();
 
+            player.CheckIfShouldFlip(moveInput);
+
             player.SetVelocityX(playerData.playerMovementSpeed * moveInput);
 
             if (moveInput == 0)

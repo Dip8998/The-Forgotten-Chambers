@@ -10,6 +10,8 @@ namespace ForgottonChambers.Player
         public float playerJumpForce;
         public float playerDoubleJumpForce;
         public float playerCrouchMovementSpeed;
+        public float playerWallSlideSpeed;
+        public float playerWallClimbSpeed;
         public float coyoteTime;
         public int playerMaxHealth;
         public int amountOfJumps;

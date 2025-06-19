@@ -13,6 +13,9 @@ namespace ForgottonChambers.Player
         public PlayerJumpState JumpState { get; private set; }
         public PlayerInAirState AirState { get; private set; }
         public PlayerLandState LandState { get; private set; }
+        public PlayerWallSlideState WallSlideState { get; private set; }
+        public PlayerWallGrabState WallGrabState { get; private set; }
+        public PlayerWallClimbState WallClimbState { get; private set; }
         private PlayerScriptableObject playerScriptableObject;
         #endregion
 
@@ -30,6 +33,10 @@ namespace ForgottonChambers.Player
         public Vector2 CurrentVelocity { get; private set; }
         #endregion
 
+        #region Other Variables
+        public int FacingDirection { get; private set; }
+        #endregion
+
         #region Unity Callback Setter functions 
         public PlayerController(PlayerScriptableObject playerScriptableObject)
         {
@@ -43,7 +50,9 @@ namespace ForgottonChambers.Player
 
         public void SetStartPlayer()
         {
+            FacingDirection = 1;
             StateMachine.InitializeState(IdleState);
+            Debug.Log("<color=magenta>PlayerController.SetStartPlayer() called!</color>");
         }
 
         public void SetUpdatePlayer()
@@ -67,6 +76,9 @@ namespace ForgottonChambers.Player
             JumpState = new PlayerJumpState(this, StateMachine, playerScriptableObject, "inAir");
             AirState = new PlayerInAirState(this, StateMachine, playerScriptableObject, "inAir");
             LandState = new PlayerLandState(this, StateMachine, playerScriptableObject, "land");
+            WallSlideState = new PlayerWallSlideState(this, StateMachine, playerScriptableObject, "wallSlide");
+            WallGrabState = new PlayerWallGrabState(this, StateMachine, playerScriptableObject, "wallGrab");
+            WallClimbState = new PlayerWallClimbState(this, StateMachine, playerScriptableObject, "wallClimb");
         }
 
         private void InitializePlayerView()
@@ -83,7 +95,6 @@ namespace ForgottonChambers.Player
             workSpace.Set(velocity, CurrentVelocity.y);
             rb2D.linearVelocity = workSpace;
             CurrentVelocity = workSpace;
-            SetPlayerScale(velocity);
         }
 
         public void SetVelocityY(float velocity)
@@ -93,24 +104,32 @@ namespace ForgottonChambers.Player
             CurrentVelocity = workSpace;
         }
 
-        private void SetPlayerScale(float moveSpeed)
-        {
-            if (moveSpeed == 0) return;
-
-            Vector2 scale = playerView.transform.localScale;
-            scale.x = moveSpeed > 0 ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
-            playerView.transform.localScale = scale;
-        }
         #endregion
 
         #region Check functions
-        public bool CheckIsGround()
+
+        public void CheckIfShouldFlip(float xInput)
         {
-            return playerView.IsGrounded();
+            if (xInput != 0 && xInput != FacingDirection)
+            {
+                Flip();
+            }
         }
+
+        public bool CheckIsGround() => playerView.IsGrounded();
+
+        public bool CheckIsWall() => playerView.IsTouchingWall();
+
         #endregion
 
         #region Other Functions
+
+
+        private void Flip()
+        {
+            FacingDirection *= -1;
+            playerView.transform.Rotate(0.0f, 180.0f, 0.0f);
+        }
 
         public void AnimationTrigger() => StateMachine.currentState.AnimationTrigger();
 

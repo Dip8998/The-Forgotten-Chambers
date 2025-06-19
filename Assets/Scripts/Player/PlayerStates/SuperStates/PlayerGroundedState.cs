@@ -6,6 +6,7 @@ namespace ForgottonChambers.Player
     {
         protected float moveInput;
         private bool jumpInput;
+        private bool grabInput;
 
         public PlayerGroundedState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
         {
@@ -32,6 +33,7 @@ namespace ForgottonChambers.Player
             base.OnUpdate();
             moveInput = player.InputHandler.MoveInput;
             jumpInput = player.InputHandler.JumpInput;
+            grabInput = player.InputHandler.GrabInput;
 
             if(jumpInput && player.JumpState.CanJump())
             {
@@ -41,6 +43,10 @@ namespace ForgottonChambers.Player
             {
                 player.AirState.StartCoyoteTime();
                 stateMachine.ChangeState(player.AirState);
+            }
+            else if(player.CheckIsWall() && grabInput)
+            {
+                stateMachine.ChangeState(player.WallGrabState);
             }
         }
     }
