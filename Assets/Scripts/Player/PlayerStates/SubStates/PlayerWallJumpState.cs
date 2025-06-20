@@ -23,8 +23,11 @@ namespace ForgottonChambers.Player
         public override void OnUpdate()
         {
             base.OnUpdate();
-            
-            if(Time.time >= startTime + playerData.playerWallJumpTime)
+
+            player.playerView.playerAnimator.SetFloat("yVelocity", player.CurrentVelocity.y);
+            player.playerView.playerAnimator.SetFloat("xVelocity", Mathf.Abs(player.CurrentVelocity.x));
+
+            if (Time.time >= startTime + playerData.playerWallJumpTime)
             {
                 isAbilityDone = true;
             }
