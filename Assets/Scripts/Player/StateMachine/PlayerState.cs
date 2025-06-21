@@ -1,5 +1,6 @@
 using ForgottonChambers.Player;
 using UnityEngine;
+using ForgottonChambers.ScriptableObjects;
 
 namespace ForgottonChambers.Player
 {

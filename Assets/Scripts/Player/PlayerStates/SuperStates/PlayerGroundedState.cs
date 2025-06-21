@@ -1,4 +1,5 @@
 using UnityEngine;
+using ForgottonChambers.ScriptableObjects;
 
 namespace ForgottonChambers.Player
 {
@@ -37,16 +38,24 @@ namespace ForgottonChambers.Player
             jumpInput = player.InputHandler.JumpInput;
             grabInput = player.InputHandler.GrabInput;
 
-            if(jumpInput && player.JumpState.CanJump())
+            if (player.InputHandler.AttackInputs[(int)CombateInputs.Primary])
+            {
+                stateMachine.ChangeState(player.PrimaryAttackState);
+            }
+            else if (player.InputHandler.AttackInputs[(int)CombateInputs.Secondary])
+            {
+                stateMachine.ChangeState(player.SecondaryAttackState);
+            }
+            else if (jumpInput && player.JumpState.CanJump())
             {
                 stateMachine.ChangeState(player.JumpState);
             }
-            else if(!player.CheckIsGround())
+            else if (!player.CheckIsGround())
             {
                 player.AirState.StartCoyoteTime();
                 stateMachine.ChangeState(player.AirState);
             }
-            else if(player.CheckIsWall() && grabInput)
+            else if (player.CheckIsWall() && grabInput)
             {
                 stateMachine.ChangeState(player.WallGrabState);
             }

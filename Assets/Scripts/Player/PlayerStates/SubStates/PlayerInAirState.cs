@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using ForgottonChambers.ScriptableObjects;
 
 namespace ForgottonChambers.Player
 {
@@ -41,7 +42,15 @@ namespace ForgottonChambers.Player
             jumpInput = player.InputHandler.JumpInput;
             grabInput = player.InputHandler.GrabInput;
 
-            if (player.CheckIsGround() && player.CurrentVelocity.y < 0.01f)
+            if (player.InputHandler.AttackInputs[(int)CombateInputs.Primary] && !player.CheckIsCeiling())
+            {
+                stateMachine.ChangeState(player.PrimaryAttackState);
+            }
+            else if (player.InputHandler.AttackInputs[(int)CombateInputs.Secondary] && !player.CheckIsCeiling())
+            {
+                stateMachine.ChangeState(player.SecondaryAttackState);
+            }
+            else if (player.CheckIsGround() && player.CurrentVelocity.y < 0.01f)
             {
                 stateMachine.ChangeState(player.LandState);
             }

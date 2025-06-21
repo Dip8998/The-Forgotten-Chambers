@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using ForgottonChambers.ScriptableObjects;
+
 namespace ForgottonChambers.Player
 {
     public class PlayerWallJumpState : PlayerAbilityState

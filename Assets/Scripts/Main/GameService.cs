@@ -1,15 +1,20 @@
 using ForgottonChambers.Player;
 using UnityEngine;
+using ForgottonChambers.ScriptableObjects;
+using ForgottonChambers.Utilities;
 
-public class GameService : GenericMonoSingleton<GameService>
+namespace ForgottonChambers.Main
 {
-    public PlayerService playerService {  get; private set; }
-
-    [SerializeField] private PlayerScriptableObject playerScriptableObject;
-
-    protected override void Awake()
+    public class GameService : GenericMonoSingleton<GameService>
     {
-        base.Awake();
-        playerService = new PlayerService(playerScriptableObject);
+        public PlayerService playerService { get; private set; }
+
+        [SerializeField] private PlayerScriptableObject playerScriptableObject;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            playerService = new PlayerService(playerScriptableObject);
+        }
     }
 }
