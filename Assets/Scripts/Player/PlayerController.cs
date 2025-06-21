@@ -17,12 +17,15 @@ namespace ForgottonChambers.Player
         public PlayerWallGrabState WallGrabState { get; private set; }
         public PlayerWallClimbState WallClimbState { get; private set; }
         public PlayerWallJumpState WallJumpState { get; private set; }
+        public PlayerCrouchIdleState CrouchIdleState { get; private set; }
+        public PlayerCrouchMoveState CrouchMoveState { get; private set; }
         private PlayerScriptableObject playerScriptableObject;
         #endregion
 
         #region Components
         public PlayerInputHandler InputHandler { get; private set; }
         private Rigidbody2D rb2D;
+        public BoxCollider2D MovementCollider { get; private set; }
         #endregion
 
         #region Player ref
@@ -53,6 +56,7 @@ namespace ForgottonChambers.Player
         {
             FacingDirection = 1;
             StateMachine.InitializeState(IdleState);
+            MovementCollider = playerView.GetComponent<BoxCollider2D>();
         }
 
         public void SetUpdatePlayer()
@@ -80,6 +84,8 @@ namespace ForgottonChambers.Player
             WallGrabState = new PlayerWallGrabState(this, StateMachine, playerScriptableObject, "wallGrab");
             WallClimbState = new PlayerWallClimbState(this, StateMachine, playerScriptableObject, "wallClimb");
             WallJumpState = new PlayerWallJumpState(this, StateMachine, playerScriptableObject, "inAir");
+            CrouchIdleState = new PlayerCrouchIdleState(this, StateMachine, playerScriptableObject, "crouchIdle");
+            CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerScriptableObject, "crouchMove");
         }
 
         private void InitializePlayerView()
@@ -91,6 +97,12 @@ namespace ForgottonChambers.Player
         #endregion
 
         #region Setters functions
+        public void SetVelocityZero()
+        {
+            rb2D.linearVelocity = Vector2.zero;
+            CurrentVelocity = Vector2.zero;
+        }
+
         public void SetVelocityX(float velocity)
         {
             workSpace.Set(velocity, CurrentVelocity.y);
@@ -131,6 +143,8 @@ namespace ForgottonChambers.Player
 
         public bool CheckIsWallBack() => playerView.IsTouchingWallBack();
 
+        public bool CheckIsCeiling() => playerView.IsCeiling();
+
         #endregion
 
         #region Other Functions
@@ -141,6 +155,13 @@ namespace ForgottonChambers.Player
             FacingDirection *= -1;
             playerView.transform.Rotate(0.0f, 180.0f, 0.0f);
         }
+
+        public void SetColliderSize(Vector2 newSize, Vector2 newOffset)
+        {
+            MovementCollider.size = newSize;
+            MovementCollider.offset = newOffset;
+        }
+
 
         public void AnimationTrigger() => StateMachine.currentState.AnimationTrigger();
 

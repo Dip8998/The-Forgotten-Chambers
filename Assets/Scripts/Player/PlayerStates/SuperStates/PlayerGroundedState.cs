@@ -5,6 +5,7 @@ namespace ForgottonChambers.Player
     public class PlayerGroundedState : PlayerState
     {
         protected float moveInput;
+        protected float crouchInput;
         private bool jumpInput;
         private bool grabInput;
 
@@ -32,6 +33,7 @@ namespace ForgottonChambers.Player
         {
             base.OnUpdate();
             moveInput = player.InputHandler.MoveInput;
+            crouchInput = player.InputHandler.UpInput;
             jumpInput = player.InputHandler.JumpInput;
             grabInput = player.InputHandler.GrabInput;
 

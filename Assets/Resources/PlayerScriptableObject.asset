@@ -16,7 +16,9 @@ MonoBehaviour:
   playerMovementSpeed: 10
   playerJumpForce: 15
   playerDoubleJumpForce: 12
-  playerCrouchMovementSpeed: 0.5
+  playerCrouchMovementSpeed: 5
+  playerCrouchColliderHeight: 0.8
+  playerStandColliderHeight: 1.8
   playerWallSlideSpeed: 3
   playerWallClimbSpeed: 3
   playerWallJumpSpeed: 20
@@ -24,4 +26,4 @@ MonoBehaviour:
   playerWallJumpAngle: {x: 1, y: 2}
   coyoteTime: 0.2
   playerMaxHealth: 100
-  amountOfJumps: 2
+  amountOfJumps: 1

@@ -14,6 +14,12 @@ namespace ForgottonChambers.Player
         public override void OnStateEnter()
         {
             base.OnStateEnter();
+
+            if (player.playerView.HasBoxAttached())
+            {
+                isAbilityDone = true; 
+                return;
+            }
             player.SetVelocityY(playerData.playerJumpForce);
             isAbilityDone = true;
             amountOfJumpsLeft--;

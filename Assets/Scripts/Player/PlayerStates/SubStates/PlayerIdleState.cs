@@ -28,10 +28,17 @@ namespace ForgottonChambers.Player
         {
             base.OnUpdate();
 
-            if(moveInput != 0 && !isExitingState)
+            if (!isExitingState)
             {
-                stateMachine.ChangeState(player.MoveState);
-            }
+                if (moveInput != 0)
+                {
+                    stateMachine.ChangeState(player.MoveState);
+                }
+                else if (crouchInput == -1)
+                {
+                    stateMachine.ChangeState(player.CrouchIdleState);
+                }
+            }  
         }
     }
 }

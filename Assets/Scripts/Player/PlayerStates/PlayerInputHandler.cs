@@ -12,6 +12,8 @@ namespace ForgottonChambers.Player
             public float UpInput { get; private set; }
             public bool JumpInput { get; private set; }
             public bool GrabInput { get; private set; }
+            public bool BoxPushPullInput { get; private set; }
+            public bool BoxDropeInput { get; private set; }
 
             public void UpdateInputs()
             {
@@ -19,6 +21,8 @@ namespace ForgottonChambers.Player
                 UpInput = Input.GetAxisRaw("Vertical");
                 JumpInput = Input.GetKeyDown(KeyCode.Space);
                 GrabInput = Input.GetKey(KeyCode.LeftShift);
+                BoxPushPullInput = Input.GetKey(KeyCode.E);
+                BoxDropeInput = Input.GetKeyUp(KeyCode.E);
             }
         }
     }
