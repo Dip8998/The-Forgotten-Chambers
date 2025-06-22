@@ -5,41 +5,39 @@ namespace ForgottonChambers.Player
 {
     public class PlayerJumpState : PlayerAbilityState
     {
-        private int amountOfJumpsLeft;
+        private int _amountOfJumpsLeft;
+        public int AmountOfJumpsLeft => _amountOfJumpsLeft;
 
-        public PlayerJumpState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
+        public PlayerJumpState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
+            : base(player, stateMachine, playerData, animBoolName)
         {
-            amountOfJumpsLeft = playerData.amountOfJumps;
+            _amountOfJumpsLeft = PlayerData.amountOfJumps;
         }
 
         public override void OnStateEnter()
         {
             base.OnStateEnter();
 
-            if (player.playerView.HasBoxAttached())
+            if (Player.PlayerView.HasBoxAttached())
             {
-                isAbilityDone = true; 
+                isAbilityDone = true;
                 return;
             }
-            player.SetVelocityY(playerData.playerJumpForce);
+
+            float jumpForce = _amountOfJumpsLeft == PlayerData.amountOfJumps ? PlayerData.playerJumpForce : PlayerData.playerDoubleJumpForce;
+            Player.SetVelocityY(jumpForce);
+
             isAbilityDone = true;
-            amountOfJumpsLeft--;
+            _amountOfJumpsLeft--;
         }
 
         public bool CanJump()
         {
-            if(amountOfJumpsLeft > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return _amountOfJumpsLeft > 0;
         }
 
-        public void ResetAmountJumpsLeft() => amountOfJumpsLeft = playerData.amountOfJumps;
+        public void ResetAmountJumpsLeft() => _amountOfJumpsLeft = PlayerData.amountOfJumps;
 
-        public void DecreaseAmountOfJumpsLeft() => amountOfJumpsLeft--; 
+        public void DecreaseAmountOfJumpsLeft() => _amountOfJumpsLeft--;
     }
 }

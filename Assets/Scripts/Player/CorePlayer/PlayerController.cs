@@ -1,13 +1,11 @@
-﻿using ForgottonChambers.Player.ForgottonChambers.Player;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 using ForgottonChambers.ScriptableObjects;
 
 namespace ForgottonChambers.Player
 {
     public class PlayerController
     {
-        #region State Variables
+        #region State Machine
         public PlayerStateMachine StateMachine { get; private set; }
         public PlayerIdleState IdleState { get; private set; }
         public PlayerMoveState MoveState { get; private set; }
@@ -20,124 +18,138 @@ namespace ForgottonChambers.Player
         public PlayerWallJumpState WallJumpState { get; private set; }
         public PlayerCrouchIdleState CrouchIdleState { get; private set; }
         public PlayerCrouchMoveState CrouchMoveState { get; private set; }
-        public PlayerAttackState PrimaryAttackState { get; private set; }
-        public PlayerAttackState SecondaryAttackState { get; private set; }
-        private PlayerScriptableObject playerScriptableObject;
+
+        private readonly PlayerAttackState[] attackStates = new PlayerAttackState[2];
+        public PlayerAttackState PrimaryAttackState => attackStates[(int)CombateInputs.Primary];
+        public PlayerAttackState SecondaryAttackState => attackStates[(int)CombateInputs.Secondary];
         #endregion
 
-        #region Components
+        #region Dependencies & Components
+        private readonly PlayerScriptableObject playerConfig;
         public PlayerInputHandler InputHandler { get; private set; }
-        private Rigidbody2D rb2D;
-        public BoxCollider2D MovementCollider { get; private set; }
+        public PlayerView PlayerView { get; private set; }
         public PlayerInventory Inventory { get; private set; }
-        #endregion
+        public BoxCollider2D MovementCollider { get; private set; }
 
-        #region Player ref
-        public PlayerView playerView { get; private set; }
-        #endregion
-
-        #region Vector Variables
-        private Vector2 workSpace;
-        public Vector2 CurrentVelocity { get; private set; }
+        private Rigidbody2D _rb2D;
+        private Vector2 _workSpace;
+        public Vector2 CurrentVelocity => _rb2D.linearVelocity;
         #endregion
 
         #region Other Variables
-        public int FacingDirection { get; private set; }
+        public int FacingDirection { get; private set; } = 1;
         #endregion
 
-        #region Unity Callback Setter functions 
-        public PlayerController(PlayerScriptableObject playerScriptableObject)
+        #region Player call back functions
+        public PlayerController(PlayerScriptableObject playerConfig)
         {
-            this.playerScriptableObject = playerScriptableObject;
+            this.playerConfig = playerConfig;
             StateMachine = new PlayerStateMachine();
             InputHandler = new PlayerInputHandler();
+            _workSpace = Vector2.zero;
 
             InitializePlayerView();
-            InitializePlayerState();
+            InitializePlayerStates();
         }
 
-        public void SetStartPlayer()
+        public void SetupPlayer()
         {
-            FacingDirection = 1;
             InputHandler.StartInputs();
+
+            MovementCollider = PlayerView.GetComponent<BoxCollider2D>();
+            Inventory = PlayerView.GetComponent<PlayerInventory>();
+
+            if (Inventory != null && Inventory.Weapons != null && Inventory.Weapons.Length > (int)CombateInputs.Primary && Inventory.Weapons[(int)CombateInputs.Primary] != null)
+            {
+                PrimaryAttackState.SetWeapon(Inventory.Weapons[(int)CombateInputs.Primary]);
+            }
+            else
+            {
+            }
+
             StateMachine.InitializeState(IdleState);
-            MovementCollider = playerView.GetComponent<BoxCollider2D>();
-            Inventory = playerView.GetComponent<PlayerInventory>();
-            PrimaryAttackState.SetWeapon(Inventory.Weapons[(int)CombateInputs.Primary]);
-            //SecondaryAttackState.SetWeapon(Inventory.Weapons[(int)CombateInputs.Secondary]);
         }
 
-        public void SetUpdatePlayer()
+        public void OnPlayerUpdate()
         {
             InputHandler.UpdateInputs();
-            CurrentVelocity = rb2D.linearVelocity;
             StateMachine.currentState.OnUpdate();
         }
 
-        public void SetFixedUpdatePlayer()
+        public void OnPlayerFixedUpdate()
         {
             StateMachine.currentState.OnFixedUpdate();
         }
         #endregion
 
-        #region Initialization of State and Player functions 
-        private void InitializePlayerState()
-        {
-            IdleState = new PlayerIdleState(this, StateMachine, playerScriptableObject, "idle");
-            MoveState = new PlayerMoveState(this, StateMachine, playerScriptableObject, "move");
-            JumpState = new PlayerJumpState(this, StateMachine, playerScriptableObject, "inAir");
-            AirState = new PlayerInAirState(this, StateMachine, playerScriptableObject, "inAir");
-            LandState = new PlayerLandState(this, StateMachine, playerScriptableObject, "land");
-            WallSlideState = new PlayerWallSlideState(this, StateMachine, playerScriptableObject, "wallSlide");
-            WallGrabState = new PlayerWallGrabState(this, StateMachine, playerScriptableObject, "wallGrab");
-            WallClimbState = new PlayerWallClimbState(this, StateMachine, playerScriptableObject, "wallClimb");
-            WallJumpState = new PlayerWallJumpState(this, StateMachine, playerScriptableObject, "inAir");
-            CrouchIdleState = new PlayerCrouchIdleState(this, StateMachine, playerScriptableObject, "crouchIdle");
-            CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerScriptableObject, "crouchMove");
-            PrimaryAttackState = new PlayerAttackState(this, StateMachine, playerScriptableObject, "attack");
-            SecondaryAttackState = new PlayerAttackState(this, StateMachine, playerScriptableObject, "attack");
-        }
+        #region Initialization
 
         private void InitializePlayerView()
         {
-            playerView = Object.Instantiate(playerScriptableObject.playerPrefab);
-            rb2D = playerView.GetComponent<Rigidbody2D>();
-            playerView.SetPlayerController(this);
+            if (playerConfig.playerPrefab == null)
+            {
+                return;
+            }
+            PlayerView = Object.Instantiate(playerConfig.playerPrefab);
+            _rb2D = PlayerView.GetComponent<Rigidbody2D>();
+            PlayerView.SetPlayerController(this);
         }
+
+        private void InitializePlayerStates()
+        {
+            IdleState = new PlayerIdleState(this, StateMachine, playerConfig, "idle");
+            MoveState = new PlayerMoveState(this, StateMachine, playerConfig, "move");
+            JumpState = new PlayerJumpState(this, StateMachine, playerConfig, "inAir");
+            AirState = new PlayerInAirState(this, StateMachine, playerConfig, "inAir");
+            LandState = new PlayerLandState(this, StateMachine, playerConfig, "land");
+            WallSlideState = new PlayerWallSlideState(this, StateMachine, playerConfig, "wallSlide");
+            WallGrabState = new PlayerWallGrabState(this, StateMachine, playerConfig, "wallGrab");
+            WallClimbState = new PlayerWallClimbState(this, StateMachine, playerConfig, "wallClimb");
+            WallJumpState = new PlayerWallJumpState(this, StateMachine, playerConfig, "inAir");
+            CrouchIdleState = new PlayerCrouchIdleState(this, StateMachine, playerConfig, "crouchIdle");
+            CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerConfig, "crouchMove");
+
+            string attackAnimBool = "attack";
+            attackStates[(int)CombateInputs.Primary] = new PlayerAttackState(this, StateMachine, playerConfig, attackAnimBool);
+            attackStates[(int)CombateInputs.Secondary] = new PlayerAttackState(this, StateMachine, playerConfig, attackAnimBool);
+        }
+
         #endregion
 
-        #region Setters functions
+        #region Movement and Velocity Application
+
         public void SetVelocityZero()
         {
-            rb2D.linearVelocity = Vector2.zero;
-            CurrentVelocity = Vector2.zero;
+            _rb2D.linearVelocity = Vector2.zero;
         }
 
         public void SetVelocityX(float velocity)
         {
-            workSpace.Set(velocity, CurrentVelocity.y);
-            rb2D.linearVelocity = workSpace;
-            CurrentVelocity = workSpace;
+            _workSpace.Set(velocity, _rb2D.linearVelocity.y);
+            ApplyVelocity();
         }
 
         public void SetVelocityY(float velocity)
         {
-            workSpace.Set(CurrentVelocity.x, velocity);
-            rb2D.linearVelocity = workSpace;
-            CurrentVelocity = workSpace;
+            _workSpace.Set(_rb2D.linearVelocity.x, velocity);
+            ApplyVelocity();
         }
 
-        public void SetVelocity(float velocity, Vector2 angle, int dir)
+        public void SetVelocity(float speed, Vector2 angle, int dir)
         {
             angle.Normalize();
-            workSpace.Set(angle.x * velocity * dir, angle.y * velocity);
-            rb2D.linearVelocity = workSpace;
-            CurrentVelocity = workSpace;
+            _workSpace.Set(angle.x * speed * dir, angle.y * speed);
+            ApplyVelocity();
+        }
+
+        private void ApplyVelocity()
+        {
+            _rb2D.linearVelocity = _workSpace;
         }
 
         #endregion
 
-        #region Check functions
+        #region Checks & Utilities
 
         public void CheckIfShouldFlip(float xInput)
         {
@@ -147,31 +159,31 @@ namespace ForgottonChambers.Player
             }
         }
 
-        public bool CheckIsGround() => playerView.IsGrounded();
-
-        public bool CheckIsWall() => playerView.IsTouchingWall();
-
-        public bool CheckIsWallBack() => playerView.IsTouchingWallBack();
-
-        public bool CheckIsCeiling() => playerView.IsCeiling();
-
-        #endregion
-
-        #region Other Functions
-
-
         private void Flip()
         {
             FacingDirection *= -1;
-            playerView.transform.Rotate(0.0f, 180.0f, 0.0f);
+            PlayerView.transform.Rotate(0f, 180f, 0f);
         }
+
+        public bool CheckIsGround() => PlayerView.IsGrounded();
+
+        public bool CheckIsWall() => PlayerView.IsTouchingWall();
+
+        public bool CheckIsWallBack() => PlayerView.IsTouchingWallBack();
+
+        public bool CheckIsCeiling() => PlayerView.IsCeiling();
 
         public void SetColliderSize(Vector2 newSize, Vector2 newOffset)
         {
-            MovementCollider.size = newSize;
-            MovementCollider.offset = newOffset;
+            if (MovementCollider != null)
+            {
+                MovementCollider.size = newSize;
+                MovementCollider.offset = newOffset;
+            }
+            else
+            {
+            }
         }
-
 
         public void AnimationTrigger() => StateMachine.currentState.AnimationTrigger();
 

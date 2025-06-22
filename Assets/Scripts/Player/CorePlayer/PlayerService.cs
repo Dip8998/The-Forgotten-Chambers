@@ -1,22 +1,39 @@
-using UnityEngine;
 using ForgottonChambers.ScriptableObjects;
+using UnityEngine;
 
 namespace ForgottonChambers.Player
 {
-    public class PlayerService 
+    public class PlayerService
     {
-        private PlayerScriptableObject playerScriptableObject;
-        private PlayerController playerController;
+        private readonly PlayerScriptableObject _playerConfig;
+        private PlayerController _playerController;
 
-        public PlayerService(PlayerScriptableObject playerScriptableObject)
+        public PlayerService(PlayerScriptableObject playerConfig)
         {
-            this.playerScriptableObject = playerScriptableObject;
+            _playerConfig = playerConfig;
             SpawnPlayer();
         }
 
         public void SpawnPlayer()
         {
-            playerController = new PlayerController(playerScriptableObject);
+            if (_playerConfig == null)
+            {
+                return;
+            }
+            if (_playerConfig.playerPrefab == null)
+            {
+                return;
+            }
+
+            _playerController = new PlayerController(_playerConfig);
+        }
+
+        public PlayerController GetPlayerController()
+        {
+            if (_playerController == null)
+            {
+            }
+            return _playerController;
         }
     }
 }

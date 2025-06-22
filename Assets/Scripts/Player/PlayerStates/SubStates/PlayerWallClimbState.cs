@@ -5,21 +5,28 @@ namespace ForgottonChambers.Player
 {
     public class PlayerWallClimbState : PlayerTouchingWallState
     {
-        public PlayerWallClimbState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
+        public PlayerWallClimbState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
+            : base(player, stateMachine, playerData, animBoolName)
         {
+        }
+
+        public override void OnStateEnter()
+        {
+            base.OnStateEnter();
+            Player.SetVelocityX(0);
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
-            player.SetVelocityY(playerData.playerWallClimbSpeed);
 
-            if(!isExitingState)
+            if (isExitingState) return;
+
+            Player.SetVelocityY(PlayerData.playerWallClimbSpeed);
+
+            if (yInput <= 0)
             {
-                if (yInput != 1)
-                {
-                    stateMachine.ChangeState(player.WallGrabState);
-                }
+                StateMachine.ChangeState(Player.WallGrabState);
             }
         }
     }

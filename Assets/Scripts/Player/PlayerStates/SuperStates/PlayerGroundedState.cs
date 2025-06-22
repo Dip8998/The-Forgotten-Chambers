@@ -3,61 +3,55 @@ using ForgottonChambers.ScriptableObjects;
 
 namespace ForgottonChambers.Player
 {
-    public class PlayerGroundedState : PlayerState
+    public abstract class PlayerGroundedState : PlayerState
     {
         protected float moveInput;
-        protected float crouchInput;
+        protected float verticalInput;
         private bool jumpInput;
         private bool grabInput;
 
-        public PlayerGroundedState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
+        public PlayerGroundedState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
+            : base(player, stateMachine, playerData, animBoolName)
         {
-        }
-
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
         }
 
         public override void OnStateEnter()
         {
             base.OnStateEnter();
-            player.JumpState.ResetAmountJumpsLeft();
-        }
-
-        public override void OnStateExit()
-        {
-            base.OnStateExit();
+            Player.JumpState.ResetAmountJumpsLeft();
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
-            moveInput = player.InputHandler.MoveInput;
-            crouchInput = player.InputHandler.UpInput;
-            jumpInput = player.InputHandler.JumpInput;
-            grabInput = player.InputHandler.GrabInput;
 
-            if (player.InputHandler.AttackInputs[(int)CombateInputs.Primary])
+            moveInput = Player.InputHandler.MoveInput;
+            verticalInput = Player.InputHandler.UpInput;
+            jumpInput = Player.InputHandler.JumpInput;
+            grabInput = Player.InputHandler.GrabInput;
+
+            if (isExitingState) return;
+
+            if (Player.InputHandler.AttackInputs[(int)CombateInputs.Primary])
             {
-                stateMachine.ChangeState(player.PrimaryAttackState);
+                StateMachine.ChangeState(Player.PrimaryAttackState);
             }
-            else if (player.InputHandler.AttackInputs[(int)CombateInputs.Secondary])
+            else if (Player.InputHandler.AttackInputs[(int)CombateInputs.Secondary])
             {
-                stateMachine.ChangeState(player.SecondaryAttackState);
+                StateMachine.ChangeState(Player.SecondaryAttackState);
             }
-            else if (jumpInput && player.JumpState.CanJump())
+            else if (jumpInput && Player.JumpState.CanJump())
             {
-                stateMachine.ChangeState(player.JumpState);
+                StateMachine.ChangeState(Player.JumpState);
             }
-            else if (!player.CheckIsGround())
+            else if (!Player.CheckIsGround())
             {
-                player.AirState.StartCoyoteTime();
-                stateMachine.ChangeState(player.AirState);
+                Player.AirState.StartCoyoteTime();
+                StateMachine.ChangeState(Player.AirState);
             }
-            else if (player.CheckIsWall() && grabInput)
+            else if (Player.CheckIsWall() && grabInput)
             {
-                stateMachine.ChangeState(player.WallGrabState);
+                StateMachine.ChangeState(Player.WallGrabState);
             }
         }
     }

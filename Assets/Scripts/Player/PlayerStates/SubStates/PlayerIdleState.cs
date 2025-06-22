@@ -5,41 +5,31 @@ namespace ForgottonChambers.Player
 {
     public class PlayerIdleState : PlayerGroundedState
     {
-        public PlayerIdleState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+        public PlayerIdleState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
+            : base(player, stateMachine, playerData, animBoolName)
         {
-        }
-
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
         }
 
         public override void OnStateEnter()
         {
             base.OnStateEnter();
-            player.SetVelocityX(0);
-        }
-
-        public override void OnStateExit()
-        {
-            base.OnStateExit();
+            Player.SetVelocityZero();
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
 
-            if (!isExitingState)
+            if (isExitingState) return;
+
+            if (moveInput != 0)
             {
-                if (moveInput != 0)
-                {
-                    stateMachine.ChangeState(player.MoveState);
-                }
-                else if (crouchInput == -1)
-                {
-                    stateMachine.ChangeState(player.CrouchIdleState);
-                }
-            }  
+                StateMachine.ChangeState(Player.MoveState);
+            }
+            else if (verticalInput == -1)
+            {
+                StateMachine.ChangeState(Player.CrouchIdleState);
+            }
         }
     }
 }

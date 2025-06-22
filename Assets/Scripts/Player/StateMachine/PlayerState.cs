@@ -1,56 +1,48 @@
-using ForgottonChambers.Player;
 using UnityEngine;
 using ForgottonChambers.ScriptableObjects;
 
 namespace ForgottonChambers.Player
 {
-    public class PlayerState
+    public abstract class PlayerState
     {
-        protected PlayerController player;
-        protected PlayerStateMachine stateMachine;
-        protected PlayerScriptableObject playerData;
+        protected PlayerController Player;
+        protected PlayerStateMachine StateMachine;
+        protected PlayerScriptableObject PlayerData;
         protected bool isAnimationFinished;
         protected bool isExitingState;
 
         protected float startTime;
 
-        private string animBoolName;
+        private readonly string _animBoolName;
 
-        public PlayerState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName)
+        public PlayerState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
         {
-            this.player = player;
-            this.stateMachine = stateMachine;
-            this.playerData = playerDate;
-            this.animBoolName = animBoolName;
+            Player = player;
+            StateMachine = stateMachine;
+            PlayerData = playerData;
+            _animBoolName = animBoolName;
         }
 
         public virtual void OnStateEnter()
         {
             startTime = Time.time;
-            player.playerView.playerAnimator.SetBool(animBoolName, true);
-            isAnimationFinished = false; 
+            Player.PlayerView.PlayerAnimator.SetBool(_animBoolName, true);
+            isAnimationFinished = false;
             isExitingState = false;
         }
 
         public virtual void OnStateExit()
         {
-            player.playerView.playerAnimator.SetBool(animBoolName, false);
+            Player.PlayerView.PlayerAnimator.SetBool(_animBoolName, false);
             isExitingState = true;
         }
 
-        public virtual void OnUpdate()
-        {
+        public virtual void OnUpdate() { }
 
-        }
-
-        public virtual void OnFixedUpdate()
-        {
-
-        }
+        public virtual void OnFixedUpdate() { }
 
         public virtual void AnimationTrigger() { }
 
         public virtual void AnimationFinishTrigger() => isAnimationFinished = true;
     }
 }
-    

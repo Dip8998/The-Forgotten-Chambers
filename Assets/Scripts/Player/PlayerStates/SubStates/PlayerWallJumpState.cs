@@ -1,14 +1,14 @@
 using UnityEngine;
-
 using ForgottonChambers.ScriptableObjects;
 
 namespace ForgottonChambers.Player
 {
     public class PlayerWallJumpState : PlayerAbilityState
     {
-        private int wallJumpDir;
+        private int _wallJumpDir;
 
-        public PlayerWallJumpState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
+        public PlayerWallJumpState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
+            : base(player, stateMachine, playerData, animBoolName)
         {
         }
 
@@ -16,20 +16,22 @@ namespace ForgottonChambers.Player
         {
             base.OnStateEnter();
 
-            player.JumpState.ResetAmountJumpsLeft();
-            player.SetVelocity(playerData.playerWallJumpSpeed, playerData.playerWallJumpAngle, wallJumpDir);
-            player.CheckIfShouldFlip(wallJumpDir);
-            player.JumpState.DecreaseAmountOfJumpsLeft();
+            Player.JumpState.ResetAmountJumpsLeft();
+            Player.SetVelocity(PlayerData.playerWallJumpSpeed, PlayerData.playerWallJumpAngle, _wallJumpDir);
+            Player.CheckIfShouldFlip(_wallJumpDir);
+            Player.JumpState.DecreaseAmountOfJumpsLeft();
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
 
-            player.playerView.playerAnimator.SetFloat("yVelocity", player.CurrentVelocity.y);
-            player.playerView.playerAnimator.SetFloat("xVelocity", Mathf.Abs(player.CurrentVelocity.x));
+            if (isExitingState) return;
 
-            if (Time.time >= startTime + playerData.playerWallJumpTime)
+            Player.PlayerView.PlayerAnimator.SetFloat("yVelocity", Player.CurrentVelocity.y);
+            Player.PlayerView.PlayerAnimator.SetFloat("xVelocity", Mathf.Abs(Player.CurrentVelocity.x));
+
+            if (Time.time >= startTime + PlayerData.playerWallJumpTime)
             {
                 isAbilityDone = true;
             }
@@ -37,14 +39,7 @@ namespace ForgottonChambers.Player
 
         public void DetermineWallJumpDirection(bool isTouchingWall)
         {
-            if (isTouchingWall)
-            {
-                wallJumpDir = -player.FacingDirection;
-            }
-            else
-            {
-                wallJumpDir = player.FacingDirection;
-            }
+            _wallJumpDir = isTouchingWall ? -Player.FacingDirection : Player.FacingDirection;
         }
     }
 }

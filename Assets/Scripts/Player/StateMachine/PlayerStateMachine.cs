@@ -2,18 +2,23 @@ using UnityEngine;
 
 namespace ForgottonChambers.Player
 {
-    public class PlayerStateMachine 
+    public class PlayerStateMachine
     {
         public PlayerState currentState { get; private set; }
 
         public void InitializeState(PlayerState startingState)
         {
             currentState = startingState;
-            currentState.OnStateEnter();
+            currentState?.OnStateEnter();
         }
 
         public void ChangeState(PlayerState newState)
         {
+            if (currentState == newState)
+            {
+                return;
+            }
+
             currentState?.OnStateExit();
             currentState = newState;
             currentState?.OnStateEnter();

@@ -3,17 +3,13 @@ using ForgottonChambers.ScriptableObjects;
 
 namespace ForgottonChambers.Player
 {
-    public class PlayerAbilityState : PlayerState
+    public abstract class PlayerAbilityState : PlayerState
     {
         protected bool isAbilityDone;
 
-        public PlayerAbilityState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
+        public PlayerAbilityState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
+            : base(player, stateMachine, playerData, animBoolName)
         {
-        }
-
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
         }
 
         public override void OnStateEnter()
@@ -22,23 +18,19 @@ namespace ForgottonChambers.Player
             isAbilityDone = false;
         }
 
-        public override void OnStateExit()
-        {
-            base.OnStateExit();
-        }
-
         public override void OnUpdate()
         {
             base.OnUpdate();
-            if (isAbilityDone)
+
+            if (isAbilityDone && !isExitingState)
             {
-                if(player.CheckIsGround() && player.CurrentVelocity.y < 0.01f)
+                if (Player.CheckIsGround() && Mathf.Abs(Player.CurrentVelocity.y) < 0.01f)
                 {
-                    stateMachine.ChangeState(player.IdleState);
+                    StateMachine.ChangeState(Player.IdleState);
                 }
                 else
                 {
-                    stateMachine.ChangeState(player.AirState);
+                    StateMachine.ChangeState(Player.AirState);
                 }
             }
         }

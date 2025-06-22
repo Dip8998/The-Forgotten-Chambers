@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace ForgottonChambers.ScriptableObjects
 {
-    [CreateAssetMenu(fileName = "NewWeaponScriptableObject", menuName = "ScriptableObjects/WeaponScriptableObject")]
+    [CreateAssetMenu(fileName = "NewWeaponData", menuName = "ScriptableObjects/WeaponData")]
     public class WeaponScriptableObject : ScriptableObject
     {
-        public float[] movementSpeed;
+        public float[] attackMovementSpeeds;
     }
 }

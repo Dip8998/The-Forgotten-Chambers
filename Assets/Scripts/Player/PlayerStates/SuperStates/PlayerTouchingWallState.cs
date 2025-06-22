@@ -3,62 +3,49 @@ using ForgottonChambers.ScriptableObjects;
 
 namespace ForgottonChambers.Player
 {
-    public class PlayerTouchingWallState : PlayerState
+    public abstract class PlayerTouchingWallState : PlayerState
     {
         protected float xInput;
         protected float yInput;
         protected bool jumpInput;
         protected bool grabInput;
 
-        public PlayerTouchingWallState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
+        public PlayerTouchingWallState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
+            : base(player, stateMachine, playerData, animBoolName)
         {
-        }
-
-        public override void AnimationFinishTrigger()
-        {
-            base.AnimationFinishTrigger();
-        }
-
-        public override void AnimationTrigger()
-        {
-            base.AnimationTrigger();
-        }
-
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
         }
 
         public override void OnStateEnter()
         {
             base.OnStateEnter();
-        }
-
-        public override void OnStateExit()
-        {
-            base.OnStateExit();
+            Player.JumpState.ResetAmountJumpsLeft();
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
-            xInput = player.InputHandler.MoveInput;
-            yInput = player.InputHandler.UpInput;
-            grabInput = player.InputHandler.GrabInput;
-            jumpInput = player.InputHandler.JumpInput;
+
+            xInput = Player.InputHandler.MoveInput;
+            yInput = Player.InputHandler.UpInput;
+            grabInput = Player.InputHandler.GrabInput;
+            jumpInput = Player.InputHandler.JumpInput;
+
+            if (isExitingState) return;
 
             if (jumpInput)
             {
-                player.WallJumpState.DetermineWallJumpDirection(player.CheckIsWall());
-                stateMachine.ChangeState(player.WallJumpState); 
+                Player.AirState.StopWallCoyoteTime();
+                Player.WallJumpState.DetermineWallJumpDirection(Player.CheckIsWall());
+                StateMachine.ChangeState(Player.WallJumpState);
             }
-            else if (player.CheckIsGround() && !grabInput)
+            else if (Player.CheckIsGround() && !grabInput)
             {
-                stateMachine.ChangeState(player.IdleState);
+                StateMachine.ChangeState(Player.IdleState);
             }
-            else if(!player.CheckIsWall() || (xInput != player.FacingDirection && !grabInput))
+            else if (!Player.CheckIsWall() || (xInput != 0 && xInput != Player.FacingDirection && !grabInput))
             {
-                stateMachine.ChangeState(player.AirState);
+                Player.AirState.StartWallCoyoteTime();
+                StateMachine.ChangeState(Player.AirState);
             }
         }
     }

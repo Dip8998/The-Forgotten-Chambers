@@ -5,13 +5,9 @@ namespace ForgottonChambers.Player
 {
     public class PlayerMoveState : PlayerGroundedState
     {
-        public PlayerMoveState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
+        public PlayerMoveState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
+            : base(player, stateMachine, playerData, animBoolName)
         {
-        }
-
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
         }
 
         public override void OnStateEnter()
@@ -19,29 +15,22 @@ namespace ForgottonChambers.Player
             base.OnStateEnter();
         }
 
-        public override void OnStateExit()
-        {
-            base.OnStateExit();
-        }
-
         public override void OnUpdate()
         {
             base.OnUpdate();
 
-            player.CheckIfShouldFlip(moveInput);
+            if (isExitingState) return;
 
-            player.SetVelocityX(playerData.playerMovementSpeed * moveInput);
+            Player.CheckIfShouldFlip(moveInput);
+            Player.SetVelocityX(PlayerData.playerMovementSpeed * moveInput);
 
-            if (!isExitingState)
+            if (moveInput == 0)
             {
-                if (moveInput == 0)
-                {
-                    stateMachine.ChangeState(player.IdleState);
-                }
-                else if (crouchInput == -1)
-                {
-                    stateMachine.ChangeState(player.CrouchMoveState);
-                }
+                StateMachine.ChangeState(Player.IdleState);
+            }
+            else if (verticalInput == -1)
+            {
+                StateMachine.ChangeState(Player.CrouchMoveState);
             }
         }
     }

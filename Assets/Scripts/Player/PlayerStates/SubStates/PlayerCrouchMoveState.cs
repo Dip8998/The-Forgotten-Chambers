@@ -5,43 +5,39 @@ namespace ForgottonChambers.Player
 {
     public class PlayerCrouchMoveState : PlayerGroundedState
     {
-        public PlayerCrouchMoveState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
+        public PlayerCrouchMoveState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
+            : base(player, stateMachine, playerData, animBoolName)
         {
         }
 
         public override void OnStateEnter()
         {
             base.OnStateEnter();
-            player.SetColliderSize(
-                               new Vector2(1.0f, 0.5f),
-                               new Vector2(0.0f, -0.25f));
+            Player.SetColliderSize(PlayerData.playerCrouchColliderSize, PlayerData.playerCrouchColliderOffset);
         }
 
         public override void OnStateExit()
         {
             base.OnStateExit();
-            player.SetColliderSize(
-                           new Vector2(1.0f, 1.8f),
-                           new Vector2(0.0f, 0.0f));
+            Player.SetColliderSize(PlayerData.playerStandColliderSize, PlayerData.playerStandColliderOffset);
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
 
-            if(!isExitingState)
-            {
-                player.SetVelocityX(playerData.playerCrouchMovementSpeed * player.FacingDirection);
-                player.CheckIfShouldFlip(moveInput);
+            if (isExitingState) return;
 
-                if(moveInput == 0)
-                {
-                    stateMachine.ChangeState(player.CrouchIdleState);
-                }
-                else if(crouchInput != -1 && !player.CheckIsCeiling())
-                {
-                    stateMachine.ChangeState(player.MoveState);
-                }
+            Player.SetVelocityX(PlayerData.playerCrouchMovementSpeed * Player.FacingDirection);
+            Player.CheckIfShouldFlip(moveInput);
+
+            if (moveInput == 0)
+            {
+                StateMachine.ChangeState(Player.CrouchIdleState);
+            }
+            else if (verticalInput != -1 && !Player.CheckIsCeiling())
+            {
+                StateMachine.ChangeState(Player.MoveState);
             }
         }
     }

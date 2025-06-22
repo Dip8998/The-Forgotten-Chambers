@@ -5,110 +5,116 @@ namespace ForgottonChambers.Player
 {
     public class PlayerInAirState : PlayerState
     {
-        private float xInput;
-        private bool jumpInput;
-        private bool grabInput;
-        private bool coyoteTime;
-        private bool wallJumpCoyoteTime;
-        private float startWallJumpCoyoteTime;
+        private float _xInput;
+        private bool _jumpInput;
+        private bool _grabInput;
+        private bool _coyoteTimeActive;
+        private bool _wallJumpCoyoteTimeActive;
+        private float _startWallJumpCoyoteTime;
 
-        public PlayerInAirState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
+        public PlayerInAirState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
+            : base(player, stateMachine, playerData, animBoolName)
         {
-        }
-
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
         }
 
         public override void OnStateEnter()
         {
             base.OnStateEnter();
-        }
-
-        public override void OnStateExit()
-        {
-            base.OnStateExit();
+            if (Player.JumpState.AmountOfJumpsLeft == PlayerData.amountOfJumps)
+            {
+                Player.JumpState.DecreaseAmountOfJumpsLeft();
+            }
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
 
+            if (isExitingState) return;
+
             CheckCoyoteTime();
             CheckWallCoyoteTime();
 
-            xInput = player.InputHandler.MoveInput;
-            jumpInput = player.InputHandler.JumpInput;
-            grabInput = player.InputHandler.GrabInput;
+            _xInput = Player.InputHandler.MoveInput;
+            _jumpInput = Player.InputHandler.JumpInput;
+            _grabInput = Player.InputHandler.GrabInput;
 
-            if (player.InputHandler.AttackInputs[(int)CombateInputs.Primary] && !player.CheckIsCeiling())
+            if (Player.InputHandler.AttackInputs[(int)CombateInputs.Primary] && !Player.CheckIsCeiling())
             {
-                stateMachine.ChangeState(player.PrimaryAttackState);
+                StateMachine.ChangeState(Player.PrimaryAttackState);
             }
-            else if (player.InputHandler.AttackInputs[(int)CombateInputs.Secondary] && !player.CheckIsCeiling())
+            else if (Player.InputHandler.AttackInputs[(int)CombateInputs.Secondary] && !Player.CheckIsCeiling())
             {
-                stateMachine.ChangeState(player.SecondaryAttackState);
+                StateMachine.ChangeState(Player.SecondaryAttackState);
             }
-            else if (player.CheckIsGround() && player.CurrentVelocity.y < 0.01f)
+            else if (Player.CheckIsGround() && Player.CurrentVelocity.y < 0.01f)
             {
-                stateMachine.ChangeState(player.LandState);
+                StateMachine.ChangeState(Player.LandState);
             }
-            else if(jumpInput && (player.CheckIsWall() || player.CheckIsWallBack() || wallJumpCoyoteTime))
+            else if (_jumpInput)
             {
-                StopWallCoyoteTime();
-                player.WallJumpState.DetermineWallJumpDirection(player.CheckIsWall());
-                stateMachine.ChangeState(player.WallJumpState);
+                if (Player.CheckIsWall() || Player.CheckIsWallBack() || _wallJumpCoyoteTimeActive)
+                {
+                    StopWallCoyoteTime();
+                    Player.WallJumpState.DetermineWallJumpDirection(Player.CheckIsWall());
+                    StateMachine.ChangeState(Player.WallJumpState);
+                }
+                else if (Player.JumpState.CanJump() && _coyoteTimeActive)
+                {
+                    _coyoteTimeActive = false;
+                    StateMachine.ChangeState(Player.JumpState);
+                }
+                else if (Player.JumpState.CanJump())
+                {
+                    StateMachine.ChangeState(Player.JumpState);
+                }
             }
-            else if (jumpInput && player.JumpState.CanJump())
+            else if (Player.CheckIsWall() && _grabInput)
             {
-                stateMachine.ChangeState(player.JumpState);
+                StateMachine.ChangeState(Player.WallGrabState);
             }
-            else if (player.CheckIsWall() && grabInput)
+            else if (Player.CheckIsWall() && _xInput == Player.FacingDirection && Player.CurrentVelocity.y <= 0)
             {
-                stateMachine.ChangeState(player.WallGrabState);
-            }
-            else if (player.CheckIsWall() && xInput == player.FacingDirection && player.CurrentVelocity.y <= 0)
-            {
-                stateMachine.ChangeState(player.WallSlideState);
+                StateMachine.ChangeState(Player.WallSlideState);
             }
             else
             {
-                player.CheckIfShouldFlip(xInput);
-                player.SetVelocityX(playerData.playerMovementSpeed * xInput);
+                Player.CheckIfShouldFlip(_xInput);
+                Player.SetVelocityX(PlayerData.playerMovementSpeed * _xInput);
 
-                player.playerView.playerAnimator.SetFloat("yVelocity", player.CurrentVelocity.y);
-                player.playerView.playerAnimator.SetFloat("xVelocity", Mathf.Abs(player.CurrentVelocity.x));
+                Player.PlayerView.PlayerAnimator.SetFloat("yVelocity", Player.CurrentVelocity.y);
+                Player.PlayerView.PlayerAnimator.SetFloat("xVelocity", Mathf.Abs(Player.CurrentVelocity.x));
             }
         }
 
         private void CheckCoyoteTime()
         {
-            if(coyoteTime && Time.time > startTime + playerData.coyoteTime)
+            if (_coyoteTimeActive && Time.time > startTime + PlayerData.coyoteTime)
             {
-                coyoteTime = false;
-                player.JumpState.DecreaseAmountOfJumpsLeft();
+                _coyoteTimeActive = false;
+                if (Player.JumpState.AmountOfJumpsLeft == PlayerData.amountOfJumps)
+                {
+                    Player.JumpState.DecreaseAmountOfJumpsLeft();
+                }
             }
         }
 
         private void CheckWallCoyoteTime()
         {
-            if (wallJumpCoyoteTime && Time.time > startWallJumpCoyoteTime + playerData.coyoteTime)
+            if (_wallJumpCoyoteTimeActive && Time.time > _startWallJumpCoyoteTime + PlayerData.coyoteTime)
             {
-                wallJumpCoyoteTime = false;
-                player.JumpState.DecreaseAmountOfJumpsLeft();
+                _wallJumpCoyoteTimeActive = false;
             }
         }
 
-        public void StartCoyoteTime() => coyoteTime = true; 
+        public void StartCoyoteTime() => _coyoteTimeActive = true;
 
         public void StartWallCoyoteTime()
         {
-            wallJumpCoyoteTime = true;
-            startWallJumpCoyoteTime = Time.time;
+            _wallJumpCoyoteTimeActive = true;
+            _startWallJumpCoyoteTime = Time.time;
         }
 
-        public void StopWallCoyoteTime() => wallJumpCoyoteTime = false;
-
+        public void StopWallCoyoteTime() => _wallJumpCoyoteTimeActive = false;
     }
 }

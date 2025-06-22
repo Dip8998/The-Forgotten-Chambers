@@ -6,67 +6,83 @@ namespace ForgottonChambers.Player
 {
     public class PlayerAttackState : PlayerAbilityState
     {
-        private Weapon weapon;
-        private float velocityToSet;
-        private bool setVelocity;
-        private float xInput;
-        private bool shouldCheckFlip;
+        private Weapon _weapon;
+        private float _velocityToSet;
+        private bool _setVelocity;
+        private float _xInput;
+        private bool _shouldCheckFlip;
 
-        public PlayerAttackState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerDate, string animBoolName) : base(player, stateMachine, playerDate, animBoolName)
+        public PlayerAttackState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
+            : base(player, stateMachine, playerData, animBoolName)
         {
+        }
+
+        public override void OnStateEnter()
+        {
+            base.OnStateEnter();
+            _setVelocity = false;
+            if (_weapon != null)
+            {
+                _weapon.EnterWeapon();
+            }
+            else
+            {
+                isAbilityDone = true;
+            }
+        }
+
+        public override void OnStateExit()
+        {
+            base.OnStateExit();
+            if (_weapon != null)
+            {
+                _weapon.ExitWeapon();
+            }
+        }
+
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+
+            if (isExitingState) return;
+
+            _xInput = Player.InputHandler.MoveInput;
+
+            if (_shouldCheckFlip)
+            {
+                Player.CheckIfShouldFlip(_xInput);
+            }
+
+            if (_setVelocity)
+            {
+                Player.SetVelocityX(_velocityToSet * Player.FacingDirection);
+            }
+        }
+
+        public void SetWeapon(Weapon weapon)
+        {
+            _weapon = weapon;
+            if (_weapon != null)
+            {
+                _weapon.InitializeWeapon(this);
+            }
+        }
+
+        public void SetPlayerVelocity(float velocity)
+        {
+            _velocityToSet = velocity;
+            _setVelocity = true;
+        }
+
+        public void SetFlipCheck(bool value)
+        {
+            _shouldCheckFlip = value;
         }
 
         public override void AnimationFinishTrigger()
         {
             base.AnimationFinishTrigger();
             isAbilityDone = true;
-        }
-
-        public override void OnStateEnter()
-        {
-            base.OnStateEnter();
-            setVelocity = false;
-            weapon.EnterWeapon();
-        }
-
-        public override void OnStateExit()
-        {
-            base.OnStateExit();
-            weapon.ExitWeapon();
-        }
-
-        public void SetWeapon(Weapon weapon)
-        {
-            this.weapon = weapon;
-            weapon.InitializeWeapon(this);
-        }
-
-        public void SetPlayerVelocity(float velocity)
-        {
-            player.SetVelocityX(velocity * player.FacingDirection);
-            velocityToSet = velocity;
-            setVelocity = true;
-        }
-
-        public void SetFlipCheck(bool value)
-        {
-            shouldCheckFlip = value;
-        }
-
-        public override void OnUpdate()
-        {
-            base.OnUpdate();
-            xInput = player.InputHandler.MoveInput;
-
-            if(shouldCheckFlip)
-            {
-                player.CheckIfShouldFlip(xInput);
-            }
-
-            if (setVelocity)
-            {
-                player.SetVelocityX(velocityToSet*player.FacingDirection);
-            }
         }
     }
 }
