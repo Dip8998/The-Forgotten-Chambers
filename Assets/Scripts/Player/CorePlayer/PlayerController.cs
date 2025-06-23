@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using ForgottonChambers.ScriptableObjects;
+using ForgottonChambers.Weapons;
+using System.Linq;
 
 namespace ForgottonChambers.Player
 {
@@ -18,17 +20,13 @@ namespace ForgottonChambers.Player
         public PlayerWallJumpState WallJumpState { get; private set; }
         public PlayerCrouchIdleState CrouchIdleState { get; private set; }
         public PlayerCrouchMoveState CrouchMoveState { get; private set; }
-
-        private readonly PlayerAttackState[] attackStates = new PlayerAttackState[2];
-        public PlayerAttackState PrimaryAttackState => attackStates[(int)CombateInputs.Primary];
-        public PlayerAttackState SecondaryAttackState => attackStates[(int)CombateInputs.Secondary];
+        public PlayerAttackState AttackState { get; private set; }
         #endregion
 
         #region Dependencies & Components
         private readonly PlayerScriptableObject playerConfig;
         public PlayerInputHandler InputHandler { get; private set; }
         public PlayerView PlayerView { get; private set; }
-        public PlayerInventory Inventory { get; private set; }
         public BoxCollider2D MovementCollider { get; private set; }
 
         private Rigidbody2D _rb2D;
@@ -38,6 +36,7 @@ namespace ForgottonChambers.Player
 
         #region Other Variables
         public int FacingDirection { get; private set; } = 1;
+        private int _currentWeaponIndex;
         #endregion
 
         #region Player call back functions
@@ -54,18 +53,9 @@ namespace ForgottonChambers.Player
 
         public void SetupPlayer()
         {
-            InputHandler.StartInputs();
-
             MovementCollider = PlayerView.GetComponent<BoxCollider2D>();
-            Inventory = PlayerView.GetComponent<PlayerInventory>();
-
-            if (Inventory != null && Inventory.Weapons != null && Inventory.Weapons.Length > (int)CombateInputs.Primary && Inventory.Weapons[(int)CombateInputs.Primary] != null)
-            {
-                PrimaryAttackState.SetWeapon(Inventory.Weapons[(int)CombateInputs.Primary]);
-            }
-            else
-            {
-            }
+            _currentWeaponIndex = 0;
+            AttackState.SetWeapon(PlayerView.Weapons[_currentWeaponIndex]);
 
             StateMachine.InitializeState(IdleState);
         }
@@ -74,6 +64,10 @@ namespace ForgottonChambers.Player
         {
             InputHandler.UpdateInputs();
             StateMachine.currentState.OnUpdate();
+            if (InputHandler.SwitchWeaponInput)
+            {
+                SwitchWeapon();
+            }
         }
 
         public void OnPlayerFixedUpdate()
@@ -110,8 +104,7 @@ namespace ForgottonChambers.Player
             CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerConfig, "crouchMove");
 
             string attackAnimBool = "attack";
-            attackStates[(int)CombateInputs.Primary] = new PlayerAttackState(this, StateMachine, playerConfig, attackAnimBool);
-            attackStates[(int)CombateInputs.Secondary] = new PlayerAttackState(this, StateMachine, playerConfig, attackAnimBool);
+            AttackState = new PlayerAttackState(this, StateMachine, playerConfig, attackAnimBool);
         }
 
         #endregion
@@ -189,6 +182,18 @@ namespace ForgottonChambers.Player
 
         public void AnimationFinishedTrigger() => StateMachine.currentState.AnimationFinishTrigger();
 
+        #endregion
+
+        #region Other Functions
+        private void SwitchWeapon()
+        {
+            PlayerView.Weapons[_currentWeaponIndex].gameObject.SetActive(false);
+
+            _currentWeaponIndex = (_currentWeaponIndex + 1) % PlayerView.Weapons.Length;
+
+            PlayerView.Weapons[_currentWeaponIndex].gameObject.SetActive(true);
+            AttackState.SetWeapon(PlayerView.Weapons[_currentWeaponIndex]);
+        }
         #endregion
     }
 }

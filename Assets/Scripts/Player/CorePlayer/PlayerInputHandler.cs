@@ -3,13 +3,6 @@ using UnityEngine;
 
 namespace ForgottonChambers.Player
 {
-    public enum CombateInputs
-    {
-        Primary,
-        Secondary,
-        Count
-    }
-
     public class PlayerInputHandler
     {
         public float MoveInput { get; private set; }
@@ -18,16 +11,8 @@ namespace ForgottonChambers.Player
         public bool GrabInput { get; private set; }
         public bool BoxPushPullInput { get; private set; }
         public bool BoxDropInput { get; private set; }
-        public bool[] AttackInputs { get; private set; }
-
-        public PlayerInputHandler()
-        {
-            AttackInputs = new bool[(int)CombateInputs.Count];
-        }
-
-        public void StartInputs()
-        {
-        }
+        public bool AttackInput { get; private set; }
+        public bool SwitchWeaponInput { get; private set; }
 
         public void UpdateInputs()
         {
@@ -37,8 +22,8 @@ namespace ForgottonChambers.Player
             GrabInput = Input.GetKey(KeyCode.LeftShift);
             BoxPushPullInput = Input.GetKey(KeyCode.E);
             BoxDropInput = Input.GetKeyUp(KeyCode.E);
-            AttackInputs[(int)CombateInputs.Primary] = Input.GetMouseButton(0);
-            AttackInputs[(int)CombateInputs.Secondary] = Input.GetMouseButton(1);
+            AttackInput= Input.GetMouseButton(0);
+            SwitchWeaponInput = Input.GetKeyDown(KeyCode.Tab);
         }
     }
 }

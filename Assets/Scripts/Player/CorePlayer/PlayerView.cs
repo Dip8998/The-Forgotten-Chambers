@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using ForgottonChambers.Box;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
+using ForgottonChambers.Weapons;
+using System.Collections.Generic;
 
 namespace ForgottonChambers.Player
 {
@@ -28,6 +30,7 @@ namespace ForgottonChambers.Player
         [SerializeField] private float ceilingCheckDistance;
 
         public Animator PlayerAnimator { get; private set; }
+        public Weapon[] Weapons;
         private PlayerController _playerController;
         private GameObject _attachedBox;
         private Rigidbody2D _playerRb;

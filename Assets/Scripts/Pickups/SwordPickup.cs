@@ -9,7 +9,7 @@ namespace ForgottonChambers.Pickups
         {
             if (collision.TryGetComponent(out PlayerView player))
             {
-                Destroy(gameObject); 
+                Destroy(gameObject);
             }
         }
     }

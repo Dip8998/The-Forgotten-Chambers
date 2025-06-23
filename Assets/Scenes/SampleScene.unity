@@ -939,6 +939,7 @@ GameObject:
   - component: {fileID: 241323225}
   - component: {fileID: 241323224}
   - component: {fileID: 241323227}
+  - component: {fileID: 241323228}
   m_Layer: 8
   m_Name: Box
   m_TagString: Box
@@ -1093,7 +1094,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 1c72824b554dce549b64fd90fa7d2dff, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1123,6 +1124,19 @@ FixedJoint2D:
   m_ConnectedAnchor: {x: -9.52, y: -5.5}
   m_DampingRatio: 0
   m_Frequency: 0
+--- !u!114 &241323228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241323219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fbfef3da93a70d4eb3c43091d3233a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

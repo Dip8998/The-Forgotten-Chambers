@@ -32,13 +32,9 @@ namespace ForgottonChambers.Player
 
             if (isExitingState) return;
 
-            if (Player.InputHandler.AttackInputs[(int)CombateInputs.Primary])
+            if (Player.InputHandler.AttackInput)
             {
-                StateMachine.ChangeState(Player.PrimaryAttackState);
-            }
-            else if (Player.InputHandler.AttackInputs[(int)CombateInputs.Secondary])
-            {
-                StateMachine.ChangeState(Player.SecondaryAttackState);
+                StateMachine.ChangeState(Player.AttackState);
             }
             else if (jumpInput && Player.JumpState.CanJump())
             {

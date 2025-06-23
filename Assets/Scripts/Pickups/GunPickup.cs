@@ -1,4 +1,6 @@
 using ForgottonChambers.Player;
+using ForgottonChambers.ScriptableObjects;
+using ForgottonChambers.Weapons;
 using UnityEngine;
 
 namespace ForgottonChambers.Pickups
