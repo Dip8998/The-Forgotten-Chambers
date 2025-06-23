@@ -134,7 +134,7 @@ namespace ForgottonChambers.Weapons
 
     public static class WeaponUtilities
     {
-        public static Weapon GetWeaponByType(this List<Weapon> weapons, WeaponType type)
+        public static Weapon GetWeaponByType(this Weapon[] weapons, WeaponType type)
         {
             return weapons.FirstOrDefault(w => w.WeaponData.weaponType == type);
         }

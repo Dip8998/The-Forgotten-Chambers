@@ -36,7 +36,6 @@ namespace ForgottonChambers.Player
 
         #region Other Variables
         public int FacingDirection { get; private set; } = 1;
-        private int _currentWeaponIndex;
         #endregion
 
         #region Player call back functions
@@ -54,8 +53,8 @@ namespace ForgottonChambers.Player
         public void SetupPlayer()
         {
             MovementCollider = PlayerView.GetComponent<BoxCollider2D>();
-            _currentWeaponIndex = 0;
-            AttackState.SetWeapon(PlayerView.Weapons[_currentWeaponIndex]);
+            Weapon punchWeapon = PlayerView.Weapons.GetWeaponByType(WeaponType.Punch);
+            AttackState.SetWeapon(punchWeapon);
 
             StateMachine.InitializeState(IdleState);
         }
@@ -187,12 +186,23 @@ namespace ForgottonChambers.Player
         #region Other Functions
         private void SwitchWeapon()
         {
-            PlayerView.Weapons[_currentWeaponIndex].gameObject.SetActive(false);
+            if (StateMachine.currentState == AttackState && PlayerView.PlayerAnimator.GetBool("attack"))
+            {
+                return;
+            }
 
-            _currentWeaponIndex = (_currentWeaponIndex + 1) % PlayerView.Weapons.Length;
+            Weapon currentWeapon = PlayerView.Weapons.GetWeaponByType(AttackState.CurrentWeapon.WeaponData.weaponType);
 
-            PlayerView.Weapons[_currentWeaponIndex].gameObject.SetActive(true);
-            AttackState.SetWeapon(PlayerView.Weapons[_currentWeaponIndex]);
+            Weapon nextWeapon = PlayerView.GetNextWeapon(currentWeapon);
+
+            if (nextWeapon == null)
+            {
+                Debug.LogWarning("No next weapon found.");
+                return;
+            }
+            currentWeapon.gameObject.SetActive(false);
+            nextWeapon.gameObject.SetActive(true);
+            AttackState.SetWeapon(nextWeapon);
         }
         #endregion
     }

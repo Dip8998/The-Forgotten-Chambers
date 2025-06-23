@@ -6,7 +6,7 @@ namespace ForgottonChambers.Player
 {
     public class PlayerAttackState : PlayerAbilityState
     {
-        private Weapon _weapon;
+        public Weapon CurrentWeapon { get; private set; }
         private float _velocityToSet;
         private bool _setVelocity;
         private float _xInput;
@@ -21,9 +21,9 @@ namespace ForgottonChambers.Player
         {
             base.OnStateEnter();
             _setVelocity = false;
-            if (_weapon != null)
+            if (CurrentWeapon != null)
             {
-                _weapon.EnterWeapon();
+                CurrentWeapon.EnterWeapon();
             }
             else
             {
@@ -34,9 +34,9 @@ namespace ForgottonChambers.Player
         public override void OnStateExit()
         {
             base.OnStateExit();
-            if (_weapon != null)
+            if (CurrentWeapon != null)
             {
-                _weapon.ExitWeapon();
+                CurrentWeapon.ExitWeapon();
             }
         }
 
@@ -61,10 +61,10 @@ namespace ForgottonChambers.Player
 
         public void SetWeapon(Weapon weapon)
         {
-            _weapon = weapon;
-            if (_weapon != null)
+            CurrentWeapon = weapon;
+            if (CurrentWeapon != null)
             {
-                _weapon.InitializeWeapon(this);
+                CurrentWeapon.InitializeWeapon(this);
             }
         }
 

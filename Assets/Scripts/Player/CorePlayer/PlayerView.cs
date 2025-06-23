@@ -5,6 +5,7 @@ using ForgottonChambers.Box;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 using ForgottonChambers.Weapons;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ForgottonChambers.Player
 {
@@ -82,6 +83,18 @@ namespace ForgottonChambers.Player
         public void OnAnimationFinished()
         {
             _playerController?.AnimationFinishedTrigger();
+        }
+
+        public Weapon GetNextWeapon(Weapon currentWeapon)
+        {
+            if (Weapons.Length == 0 || currentWeapon == null)
+                return null;
+
+            var sortedWeapons = Weapons.OrderBy(w => (int)w.WeaponData.weaponType).ToList();
+            int index = sortedWeapons.IndexOf(currentWeapon);
+
+            int nextIndex = (index + 1) % sortedWeapons.Count;
+            return sortedWeapons[nextIndex];
         }
 
         public bool IsCeiling() =>
