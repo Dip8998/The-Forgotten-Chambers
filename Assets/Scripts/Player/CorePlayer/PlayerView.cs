@@ -38,6 +38,7 @@ namespace ForgottonChambers.Player
         #endregion
 
         #region Other Variables
+        public PlayerController PlayerController => _playerController;
         private const string BoxTag = "Box";
         #endregion
 

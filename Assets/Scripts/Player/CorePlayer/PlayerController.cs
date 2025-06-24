@@ -39,6 +39,8 @@ namespace ForgottonChambers.Player
         #region Weapon Management
         private Dictionary<WeaponType, WeaponController> _weaponControllers;
         private WeaponType _currentWeaponType;
+        private List<WeaponType> _collectedWeapons = new();
+        private int _currentWeaponIndex = 0;
         #endregion
 
         #region Other Variables
@@ -69,6 +71,9 @@ namespace ForgottonChambers.Player
             WeaponController defaultWeaponController = _weaponControllers[_currentWeaponType];
             AttackState.SetWeapon(defaultWeaponController.WeaponView);
             PlayerView.SetWeaponGameObjectActive(_currentWeaponType, true);
+
+            _collectedWeapons = new List<WeaponType> { WeaponType.Punch };
+            _currentWeaponIndex = 0;
 
             StateMachine.InitializeState(IdleState);
         }
@@ -179,42 +184,44 @@ namespace ForgottonChambers.Player
         public void AnimationTrigger() => StateMachine.currentState.AnimationTrigger();
         #endregion
 
-        #region Other Functions
+        #region Weapon switching Functions
+
+        public void AddWeaponToInventory(WeaponType newWeaponType)
+        {
+            if (_collectedWeapons.Contains(newWeaponType)) return;
+
+            _collectedWeapons.Add(newWeaponType);
+            Debug.Log($"Collected: {newWeaponType}");
+
+            if (_collectedWeapons.Count == 1 && newWeaponType != WeaponType.Punch)
+            {
+                SwitchWeaponTo(newWeaponType);
+            }
+        }
+
         private void SwitchWeapon()
         {
-            if (StateMachine.currentState == AttackState && PlayerView.GetAnimatorBool("attack"))
-            {
-                return;
-            }
+            if (_collectedWeapons.Count <= 1) return;
+            if (StateMachine.currentState == AttackState && PlayerView.GetAnimatorBool("attack")) return;
 
-            WeaponType nextType;
-            switch (_currentWeaponType)
-            {
-                case WeaponType.Punch:
-                    nextType = WeaponType.Sword;
-                    break;
-                case WeaponType.Sword:
-                    nextType = WeaponType.Gun;
-                    break;
-                case WeaponType.Gun:
-                    nextType = WeaponType.Punch;
-                    break;
-                default:
-                    nextType = WeaponType.Punch;
-                    break;
-            }
+            _currentWeaponIndex = (_currentWeaponIndex + 1) % _collectedWeapons.Count;
+            var nextWeapon = _collectedWeapons[_currentWeaponIndex];
+            SwitchWeaponTo(nextWeapon);
+        }
 
-            if (!_weaponControllers.ContainsKey(nextType))
+        private void SwitchWeaponTo(WeaponType type)
+        {
+            if (!_weaponControllers.ContainsKey(type))
             {
-                Debug.LogWarning($"Weapon type {nextType} not found in controllers.");
+                Debug.LogWarning($"Weapon {type} not found.");
                 return;
             }
 
             PlayerView.SetWeaponGameObjectActive(_currentWeaponType, false);
-            PlayerView.SetWeaponGameObjectActive(nextType, true);
+            PlayerView.SetWeaponGameObjectActive(type, true);
 
-            AttackState.SetWeapon(_weaponControllers[nextType].WeaponView);
-            _currentWeaponType = nextType;
+            AttackState.SetWeapon(_weaponControllers[type].WeaponView);
+            _currentWeaponType = type;
         }
         #endregion
     }
