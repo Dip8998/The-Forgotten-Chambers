@@ -1555,6 +1555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be04693d723148d499d14e6cd83a4606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerViewPrefab: {fileID: 4763981773313067328, guid: e02d2ff5f691ced499d14037da904f48, type: 3}
   playerScriptableObject: {fileID: 11400000, guid: b8360764a36ddff4e8cfc242318494c8, type: 2}
 --- !u!1001 &1783222904
 PrefabInstance:
@@ -1574,7 +1575,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8813087843998388144, guid: 89e766020077a6b4b8023c1f889aa1d8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -4.87
       objectReference: {fileID: 0}
     - target: {fileID: 8813087843998388144, guid: 89e766020077a6b4b8023c1f889aa1d8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1608,33 +1609,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2139365404719848349, guid: 89e766020077a6b4b8023c1f889aa1d8, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5243398672289137280, guid: 89e766020077a6b4b8023c1f889aa1d8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1783222906}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89e766020077a6b4b8023c1f889aa1d8, type: 3}
---- !u!1 &1783222905 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5243398672289137280, guid: 89e766020077a6b4b8023c1f889aa1d8, type: 3}
-  m_PrefabInstance: {fileID: 1783222904}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1783222906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1783222905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 879e5b0f94bf9534d963514acf6afb9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 0
 --- !u!1001 &1817407131
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1682,10 +1661,6 @@ PrefabInstance:
     - target: {fileID: 278542355417659853, guid: 207b0d62c34753f4f9dbd1acc69f18ca, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6027051320592552332, guid: 207b0d62c34753f4f9dbd1acc69f18ca, type: 3}
-      propertyPath: weaponType
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9093251898898307113, guid: 207b0d62c34753f4f9dbd1acc69f18ca, type: 3}
       propertyPath: m_Name

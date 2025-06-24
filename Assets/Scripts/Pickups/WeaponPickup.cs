@@ -1,8 +1,9 @@
 using UnityEngine;
 using ForgottonChambers.ScriptableObjects;
 using ForgottonChambers.Player;
+using ForgottonChambers.Main;
 
-namespace ForgottonChambers.Weapons
+namespace ForgottonChambers.Pickups
 {
     public class WeaponPickup : MonoBehaviour
     {
@@ -12,7 +13,7 @@ namespace ForgottonChambers.Weapons
         {
             if (other.TryGetComponent(out PlayerView playerView))
             {
-                playerView.PlayerController?.AddWeaponToInventory(weaponType);
+                GameService.Instance.EventService.OnWeaponPickedUpEvent.InvokeEvent(weaponType);
                 Destroy(gameObject);
             }
         }

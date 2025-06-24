@@ -2,12 +2,14 @@ using ForgottonChambers.Player;
 using UnityEngine;
 using ForgottonChambers.ScriptableObjects;
 using ForgottonChambers.Utilities;
+using ForgottonChambers.Events;
 
 namespace ForgottonChambers.Main
 {
     public class GameService : GenericMonoSingleton<GameService>
     {
         public PlayerService PlayerService { get; private set; }
+        public EventService EventService { get; private set; }
 
         [SerializeField] private PlayerScriptableObject playerScriptableObject;
 
@@ -28,6 +30,7 @@ namespace ForgottonChambers.Main
                 return;
             }
             PlayerService = new PlayerService(playerScriptableObject);
+            EventService = new EventService();
         }
     }
 }

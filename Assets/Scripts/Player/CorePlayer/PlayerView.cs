@@ -6,6 +6,7 @@ using ForgottonChambers.Player.Checks;
 using ForgottonChambers.Player.Interactions;
 using ForgottonChambers.Player.Components;
 using ForgottonChambers.Player.Interfaces;
+using ForgottonChambers.Main;
 
 namespace ForgottonChambers.Player
 {
@@ -41,8 +42,6 @@ namespace ForgottonChambers.Player
         public PlayerController PlayerController => _playerController;
         private const string BoxTag = "Box";
         #endregion
-
-        public event System.Action OnAnimationFinishedEvent;
 
         #region Unity Call back functions
         private void Awake()
@@ -86,16 +85,14 @@ namespace ForgottonChambers.Player
         }
         #endregion
 
+        #region Setting Player
         public void SetPlayerController(PlayerController playerController)
         {
             _playerController = playerController;
         }
+        #endregion
 
-        public void OnAnimationFinished()
-        {
-            OnAnimationFinishedEvent?.Invoke();
-        }
-
+        #region Weapon Setup Functions
         public WeaponView GetWeaponViewByType(WeaponType type)
         {
             return _weapons.FirstOrDefault(w => w.WeaponController.WeaponData.weaponType == type);
@@ -109,12 +106,20 @@ namespace ForgottonChambers.Player
                 weapon.gameObject.SetActive(active);
             }
         }
+        #endregion
 
+        #region Animation Functions
         public void SetAnimatorBool(string paramName, bool value) => _unityComponents.SetAnimatorBool(paramName, value);
         public void SetAnimatorFloat(string paramName, float value) => _unityComponents.SetAnimatorFloat(paramName, value);
         public void SetAnimatorTrigger(string paramName) => _unityComponents.SetAnimatorTrigger(paramName);
-        public bool GetAnimatorBool(string paramName) => _unityComponents.GetAnimatorBool(paramName); 
+        public bool GetAnimatorBool(string paramName) => _unityComponents.GetAnimatorBool(paramName);
 
+        public void OnAnimationFinished()
+        {
+            GameService.Instance.EventService.OnAnimationFinishedEvent.InvokeEvent();
+        }
+
+        #endregion
 
         #region Physics Check Methods (Delegated)
         public bool IsCeiling() => _physicsChecks.IsCeiling();
@@ -123,10 +128,12 @@ namespace ForgottonChambers.Player
         public bool IsTouchingWallBack() => _physicsChecks.IsTouchingWallBack();
         #endregion
 
+        #region Collider Functions
         public bool HasBoxAttached() => _boxInteractionHandler.IsBoxAttached;
         public void DetachBox() => _boxInteractionHandler.DetachBox();
 
         public BoxCollider2D GetPlayerCollider() => _unityComponents.Collider;
+        #endregion
 
         #region IPlayerMover Implementation (Now uses _unityComponents)
         public void SetLinearVelocity(Vector2 velocity) => _unityComponents.SetRigidbodyLinearVelocity(velocity);
@@ -136,6 +143,7 @@ namespace ForgottonChambers.Player
         public Vector2 GetCurrentVelocity() => _unityComponents.GetRigidbodyLinearVelocity();
         #endregion
 
+        #region OnDrawGizmos
         private void OnDrawGizmos()
         {
             if (groundCheckConfig?.CheckTransform != null)
@@ -167,5 +175,6 @@ namespace ForgottonChambers.Player
 
             _boxInteractionHandler?.OnDrawGizmos(transform);
         }
+        #endregion
     }
 }

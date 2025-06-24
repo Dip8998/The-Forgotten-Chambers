@@ -4,6 +4,7 @@ using ForgottonChambers.Weapons;
 using System.Collections.Generic;
 using ForgottonChambers.Player.Interfaces;
 using ForgottonChambers.Inputs;
+using ForgottonChambers.Main;
 
 namespace ForgottonChambers.Player
 {
@@ -60,12 +61,24 @@ namespace ForgottonChambers.Player
             InitializeWeaponControllers();
         }
 
+        ~PlayerController()
+        {
+            GameService.Instance.EventService.OnAnimationFinishedEvent.RemoveListener(AnimationFinishedTrigger);
+            GameService.Instance.EventService.OnWeaponPickedUpEvent.RemoveListener(AddWeaponToInventory);
+        }
+
+        public void InitializeEvents()
+        {
+            GameService.Instance.EventService.OnAnimationFinishedEvent.AddListener(AnimationFinishedTrigger);
+            GameService.Instance.EventService.OnWeaponPickedUpEvent.AddListener(AddWeaponToInventory);
+        }
+
         public void SetupPlayer()
         {
             MovementCollider = PlayerView.GetPlayerCollider();
-            _playerMover = PlayerView; 
+            _playerMover = PlayerView;
 
-            PlayerView.OnAnimationFinishedEvent += AnimationFinishedTrigger;
+            InitializeEvents();
 
             _currentWeaponType = WeaponType.Punch;
             WeaponController defaultWeaponController = _weaponControllers[_currentWeaponType];
