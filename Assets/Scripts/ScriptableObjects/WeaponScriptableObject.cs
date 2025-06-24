@@ -1,4 +1,3 @@
-using ForgottonChambers.Weapons;
 using UnityEngine;
 
 namespace ForgottonChambers.ScriptableObjects
@@ -7,13 +6,7 @@ namespace ForgottonChambers.ScriptableObjects
     public class WeaponScriptableObject : ScriptableObject
     {
         public WeaponType weaponType;
+        public int attackDamage;
         public float[] attackMovementSpeeds;
-    }
-
-    public enum WeaponType
-    {
-        Sword,
-        Punch,
-        Gun
     }
 }

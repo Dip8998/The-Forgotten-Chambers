@@ -78,8 +78,8 @@ namespace ForgottonChambers.Player
                 Player.CheckIfShouldFlip(_xInput);
                 Player.SetVelocityX(PlayerData.playerMovementSpeed * _xInput);
 
-                Player.PlayerView.PlayerAnimator.SetFloat("yVelocity", Player.CurrentVelocity.y);
-                Player.PlayerView.PlayerAnimator.SetFloat("xVelocity", Mathf.Abs(Player.CurrentVelocity.x));
+                Player.SetAnimatorFloat("yVelocity", Player.CurrentVelocity.y);
+                Player.SetAnimatorFloat("xVelocity", Mathf.Abs(Player.CurrentVelocity.x));
             }
         }
 

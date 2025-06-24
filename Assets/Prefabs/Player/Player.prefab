@@ -156,11 +156,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1880748210369653959}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0870bee5fa3ef64f9fa8d7fcdd9c4e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 70ae61fa53a061d45b6e19e0f361126e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponData: {fileID: 11400000, guid: 598a1dfcec2a31447803be7f0e91d913, type: 2}
-  attackDamage: 10
   _hit1Box: {fileID: 7702564884440601783}
   _hit2Box: {fileID: 2983992781178686739}
 --- !u!61 &7702564884440601783
@@ -480,24 +479,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f41404e72bfd04cbe068d603457603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundCheck: {fileID: 3222786037099093654}
-  groundCheckRadius: 0.5
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  wallCheck: {fileID: 7437207970175568664}
-  wallCheckDistance: 0.8
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 128
+  groundCheckConfig:
+    CheckTransform: {fileID: 3222786037099093654}
+    Radius: 0.3
+    Layer:
+      serializedVersion: 2
+      m_Bits: 64
+  wallCheckConfig:
+    CheckTransform: {fileID: 7437207970175568664}
+    Distance: 1
+    Layer:
+      serializedVersion: 2
+      m_Bits: 128
+  ceilingCheckConfig:
+    CheckTransform: {fileID: 4412594227452685039}
+    Distance: 1.1
+    Layer:
+      serializedVersion: 2
+      m_Bits: 64
   boxCheck: {fileID: 2235282199401129061}
   boxCheckDistance: 0.9
   boxLayer:
     serializedVersion: 2
     m_Bits: 256
-  ceilingCheck: {fileID: 4412594227452685039}
-  ceilingCheckDistance: 1
-  Weapons:
+  _weapons:
   - {fileID: 6540622224358209510}
   - {fileID: 4230045784960543942}
   - {fileID: 3522586067837754295}
@@ -623,11 +628,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4204703300397214551}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0870bee5fa3ef64f9fa8d7fcdd9c4e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 70ae61fa53a061d45b6e19e0f361126e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponData: {fileID: 11400000, guid: deec6ce0a337eaf4b92ea984dd0a8178, type: 2}
-  attackDamage: 10
   _hit1Box: {fileID: 6301449966702980586}
   _hit2Box: {fileID: 1627812143968808899}
 --- !u!61 &6301449966702980586
@@ -866,11 +870,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5982504986870667371}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0870bee5fa3ef64f9fa8d7fcdd9c4e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 70ae61fa53a061d45b6e19e0f361126e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponData: {fileID: 11400000, guid: 84ba9b3704128f646a822a7d34e9202a, type: 2}
-  attackDamage: 10
   _hit1Box: {fileID: 4715591157606248700}
   _hit2Box: {fileID: 1874375978271071510}
 --- !u!61 &4715591157606248700

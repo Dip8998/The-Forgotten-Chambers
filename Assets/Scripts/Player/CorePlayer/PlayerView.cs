@@ -1,58 +1,64 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.UIElements;
-using ForgottonChambers.Box;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
+﻿using UnityEngine;
 using ForgottonChambers.Weapons;
-using System.Collections.Generic;
+using ForgottonChambers.ScriptableObjects;
 using System.Linq;
+using ForgottonChambers.Player.Checks;
+using ForgottonChambers.Player.Interactions;
+using ForgottonChambers.Player.Components;
+using ForgottonChambers.Player.Interfaces;
 
 namespace ForgottonChambers.Player
 {
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
-    public class PlayerView : MonoBehaviour
+    public class PlayerView : MonoBehaviour, IPlayerMover 
     {
+        #region Checking Variables
         [Header("Checks")]
-        [SerializeField] private Transform groundCheck;
-        [SerializeField] private float groundCheckRadius = 0.2f;
-        [SerializeField] private LayerMask groundLayer;
+        [SerializeField] private GroundCheckConfig groundCheckConfig;
+        [SerializeField] private WallCheckConfig wallCheckConfig;
+        [SerializeField] private CeilingCheckConfig ceilingCheckConfig;
 
-        [SerializeField] private Transform wallCheck;
-        [SerializeField] private float wallCheckDistance;
-        [SerializeField] private LayerMask wallLayer;
-
-        [SerializeField] private Transform boxCheck;
+        [SerializeField] private Transform boxCheck; 
         [SerializeField] private float boxCheckDistance;
         [SerializeField] private LayerMask boxLayer;
+        #endregion
 
-        [SerializeField] private Transform ceilingCheck;
-        [SerializeField] private float ceilingCheckDistance;
+        #region Weapons
+        [SerializeField] private WeaponView[] _weapons;
+        public WeaponView[] Weapons => _weapons;
+        #endregion
 
-        public Animator PlayerAnimator { get; private set; }
-        public Weapon[] Weapons;
-        private PlayerController _playerController;
-        private GameObject _attachedBox;
-        private Rigidbody2D _playerRb;
+        #region Internal References
+        private PlayerController _playerController; 
+        private PlayerPhysicsChecks _physicsChecks;
+        private BoxInteractionHandler _boxInteractionHandler;
+        private PlayerUnityComponents _unityComponents; 
+        #endregion
 
-        private FixedJoint2D _boxFixedJoint;
-
+        #region Other Variables
         private const string BoxTag = "Box";
+        #endregion
 
+        public event System.Action OnAnimationFinishedEvent;
+
+        #region Unity Call back functions
         private void Awake()
         {
-            PlayerAnimator = GetComponent<Animator>();
-            _playerRb = GetComponent<Rigidbody2D>();
-            _boxFixedJoint = GetComponent<FixedJoint2D>();
+            _unityComponents = new PlayerUnityComponents(gameObject); 
 
-            if (_boxFixedJoint == null)
-            {
-                _boxFixedJoint = gameObject.AddComponent<FixedJoint2D>();
-                _boxFixedJoint.autoConfigureConnectedAnchor = false;
-            }
+            _physicsChecks = new PlayerPhysicsChecks(
+                groundCheckConfig,
+                wallCheckConfig,
+                ceilingCheckConfig,
+                () => _playerController != null ? _playerController.FacingDirection : 1
+            );
 
-            _boxFixedJoint.enabled = false;
+            _boxInteractionHandler = new BoxInteractionHandler(
+                transform, _unityComponents.Rigidbody, _unityComponents.FixedJoint,
+                boxCheckDistance, boxLayer, BoxTag
+            );
         }
 
         private void Start()
@@ -63,18 +69,22 @@ namespace ForgottonChambers.Player
         private void Update()
         {
             _playerController?.OnPlayerUpdate();
-            HandleBoxInteraction();
+            if (_playerController != null)
+            {
+                _boxInteractionHandler.TryInteractWithBox(
+                   _playerController.InputHandler.BoxPushPullInput,
+                   _playerController.InputHandler.BoxDropInput,
+                   _playerController.InputHandler.MoveInput
+                );
+            }
         }
 
         private void FixedUpdate()
         {
             _playerController?.OnPlayerFixedUpdate();
-
-            if (_attachedBox != null && Mathf.Abs(_playerRb.linearVelocity.x) > 0.01f && Mathf.Approximately(_playerController.InputHandler.MoveInput, 0))
-            {
-                _playerRb.linearVelocity = new Vector2(0, _playerRb.linearVelocity.y);
-            }
         }
+        #endregion
+
         public void SetPlayerController(PlayerController playerController)
         {
             _playerController = playerController;
@@ -82,110 +92,79 @@ namespace ForgottonChambers.Player
 
         public void OnAnimationFinished()
         {
-            _playerController?.AnimationFinishedTrigger();
+            OnAnimationFinishedEvent?.Invoke();
         }
 
-        public Weapon GetNextWeapon(Weapon currentWeapon)
+        public WeaponView GetWeaponViewByType(WeaponType type)
         {
-            if (Weapons.Length == 0 || currentWeapon == null)
-                return null;
-
-            var sortedWeapons = Weapons.OrderBy(w => (int)w.WeaponData.weaponType).ToList();
-            int index = sortedWeapons.IndexOf(currentWeapon);
-
-            int nextIndex = (index + 1) % sortedWeapons.Count;
-            return sortedWeapons[nextIndex];
+            return _weapons.FirstOrDefault(w => w.WeaponController.WeaponData.weaponType == type);
         }
 
-        public bool IsCeiling() =>
-            Physics2D.Raycast(ceilingCheck.position, Vector2.up, ceilingCheckDistance, groundLayer);
-
-        public bool IsGrounded() =>
-            Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
-        public bool IsTouchingWall() =>
-            Physics2D.Raycast(wallCheck.position, Vector2.right * _playerController.FacingDirection, wallCheckDistance, wallLayer);
-
-        public bool IsTouchingWallBack() =>
-            Physics2D.Raycast(wallCheck.position, Vector2.right * -_playerController.FacingDirection, wallCheckDistance, wallLayer);
-
-        private void HandleBoxInteraction()
+        public void SetWeaponGameObjectActive(WeaponType type, bool active)
         {
-            Physics2D.queriesStartInColliders = false;
-
-            RaycastHit2D hit = Physics2D.Raycast(
-                transform.position,
-                Vector2.right * transform.localScale.x,
-                boxCheckDistance,
-                boxLayer
-            );
-
-            if (hit.collider != null && hit.collider.CompareTag("Box") && _playerController.InputHandler.BoxPushPullInput)
+            WeaponView weapon = GetWeaponViewByType(type);
+            if (weapon != null)
             {
-                _attachedBox = hit.collider.gameObject;
-
-                var joint = _attachedBox.GetComponent<FixedJoint2D>();
-                joint.connectedBody = _playerRb;
-                joint.enabled = true;
-
-                _attachedBox.GetComponent<boxpull>().beingPushed = true;
-            }
-            else if (_playerController.InputHandler.BoxDropInput)
-            {
-                if (_attachedBox != null)
-                {
-                    var joint = _attachedBox.GetComponent<FixedJoint2D>();
-                    var boxScript = _attachedBox.GetComponent<boxpull>();
-
-                    if (joint != null)
-                    {
-                        joint.connectedBody = null;
-                        joint.enabled = false;
-                    }
-
-                    if (boxScript != null)
-                    {
-                        boxScript.beingPushed = false;
-                    }
-
-                    _attachedBox = null;
-
-                    _playerRb.linearVelocity = new Vector2(0f, _playerRb.linearVelocity.y);
-                    _playerRb.angularVelocity = 0f;
-                }
+                weapon.gameObject.SetActive(active);
             }
         }
 
+        public void SetAnimatorBool(string paramName, bool value) => _unityComponents.SetAnimatorBool(paramName, value);
+        public void SetAnimatorFloat(string paramName, float value) => _unityComponents.SetAnimatorFloat(paramName, value);
+        public void SetAnimatorTrigger(string paramName) => _unityComponents.SetAnimatorTrigger(paramName);
+        public bool GetAnimatorBool(string paramName) => _unityComponents.GetAnimatorBool(paramName); 
 
-        public bool HasBoxAttached() => _attachedBox != null;
+
+        #region Physics Check Methods (Delegated)
+        public bool IsCeiling() => _physicsChecks.IsCeiling();
+        public bool IsGrounded() => _physicsChecks.IsGrounded();
+        public bool IsTouchingWall() => _physicsChecks.IsTouchingWall();
+        public bool IsTouchingWallBack() => _physicsChecks.IsTouchingWallBack();
+        #endregion
+
+        public bool HasBoxAttached() => _boxInteractionHandler.IsBoxAttached;
+        public void DetachBox() => _boxInteractionHandler.DetachBox();
+
+        public BoxCollider2D GetPlayerCollider() => _unityComponents.Collider;
+
+        #region IPlayerMover Implementation (Now uses _unityComponents)
+        public void SetLinearVelocity(Vector2 velocity) => _unityComponents.SetRigidbodyLinearVelocity(velocity);
+        public void SetVelocityX(float velocity) => _unityComponents.SetRigidbodyLinearVelocity(new Vector2(velocity, _unityComponents.GetRigidbodyLinearVelocity().y));
+        public void SetVelocityY(float velocity) => _unityComponents.SetRigidbodyLinearVelocity(new Vector2(_unityComponents.GetRigidbodyLinearVelocity().x, velocity));
+        public void SetRotationY(float angle) => _unityComponents.SetRotationY(angle);
+        public Vector2 GetCurrentVelocity() => _unityComponents.GetRigidbodyLinearVelocity();
+        #endregion
 
         private void OnDrawGizmos()
         {
-            if (groundCheck != null)
+            if (groundCheckConfig?.CheckTransform != null)
             {
                 Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+                Gizmos.DrawWireSphere(groundCheckConfig.CheckTransform.position, groundCheckConfig.Radius);
             }
 
-            if (ceilingCheck != null)
+            if (ceilingCheckConfig?.CheckTransform != null)
             {
                 Gizmos.color = Color.magenta;
-                Gizmos.DrawLine(ceilingCheck.position, ceilingCheck.position + Vector3.up * ceilingCheckDistance);
+                Gizmos.DrawLine(ceilingCheckConfig.CheckTransform.position, ceilingCheckConfig.CheckTransform.position + Vector3.up * ceilingCheckConfig.Distance);
             }
 
-            if (wallCheck != null)
+            if (wallCheckConfig?.CheckTransform != null)
             {
                 Gizmos.color = Color.blue;
-                Gizmos.DrawRay(wallCheck.position, Vector2.right * wallCheckDistance);
-                Gizmos.DrawRay(wallCheck.position, Vector2.left * wallCheckDistance);
+                if (_playerController != null)
+                {
+                    Gizmos.DrawRay(wallCheckConfig.CheckTransform.position, Vector2.right * _playerController.FacingDirection * wallCheckConfig.Distance);
+                    Gizmos.DrawRay(wallCheckConfig.CheckTransform.position, Vector2.right * -_playerController.FacingDirection * wallCheckConfig.Distance);
+                }
+                else
+                {
+                    Gizmos.DrawRay(wallCheckConfig.CheckTransform.position, Vector2.right * wallCheckConfig.Distance);
+                    Gizmos.DrawRay(wallCheckConfig.CheckTransform.position, Vector2.left * wallCheckConfig.Distance);
+                }
             }
 
-            if (boxCheck != null)
-            {
-                Gizmos.color = Color.yellow;
-
-                Gizmos.DrawLine(transform.position, (Vector2)transform.position + Vector2.right * transform.localScale.x * boxCheckDistance);
-            }
+            _boxInteractionHandler?.OnDrawGizmos(transform);
         }
     }
 }

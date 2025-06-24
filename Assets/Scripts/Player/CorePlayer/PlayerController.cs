@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using ForgottonChambers.ScriptableObjects;
 using ForgottonChambers.Weapons;
-using System.Linq;
+using System.Collections.Generic;
+using ForgottonChambers.Player.Interfaces;
+using ForgottonChambers.Inputs;
 
 namespace ForgottonChambers.Player
 {
@@ -25,36 +27,48 @@ namespace ForgottonChambers.Player
 
         #region Dependencies & Components
         private readonly PlayerScriptableObject playerConfig;
-        public PlayerInputHandler InputHandler { get; private set; }
-        public PlayerView PlayerView { get; private set; }
-        public BoxCollider2D MovementCollider { get; private set; }
+        public InputHandler InputHandler { get; private set; }
+        public PlayerView PlayerView { get; private set; } 
+        public BoxCollider2D MovementCollider { get; private set; } 
 
-        private Rigidbody2D _rb2D;
+        private IPlayerMover _playerMover;
         private Vector2 _workSpace;
-        public Vector2 CurrentVelocity => _rb2D.linearVelocity;
+        public Vector2 CurrentVelocity => _playerMover.GetCurrentVelocity();
+        #endregion
+
+        #region Weapon Management
+        private Dictionary<WeaponType, WeaponController> _weaponControllers;
+        private WeaponType _currentWeaponType;
         #endregion
 
         #region Other Variables
         public int FacingDirection { get; private set; } = 1;
         #endregion
 
-        #region Player call back functions
+        #region Player Callbacks
         public PlayerController(PlayerScriptableObject playerConfig)
         {
             this.playerConfig = playerConfig;
             StateMachine = new PlayerStateMachine();
-            InputHandler = new PlayerInputHandler();
+            InputHandler = new InputHandler();
             _workSpace = Vector2.zero;
 
             InitializePlayerView();
             InitializePlayerStates();
+            InitializeWeaponControllers();
         }
 
         public void SetupPlayer()
         {
-            MovementCollider = PlayerView.GetComponent<BoxCollider2D>();
-            Weapon punchWeapon = PlayerView.Weapons.GetWeaponByType(WeaponType.Punch);
-            AttackState.SetWeapon(punchWeapon);
+            MovementCollider = PlayerView.GetPlayerCollider();
+            _playerMover = PlayerView; 
+
+            PlayerView.OnAnimationFinishedEvent += AnimationFinishedTrigger;
+
+            _currentWeaponType = WeaponType.Punch;
+            WeaponController defaultWeaponController = _weaponControllers[_currentWeaponType];
+            AttackState.SetWeapon(defaultWeaponController.WeaponView);
+            PlayerView.SetWeaponGameObjectActive(_currentWeaponType, true);
 
             StateMachine.InitializeState(IdleState);
         }
@@ -63,6 +77,7 @@ namespace ForgottonChambers.Player
         {
             InputHandler.UpdateInputs();
             StateMachine.currentState.OnUpdate();
+
             if (InputHandler.SwitchWeaponInput)
             {
                 SwitchWeapon();
@@ -76,15 +91,14 @@ namespace ForgottonChambers.Player
         #endregion
 
         #region Initialization
-
         private void InitializePlayerView()
         {
             if (playerConfig.playerPrefab == null)
             {
+                Debug.LogError("Player Prefab is null in PlayerConfig!");
                 return;
             }
             PlayerView = Object.Instantiate(playerConfig.playerPrefab);
-            _rb2D = PlayerView.GetComponent<Rigidbody2D>();
             PlayerView.SetPlayerController(this);
         }
 
@@ -106,43 +120,29 @@ namespace ForgottonChambers.Player
             AttackState = new PlayerAttackState(this, StateMachine, playerConfig, attackAnimBool);
         }
 
+        private void InitializeWeaponControllers()
+        {
+            _weaponControllers = new Dictionary<WeaponType, WeaponController>();
+            foreach (WeaponView weaponView in PlayerView.Weapons)
+            {
+                _weaponControllers.Add(weaponView.WeaponController.WeaponData.weaponType, weaponView.WeaponController);
+            }
+        }
         #endregion
 
         #region Movement and Velocity Application
-
-        public void SetVelocityZero()
-        {
-            _rb2D.linearVelocity = Vector2.zero;
-        }
-
-        public void SetVelocityX(float velocity)
-        {
-            _workSpace.Set(velocity, _rb2D.linearVelocity.y);
-            ApplyVelocity();
-        }
-
-        public void SetVelocityY(float velocity)
-        {
-            _workSpace.Set(_rb2D.linearVelocity.x, velocity);
-            ApplyVelocity();
-        }
-
+        public void SetVelocityZero() => _playerMover.SetLinearVelocity(Vector2.zero);
+        public void SetVelocityX(float velocity) => _playerMover.SetVelocityX(velocity);
+        public void SetVelocityY(float velocity) => _playerMover.SetVelocityY(velocity);
         public void SetVelocity(float speed, Vector2 angle, int dir)
         {
             angle.Normalize();
             _workSpace.Set(angle.x * speed * dir, angle.y * speed);
-            ApplyVelocity();
+            _playerMover.SetLinearVelocity(_workSpace);
         }
-
-        private void ApplyVelocity()
-        {
-            _rb2D.linearVelocity = _workSpace;
-        }
-
         #endregion
 
         #region Checks & Utilities
-
         public void CheckIfShouldFlip(float xInput)
         {
             if (xInput != 0 && xInput != FacingDirection)
@@ -154,55 +154,67 @@ namespace ForgottonChambers.Player
         private void Flip()
         {
             FacingDirection *= -1;
-            PlayerView.transform.Rotate(0f, 180f, 0f);
+            PlayerView.SetRotationY(FacingDirection == 1 ? 0f : 180f);
         }
 
         public bool CheckIsGround() => PlayerView.IsGrounded();
-
         public bool CheckIsWall() => PlayerView.IsTouchingWall();
-
         public bool CheckIsWallBack() => PlayerView.IsTouchingWallBack();
-
         public bool CheckIsCeiling() => PlayerView.IsCeiling();
+        public bool HasBoxAttached() => PlayerView.HasBoxAttached();
 
         public void SetColliderSize(Vector2 newSize, Vector2 newOffset)
         {
-            if (MovementCollider != null)
-            {
-                MovementCollider.size = newSize;
-                MovementCollider.offset = newOffset;
-            }
-            else
-            {
-            }
+            PlayerView.GetPlayerCollider().size = newSize;
+            PlayerView.GetPlayerCollider().offset = newOffset;
         }
 
+        public void SetAnimatorBool(string paramName, bool value) => PlayerView.SetAnimatorBool(paramName, value);
+        public void SetAnimatorFloat(string paramName, float value) => PlayerView.SetAnimatorFloat(paramName, value);
+        public void SetAnimatorTrigger(string paramName) => PlayerView.SetAnimatorTrigger(paramName);
+
+
+        private void AnimationFinishedTrigger() => StateMachine.currentState.AnimationFinishTrigger();
+
         public void AnimationTrigger() => StateMachine.currentState.AnimationTrigger();
-
-        public void AnimationFinishedTrigger() => StateMachine.currentState.AnimationFinishTrigger();
-
         #endregion
 
         #region Other Functions
         private void SwitchWeapon()
         {
-            if (StateMachine.currentState == AttackState && PlayerView.PlayerAnimator.GetBool("attack"))
+            if (StateMachine.currentState == AttackState && PlayerView.GetAnimatorBool("attack"))
             {
                 return;
             }
 
-            Weapon currentWeapon = PlayerView.Weapons.GetWeaponByType(AttackState.CurrentWeapon.WeaponData.weaponType);
-
-            Weapon nextWeapon = PlayerView.GetNextWeapon(currentWeapon);
-
-            if (nextWeapon == null)
+            WeaponType nextType;
+            switch (_currentWeaponType)
             {
-                Debug.LogWarning("No next weapon found.");
+                case WeaponType.Punch:
+                    nextType = WeaponType.Sword;
+                    break;
+                case WeaponType.Sword:
+                    nextType = WeaponType.Gun;
+                    break;
+                case WeaponType.Gun:
+                    nextType = WeaponType.Punch;
+                    break;
+                default:
+                    nextType = WeaponType.Punch;
+                    break;
+            }
+
+            if (!_weaponControllers.ContainsKey(nextType))
+            {
+                Debug.LogWarning($"Weapon type {nextType} not found in controllers.");
                 return;
             }
-            currentWeapon.gameObject.SetActive(false);
-            nextWeapon.gameObject.SetActive(true);
-            AttackState.SetWeapon(nextWeapon);
+
+            PlayerView.SetWeaponGameObjectActive(_currentWeaponType, false);
+            PlayerView.SetWeaponGameObjectActive(nextType, true);
+
+            AttackState.SetWeapon(_weaponControllers[nextType].WeaponView);
+            _currentWeaponType = nextType;
         }
         #endregion
     }

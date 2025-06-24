@@ -6,7 +6,7 @@ namespace ForgottonChambers.Player
 {
     public class PlayerAttackState : PlayerAbilityState
     {
-        public Weapon CurrentWeapon { get; private set; }
+        public WeaponController CurrentWeapon { get; private set; }
         private float _velocityToSet;
         private bool _setVelocity;
         private float _xInput;
@@ -59,14 +59,14 @@ namespace ForgottonChambers.Player
             }
         }
 
-        public void SetWeapon(Weapon weapon)
+        public void SetWeapon(WeaponView weaponView)
         {
-            CurrentWeapon = weapon;
-            if (CurrentWeapon != null)
-            {
-                CurrentWeapon.InitializeWeapon(this);
-            }
+            if (weaponView == null) return;
+
+            CurrentWeapon = weaponView.WeaponController;
+            CurrentWeapon.InitializeWeapon(this);
         }
+
 
         public void SetPlayerVelocity(float velocity)
         {

@@ -28,8 +28,8 @@ namespace ForgottonChambers.Player
 
             if (isExitingState) return;
 
-            Player.PlayerView.PlayerAnimator.SetFloat("yVelocity", Player.CurrentVelocity.y);
-            Player.PlayerView.PlayerAnimator.SetFloat("xVelocity", Mathf.Abs(Player.CurrentVelocity.x));
+            Player.SetAnimatorFloat("yVelocity", Player.CurrentVelocity.y);
+            Player.SetAnimatorFloat("xVelocity", Mathf.Abs(Player.CurrentVelocity.x));
 
             if (Time.time >= startTime + PlayerData.playerWallJumpTime)
             {

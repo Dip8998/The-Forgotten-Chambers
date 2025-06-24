@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Gun_SO
   m_EditorClassIdentifier: 
   weaponType: 2
+  attackDamage: 10
   attackMovementSpeeds:
   - 0

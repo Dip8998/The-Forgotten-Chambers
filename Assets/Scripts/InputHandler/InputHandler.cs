@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-namespace ForgottonChambers.Player
+namespace ForgottonChambers.Inputs
 {
-    public class PlayerInputHandler
+    public class InputHandler
     {
         public float MoveInput { get; private set; }
         public float UpInput { get; private set; }

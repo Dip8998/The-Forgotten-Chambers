@@ -26,14 +26,14 @@ namespace ForgottonChambers.Player
         public virtual void OnStateEnter()
         {
             startTime = Time.time;
-            Player.PlayerView.PlayerAnimator.SetBool(_animBoolName, true);
+            Player.SetAnimatorBool(_animBoolName, true);
             isAnimationFinished = false;
             isExitingState = false;
         }
 
         public virtual void OnStateExit()
         {
-            Player.PlayerView.PlayerAnimator.SetBool(_animBoolName, false);
+            Player.SetAnimatorBool(_animBoolName, false);
             isExitingState = true;
         }
 
