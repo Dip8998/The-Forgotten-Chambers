@@ -3,10 +3,11 @@ using ForgottonChambers.Weapons;
 using ForgottonChambers.ScriptableObjects;
 using System.Linq;
 using ForgottonChambers.Player.Checks;
-using ForgottonChambers.Player.Interactions;
 using ForgottonChambers.Player.Components;
 using ForgottonChambers.Player.Interfaces;
 using ForgottonChambers.Main;
+using UnityEngine.UIElements;
+using ForgottonChambers.Box;
 
 namespace ForgottonChambers.Player
 {
@@ -34,8 +35,10 @@ namespace ForgottonChambers.Player
         #region Internal References
         private PlayerController _playerController; 
         private PlayerPhysicsChecks _physicsChecks;
-        private BoxInteractionHandler _boxInteractionHandler;
-        private PlayerUnityComponents _unityComponents; 
+        private PlayerUnityComponents _unityComponents;
+        private GameObject _attachedBox;
+        private Rigidbody2D _playerRb;
+        private FixedJoint2D _boxFixedJoint;
         #endregion
 
         #region Other Variables
@@ -54,11 +57,16 @@ namespace ForgottonChambers.Player
                 ceilingCheckConfig,
                 () => _playerController != null ? _playerController.FacingDirection : 1
             );
+            _playerRb = _unityComponents.Rigidbody;
+            _boxFixedJoint = _unityComponents.FixedJoint;
 
-            _boxInteractionHandler = new BoxInteractionHandler(
-                transform, _unityComponents.Rigidbody, _unityComponents.FixedJoint,
-                boxCheckDistance, boxLayer, BoxTag
-            );
+            if (_boxFixedJoint == null)
+            {
+                _boxFixedJoint = gameObject.AddComponent<FixedJoint2D>();
+                _boxFixedJoint.autoConfigureConnectedAnchor = false;
+            }
+
+            _boxFixedJoint.enabled = false;
         }
 
         private void Start()
@@ -69,19 +77,17 @@ namespace ForgottonChambers.Player
         private void Update()
         {
             _playerController?.OnPlayerUpdate();
-            if (_playerController != null)
-            {
-                _boxInteractionHandler.TryInteractWithBox(
-                   _playerController.InputHandler.BoxPushPullInput,
-                   _playerController.InputHandler.BoxDropInput,
-                   _playerController.InputHandler.MoveInput
-                );
-            }
+            HandleBoxInteraction();
         }
 
         private void FixedUpdate()
         {
             _playerController?.OnPlayerFixedUpdate();
+            if (_attachedBox != null && Mathf.Abs(_playerRb.linearVelocity.x) > 0.01f && Mathf.Approximately(_playerController.InputHandler.MoveInput, 0))
+            {
+                _playerRb.linearVelocity = new Vector2(0, _playerRb.linearVelocity.y);
+            }
+
         }
         #endregion
 
@@ -129,9 +135,56 @@ namespace ForgottonChambers.Player
         #endregion
 
         #region Collider Functions
-        public bool HasBoxAttached() => _boxInteractionHandler.IsBoxAttached;
-        public void DetachBox() => _boxInteractionHandler.DetachBox();
+        private void HandleBoxInteraction()
+        {
+            Physics2D.queriesStartInColliders = false;
 
+            RaycastHit2D hit = Physics2D.Raycast(
+                transform.position,
+                Vector2.right * _playerController.FacingDirection,
+                boxCheckDistance,
+                boxLayer
+            );
+
+            if (hit.collider != null && hit.collider.CompareTag("Box") && _playerController.InputHandler.BoxPushPullInput)
+            {
+                _attachedBox = hit.collider.gameObject;
+
+                var joint = _attachedBox.GetComponent<FixedJoint2D>();
+                joint.connectedBody = _playerRb;
+                joint.enabled = true;
+
+                _attachedBox.GetComponent<boxpull>().beingPushed = true;
+            }
+            else if (_playerController.InputHandler.BoxDropInput)
+            {
+                if (_attachedBox != null)
+                {
+                    var joint = _attachedBox.GetComponent<FixedJoint2D>();
+                    var boxScript = _attachedBox.GetComponent<boxpull>();
+
+                    if (joint != null)
+                    {
+                        joint.connectedBody = null;
+                        joint.enabled = false;
+                    }
+
+                    if (boxScript != null)
+                    {
+                        boxScript.beingPushed = false;
+                    }
+
+                    _attachedBox = null;
+
+                    _playerRb.linearVelocity = new Vector2(0f, _playerRb.linearVelocity.y);
+                    _playerRb.angularVelocity = 0f;
+                }
+            }
+        }
+
+
+
+        public bool HasBoxAttached() => _attachedBox != null;
         public BoxCollider2D GetPlayerCollider() => _unityComponents.Collider;
         #endregion
 
@@ -173,7 +226,12 @@ namespace ForgottonChambers.Player
                 }
             }
 
-            _boxInteractionHandler?.OnDrawGizmos(transform);
+            if (boxCheck != null)
+            {
+                Gizmos.color = Color.yellow;
+
+                Gizmos.DrawLine(transform.position, (Vector2)transform.position + Vector2.right * transform.localScale.x * boxCheckDistance);
+            }
         }
         #endregion
     }

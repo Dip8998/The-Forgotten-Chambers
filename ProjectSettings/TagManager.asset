@@ -10,14 +10,14 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Collectibles
   - Water
   - UI
   - Ground
   - Wall
   - 'Box '
-  - 
-  - 
+  - Player
+  - Bullet
   - 
   - 
   - 

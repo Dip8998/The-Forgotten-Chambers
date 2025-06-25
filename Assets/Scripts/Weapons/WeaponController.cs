@@ -1,4 +1,5 @@
-﻿using ForgottonChambers.Player;
+﻿using ForgottonChambers.Bullets;
+using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
 
@@ -16,14 +17,16 @@ namespace ForgottonChambers.Weapons
         private PlayerAttackState _state;
 
         private int _attackCounter;
+        private BulletController _bulletController;
 
         public WeaponScriptableObject WeaponData => _weaponScriptableObject;
         public bool IsAttacking => _animator != null && _animator.GetBool("attack");
         public WeaponView WeaponView => _weaponView;
 
-        public WeaponController(WeaponScriptableObject weaponScriptableObject)
+        public WeaponController(WeaponScriptableObject weaponScriptableObject, BulletController bulletController)
         {
             _weaponScriptableObject = weaponScriptableObject;
+            _bulletController = bulletController;
         }
 
         public void SetWeaponView(WeaponView view)
@@ -81,5 +84,9 @@ namespace ForgottonChambers.Weapons
         public void AnimationTurnOffWeapon1HitBoxTrigger() { if (_hit1Box != null) _hit1Box.enabled = false; }
         public void AnimationTurnOnWeapon2HitBoxTrigger() { if (_hit2Box != null) _hit2Box.enabled = true; }
         public void AnimationTurnOffWeapon2HitBoxTrigger() { if (_hit2Box != null) _hit2Box.enabled = false; }
+        public void AnimationBulletShootTrigger()
+        {
+            _bulletController.ShootBullet();
+        }
     }
 }

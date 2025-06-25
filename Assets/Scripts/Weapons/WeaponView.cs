@@ -1,3 +1,4 @@
+using ForgottonChambers.Bullets;
 using ForgottonChambers.HealthSystem;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace ForgottonChambers.Weapons
         [SerializeField] private WeaponScriptableObject _weaponData;
         [SerializeField] private BoxCollider2D _hit1Box;
         [SerializeField] private CapsuleCollider2D _hit2Box;
+        [SerializeField] private BulletController _bulletController;
 
         public BoxCollider2D Hit1Box => _hit1Box;
         public CapsuleCollider2D Hit2Box => _hit2Box;
@@ -18,7 +20,7 @@ namespace ForgottonChambers.Weapons
 
         protected virtual void Awake()
         {
-            WeaponController = new WeaponController(_weaponData);
+            WeaponController = new WeaponController(_weaponData, _bulletController);
             WeaponController.SetWeaponView(this);
         }
 
