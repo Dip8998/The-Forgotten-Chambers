@@ -20,6 +20,13 @@ namespace ForgottonChambers.Player
         public override void OnStateEnter()
         {
             base.OnStateEnter();
+            
+            if (Player.PlayerView.HasBoxAttached())
+            {
+                isAbilityDone = true;
+                return;
+            }
+
             _setVelocity = false;
             if (CurrentWeapon != null)
             {

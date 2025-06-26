@@ -162,7 +162,7 @@ MonoBehaviour:
   _weaponData: {fileID: 11400000, guid: 598a1dfcec2a31447803be7f0e91d913, type: 2}
   _hit1Box: {fileID: 7702564884440601783}
   _hit2Box: {fileID: 2983992781178686739}
-  _bulletController: {fileID: 0}
+  _bulletShooter: {fileID: 0}
 --- !u!61 &7702564884440601783
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -751,7 +751,7 @@ MonoBehaviour:
   _weaponData: {fileID: 11400000, guid: deec6ce0a337eaf4b92ea984dd0a8178, type: 2}
   _hit1Box: {fileID: 6301449966702980586}
   _hit2Box: {fileID: 1627812143968808899}
-  _bulletController: {fileID: 0}
+  _bulletShooter: {fileID: 7603976818562389051}
 --- !u!114 &7603976818562389051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -765,8 +765,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1580238549727494876, guid: da06e4dcc7d8abd44ab331ec2928f32d, type: 3}
+  bulletData: {fileID: 11400000, guid: 67987e81e8dca534f84e4401f581a2f2, type: 2}
   firePoint: {fileID: 3994279580906235148}
-  bulletSpeed: 10
 --- !u!1 &5740787578200514442
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,7 +926,7 @@ MonoBehaviour:
   _weaponData: {fileID: 11400000, guid: 84ba9b3704128f646a822a7d34e9202a, type: 2}
   _hit1Box: {fileID: 4715591157606248700}
   _hit2Box: {fileID: 1874375978271071510}
-  _bulletController: {fileID: 0}
+  _bulletShooter: {fileID: 0}
 --- !u!61 &4715591157606248700
 BoxCollider2D:
   m_ObjectHideFlags: 0

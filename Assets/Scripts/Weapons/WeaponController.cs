@@ -17,16 +17,16 @@ namespace ForgottonChambers.Weapons
         private PlayerAttackState _state;
 
         private int _attackCounter;
-        private BulletController _bulletController;
+        private BulletShooter _bulletShooter;
 
         public WeaponScriptableObject WeaponData => _weaponScriptableObject;
         public bool IsAttacking => _animator != null && _animator.GetBool("attack");
         public WeaponView WeaponView => _weaponView;
 
-        public WeaponController(WeaponScriptableObject weaponScriptableObject, BulletController bulletController)
+        public WeaponController(WeaponScriptableObject weaponScriptableObject, BulletShooter bulletShooter)
         {
             _weaponScriptableObject = weaponScriptableObject;
-            _bulletController = bulletController;
+            _bulletShooter = bulletShooter;
         }
 
         public void SetWeaponView(WeaponView view)
@@ -86,7 +86,7 @@ namespace ForgottonChambers.Weapons
         public void AnimationTurnOffWeapon2HitBoxTrigger() { if (_hit2Box != null) _hit2Box.enabled = false; }
         public void AnimationBulletShootTrigger()
         {
-            _bulletController.ShootBullet();
+            _bulletShooter.Shoot();
         }
     }
 }

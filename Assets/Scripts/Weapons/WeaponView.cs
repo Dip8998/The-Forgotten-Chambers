@@ -11,7 +11,7 @@ namespace ForgottonChambers.Weapons
         [SerializeField] private WeaponScriptableObject _weaponData;
         [SerializeField] private BoxCollider2D _hit1Box;
         [SerializeField] private CapsuleCollider2D _hit2Box;
-        [SerializeField] private BulletController _bulletController;
+        [SerializeField] private BulletShooter _bulletShooter;
 
         public BoxCollider2D Hit1Box => _hit1Box;
         public CapsuleCollider2D Hit2Box => _hit2Box;
@@ -20,7 +20,7 @@ namespace ForgottonChambers.Weapons
 
         protected virtual void Awake()
         {
-            WeaponController = new WeaponController(_weaponData, _bulletController);
+            WeaponController = new WeaponController(_weaponData, _bulletShooter);
             WeaponController.SetWeaponView(this);
         }
 
