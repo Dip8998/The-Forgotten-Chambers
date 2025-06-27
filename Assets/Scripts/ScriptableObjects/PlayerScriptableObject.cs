@@ -3,7 +3,7 @@ using ForgottonChambers.Player;
 
 namespace ForgottonChambers.ScriptableObjects
 {
-    [CreateAssetMenu(fileName = "NewPlayerConfig", menuName = "ScriptableObjects/PlayerConfig")]
+    [CreateAssetMenu(fileName = "NewPlayerData", menuName = "ScriptableObjects/PlayerData")]
     public class PlayerScriptableObject : ScriptableObject
     {
         [Header("Prefabs")]
