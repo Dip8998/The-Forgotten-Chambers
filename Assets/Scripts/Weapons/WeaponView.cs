@@ -1,4 +1,5 @@
 using ForgottonChambers.Bullets;
+using ForgottonChambers.Enemy;
 using ForgottonChambers.HealthSystem;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
@@ -35,8 +36,12 @@ namespace ForgottonChambers.Weapons
 
             if (collision.TryGetComponent<IHealth>(out var health))
             {
-                Debug.Log("Enemy has IHealth, applying damage.");
                 health.TakeDamage(WeaponController.WeaponData.attackDamage);
+
+                if (collision.TryGetComponent<EnemyView>(out var enemy))
+                {
+                    enemy.Controller.SetDamageDirection(); 
+                }
             }
         }
 

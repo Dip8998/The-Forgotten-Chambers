@@ -16,6 +16,8 @@ MonoBehaviour:
   enemyType: 0
   movementSpeed: 3
   chargeSpeed: 6
+  castDistance: 0.5
+  groundCheckRadius: 0
   minIdleTime: 2
   maxIdleTime: 4
   chargeTime: 2
@@ -24,10 +26,12 @@ MonoBehaviour:
   maxPlayerDetectedDistance: 4
   closeRangeActionDistance: 0.75
   attackRadius: 0.55
-  castDistance: 0.5
-  amountOfTurns: 2
   attackDamage: 10
+  amountOfTurns: 2
   timeBetweenTurns: 0.75
+  damageHopSpeed: 3
+  knockBackSpeed: 4
+  knockBackAngle: {x: 1, y: 1}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

@@ -19,6 +19,7 @@ public class EnemyView : MonoBehaviour
     public Animator EnemyAnimator => enemyAnimator;
     public Transform PlayerCheck => playerCheck;
     public Transform AttackPosition => attackPosition;
+    public EnemyController Controller => controller;
 
     private void Start()
     {

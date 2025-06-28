@@ -1,3 +1,4 @@
+using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace ForgottonChambers.Enemy
         private Vector2 velocityWorkSpace;
 
         public int FacingDirection { get; private set; }
+        public int LastDamageDirection { get; private set; }
 
         public EnemyController(EnemyView enemyView, EnemyScriptableObject enemyData)
         {
@@ -57,6 +59,36 @@ namespace ForgottonChambers.Enemy
         {
             velocityWorkSpace.Set(FacingDirection * speed, EnemyView.Rigidbody.linearVelocity.y);
             EnemyView.Rigidbody.linearVelocity = velocityWorkSpace;
+        }
+
+        public void SetVelocity(float velocity, Vector2 angle, int direction)
+        {
+            angle.Normalize();
+            velocityWorkSpace.Set(angle.x * velocity * direction, angle.y * velocity);
+            EnemyView.Rigidbody.linearVelocity = velocityWorkSpace;
+        }
+
+        public void SetDamageDirection()
+        {
+            DamageHop(enemyData.damageHopSpeed);
+
+            if (EnemyView.transform.position.x < PlayerPosition().position.x)
+                LastDamageDirection = -1; // player is on the right
+            else
+                LastDamageDirection = 1;  // player is on the left
+
+            SetVelocity(enemyData.knockBackSpeed, enemyData.knockBackAngle, LastDamageDirection);
+        }
+
+        public void DamageHop(float velocity)
+        {
+            velocityWorkSpace.Set(EnemyView.Rigidbody.linearVelocity.x , velocity);
+            EnemyView.Rigidbody.linearVelocity = velocityWorkSpace;
+        }
+
+        private Transform PlayerPosition()
+        {
+            return GameObject.FindGameObjectWithTag("Player")?.transform;
         }
 
         public bool CheckIsHittingWall() => AllChecks(EnemyView.CastPosition, enemyData.castDistance, 0, Color.blue, enemyData.groundLayer);
