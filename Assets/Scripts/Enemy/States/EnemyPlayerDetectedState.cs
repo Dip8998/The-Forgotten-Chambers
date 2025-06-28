@@ -41,12 +41,12 @@ namespace ForgottonChambers.Enemy
         {
             base.OnUpdate();
 
-            if(Time.time >= startTime + enemyData.longRangeActionTime)
+            if (Time.time >= startTime + enemyData.longRangeActionTime)
             {
                 performLongRangeAction = true;
             }
 
-            if(performCloseRangeAction)
+            if (performCloseRangeAction)
             {
                 stateMachine.ChangeState(enemy.MeleeAttackState);
             }

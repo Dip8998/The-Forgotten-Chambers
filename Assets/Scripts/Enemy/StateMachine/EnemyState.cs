@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ForgottonChambers.Enemy
 {
-    public class EnemyState 
+    public class EnemyState
     {
         protected EnemyStateMachine stateMachine;
         protected EnemyController enemy;
@@ -28,7 +28,7 @@ namespace ForgottonChambers.Enemy
         public virtual void OnUpdate() { }
 
         public virtual void OnFixedUpdate() { }
- 
+
         public virtual void OnStateExit()
         {
             enemy.EnemyView.EnemyAnimator.SetBool(animBoolName, false);

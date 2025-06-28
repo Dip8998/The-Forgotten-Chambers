@@ -4,7 +4,7 @@ namespace ForgottonChambers.Enemy
 {
     public class EnemyStateMachine
     {
-        public EnemyState CurrentState {  get; private set; }
+        public EnemyState CurrentState { get; private set; }
 
         public void Initialize(EnemyState startingState)
         {

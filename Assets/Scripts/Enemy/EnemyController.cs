@@ -73,9 +73,9 @@ namespace ForgottonChambers.Enemy
             DamageHop(enemyData.damageHopSpeed);
 
             if (EnemyView.transform.position.x < PlayerPosition().position.x)
-                LastDamageDirection = -1; // player is on the right
+                LastDamageDirection = -1; 
             else
-                LastDamageDirection = 1;  // player is on the left
+                LastDamageDirection = 1; 
 
             SetVelocity(enemyData.knockBackSpeed, enemyData.knockBackAngle, LastDamageDirection);
         }

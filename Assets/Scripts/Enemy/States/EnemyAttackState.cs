@@ -24,7 +24,7 @@ namespace ForgottonChambers.Enemy
         {
             base.OnStateEnter();
             isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
-            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange() ;
+            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
             isAnimationFinished = false;
             enemy.SetVelocity(0f);
         }

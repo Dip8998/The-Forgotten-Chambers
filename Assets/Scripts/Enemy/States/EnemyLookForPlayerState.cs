@@ -6,6 +6,7 @@ namespace ForgottonChambers.Enemy
     public class EnemyLookForPlayerState : EnemyState
     {
         protected bool isPlayerInMinRange;
+        protected bool isPlayerInMaxRange;
         protected bool isAllTurnsDone;
         protected bool isAllTurnsTimeDone;
         protected bool turnImmediately;
@@ -24,6 +25,7 @@ namespace ForgottonChambers.Enemy
         {
             base.OnFixedUpdate();
             isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
+            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
         }
 
         public override void OnStateEnter()
@@ -31,6 +33,7 @@ namespace ForgottonChambers.Enemy
             base.OnStateEnter();
 
             isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
+            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
             isAllTurnsDone = false;
             isAllTurnsTimeDone = false;
             turnImmediately = false;
@@ -70,7 +73,7 @@ namespace ForgottonChambers.Enemy
             if (Time.time >= lastTurnTime + enemyData.timeBetweenTurns && isAllTurnsDone)
                 isAllTurnsTimeDone = true;
 
-            if (isPlayerInMinRange)
+            if (isPlayerInMinRange || isPlayerInMaxRange)
             {
                 stateMachine.ChangeState(enemy.PlayerDetectedState);
             }

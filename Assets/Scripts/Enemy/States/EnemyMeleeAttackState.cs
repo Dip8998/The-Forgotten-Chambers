@@ -16,10 +16,10 @@ namespace ForgottonChambers.Enemy
 
             Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(enemy.EnemyView.AttackPosition.position, enemyData.attackRadius, enemyData.playerLayer);
 
-            foreach(Collider2D obj in detectedObjects)
+            foreach (Collider2D obj in detectedObjects)
             {
                 IHealth health = obj.GetComponent<IHealth>();
-                if(health != null)
+                if (health != null)
                 {
                     health.TakeDamage(enemyData.attackDamage);
                 }
@@ -52,7 +52,7 @@ namespace ForgottonChambers.Enemy
 
             if (isAnimationFinished)
             {
-                if(isPlayerInMinRange || isPlayerInMaxRange)
+                if (isPlayerInMinRange || isPlayerInMaxRange)
                 {
                     stateMachine.ChangeState(enemy.PlayerDetectedState);
                 }

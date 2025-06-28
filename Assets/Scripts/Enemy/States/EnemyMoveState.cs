@@ -22,7 +22,7 @@ namespace ForgottonChambers.Enemy
             isHittingWall = enemy.CheckIsHittingWall();
             isNearEdge = enemy.CheckIsNearEdge();
             isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
-            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange(); 
+            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
         }
 
         public override void OnStateEnter()
@@ -33,7 +33,7 @@ namespace ForgottonChambers.Enemy
             isHittingWall = enemy.CheckIsHittingWall();
             isNearEdge = enemy.CheckIsNearEdge();
             isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
-            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange(); 
+            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
         }
 
         public override void OnUpdate()
