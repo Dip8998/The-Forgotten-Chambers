@@ -6,8 +6,33 @@ namespace ForgottonChambers.Enemy
 {
     public class EnemyMeleeAttackState : EnemyAttackState
     {
-        public EnemyMeleeAttackState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, string animBoolName) : base(stateMachine, enemyController, enemyData, animBoolName)
+        public EnemyMeleeAttackState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, int animBoolHash) : base(stateMachine, enemyController, enemyData, animBoolHash)
         {
+        }
+
+        public override void OnStateEnter()
+        {
+            base.OnStateEnter();
+        }
+
+        public override void OnUpdate()
+        {
+            if (isAnimationFinished)
+            {
+                if (isPlayerInMinRange || isPlayerInMaxRange)
+                {
+                    stateMachine.ChangeState(enemy.PlayerDetectedState);
+                }
+                else
+                {
+                    stateMachine.ChangeState(enemy.LookForPlayerState);
+                }
+            }
+        }
+
+        public override void OnFixedUpdate()
+        {
+            base.OnFixedUpdate();
         }
 
         public override void AnimationAttackTrigger()
@@ -31,36 +56,9 @@ namespace ForgottonChambers.Enemy
             base.AnimationFinishedTrigger();
         }
 
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
-        }
-
-        public override void OnStateEnter()
-        {
-            base.OnStateEnter();
-        }
-
         public override void OnStateExit()
         {
             base.OnStateExit();
-        }
-
-        public override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            if (isAnimationFinished)
-            {
-                if (isPlayerInMinRange || isPlayerInMaxRange)
-                {
-                    stateMachine.ChangeState(enemy.PlayerDetectedState);
-                }
-                else
-                {
-                    stateMachine.ChangeState(enemy.LookForPlayerState);
-                }
-            }
         }
     }
 }

@@ -5,24 +5,31 @@ namespace ForgottonChambers.Enemy
 {
     public class EnemyState
     {
+        public static readonly int ANIM_IDLE = Animator.StringToHash("Idle");
+        public static readonly int ANIM_MOVE = Animator.StringToHash("Move");
+        public static readonly int ANIM_PLAYER_DETECTED = Animator.StringToHash("PlayerDetected");
+        public static readonly int ANIM_CHARGE = Animator.StringToHash("Charge");
+        public static readonly int ANIM_LOOK_FOR_PLAYER = Animator.StringToHash("LookForPlayer");
+        public static readonly int ANIM_MELEE_ATTACK = Animator.StringToHash("MeleeAttack");
+
         protected EnemyStateMachine stateMachine;
         protected EnemyController enemy;
         protected EnemyScriptableObject enemyData;
         protected float startTime;
-        protected string animBoolName;
+        protected int animBoolHash;
 
-        public EnemyState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, string animBoolName)
+        public EnemyState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, int animBoolHash)
         {
             this.stateMachine = stateMachine;
             this.enemy = enemyController;
-            this.animBoolName = animBoolName;
+            this.animBoolHash = animBoolHash;
             this.enemyData = enemyData;
         }
 
         public virtual void OnStateEnter()
         {
             startTime = Time.time;
-            enemy.EnemyView.EnemyAnimator.SetBool(animBoolName, true);
+            enemy.EnemyView.EnemyAnimator.SetBool(animBoolHash, true);
         }
 
         public virtual void OnUpdate() { }
@@ -31,7 +38,7 @@ namespace ForgottonChambers.Enemy
 
         public virtual void OnStateExit()
         {
-            enemy.EnemyView.EnemyAnimator.SetBool(animBoolName, false);
+            enemy.EnemyView.EnemyAnimator.SetBool(animBoolHash, false);
         }
     }
 }

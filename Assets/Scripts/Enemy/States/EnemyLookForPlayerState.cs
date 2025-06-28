@@ -17,15 +17,8 @@ namespace ForgottonChambers.Enemy
         protected int amountOfTurnsDone;
 
 
-        public EnemyLookForPlayerState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, string animBoolName) : base(stateMachine, enemyController, enemyData, animBoolName)
+        public EnemyLookForPlayerState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, int animBoolHash) : base(stateMachine, enemyController, enemyData, animBoolHash)
         {
-        }
-
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
-            isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
-            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
         }
 
         public override void OnStateEnter()
@@ -44,15 +37,8 @@ namespace ForgottonChambers.Enemy
             enemy.SetVelocity(0);
         }
 
-        public override void OnStateExit()
-        {
-            base.OnStateExit();
-        }
-
         public override void OnUpdate()
         {
-            base.OnUpdate();
-
             if (turnImmediately)
             {
                 enemy.Flip();
@@ -70,7 +56,7 @@ namespace ForgottonChambers.Enemy
             if (amountOfTurnsDone >= enemyData.amountOfTurns)
                 isAllTurnsDone = true;
 
-            if (Time.time >= lastTurnTime + enemyData.timeBetweenTurns && isAllTurnsDone)
+            if (isAllTurnsDone && Time.time >= lastTurnTime + enemyData.timeBetweenTurns)
                 isAllTurnsTimeDone = true;
 
             if (isPlayerInMinRange || isPlayerInMaxRange)
@@ -84,6 +70,16 @@ namespace ForgottonChambers.Enemy
             }
         }
 
+        public override void OnFixedUpdate()
+        {
+            isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
+            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
+        }
+
+        public override void OnStateExit()
+        {
+            base.OnStateExit();
+        }
 
         public void SetTurnImmediately(bool flip)
         {

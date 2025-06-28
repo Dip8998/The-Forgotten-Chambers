@@ -1,4 +1,3 @@
-using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
 
@@ -9,6 +8,7 @@ namespace ForgottonChambers.Enemy
         public EnemyView EnemyView { get; private set; }
         private EnemyScriptableObject enemyData;
         private EnemyStateMachine stateMachine;
+        private Transform playerTransform;
 
         public EnemyIdleState IdleState { get; private set; }
         public EnemyMoveState MoveState { get; private set; }
@@ -22,13 +22,12 @@ namespace ForgottonChambers.Enemy
         public int FacingDirection { get; private set; }
         public int LastDamageDirection { get; private set; }
 
-        public EnemyController(EnemyView enemyView, EnemyScriptableObject enemyData)
+        public EnemyController(EnemyView enemyView, EnemyScriptableObject enemyData, Transform playerTransform)
         {
             FacingDirection = 1;
             this.EnemyView = enemyView;
             this.enemyData = enemyData;
-
-            enemyView.SetEnemyController(this);
+            this.playerTransform = playerTransform;
 
             stateMachine = new EnemyStateMachine();
             InitializeStates();
@@ -37,12 +36,12 @@ namespace ForgottonChambers.Enemy
 
         private void InitializeStates()
         {
-            IdleState = new EnemyIdleState(stateMachine, this, enemyData, "Idle");
-            MoveState = new EnemyMoveState(stateMachine, this, enemyData, "Move");
-            PlayerDetectedState = new EnemyPlayerDetectedState(stateMachine, this, enemyData, "PlayerDetected");
-            ChargeState = new EnemyChargeState(stateMachine, this, enemyData, "Charge");
-            LookForPlayerState = new EnemyLookForPlayerState(stateMachine, this, enemyData, "LookForPlayer");
-            MeleeAttackState = new EnemyMeleeAttackState(stateMachine, this, enemyData, "MeleeAttack");
+            IdleState = new EnemyIdleState(stateMachine, this, enemyData, EnemyState.ANIM_IDLE);
+            MoveState = new EnemyMoveState(stateMachine, this, enemyData, EnemyState.ANIM_MOVE);
+            PlayerDetectedState = new EnemyPlayerDetectedState(stateMachine, this, enemyData, EnemyState.ANIM_PLAYER_DETECTED);
+            ChargeState = new EnemyChargeState(stateMachine, this, enemyData, EnemyState.ANIM_CHARGE);
+            LookForPlayerState = new EnemyLookForPlayerState(stateMachine, this, enemyData, EnemyState.ANIM_LOOK_FOR_PLAYER);
+            MeleeAttackState = new EnemyMeleeAttackState(stateMachine, this, enemyData, EnemyState.ANIM_MELEE_ATTACK);
         }
 
         public void UpdateController()
@@ -72,23 +71,31 @@ namespace ForgottonChambers.Enemy
         {
             DamageHop(enemyData.damageHopSpeed);
 
-            if (EnemyView.transform.position.x < PlayerPosition().position.x)
-                LastDamageDirection = -1; 
+            if (playerTransform != null)
+            {
+                if (EnemyView.transform.position.x < playerTransform.position.x)
+                    LastDamageDirection = -1;
+                else
+                    LastDamageDirection = 1;
+            }
             else
-                LastDamageDirection = 1; 
+            {
+                Debug.LogError("Player Transform is not assigned to EnemyView or EnemyController.", EnemyView);
+                LastDamageDirection = FacingDirection;
+            }
 
             SetVelocity(enemyData.knockBackSpeed, enemyData.knockBackAngle, LastDamageDirection);
         }
 
         public void DamageHop(float velocity)
         {
-            velocityWorkSpace.Set(EnemyView.Rigidbody.linearVelocity.x , velocity);
+            velocityWorkSpace.Set(EnemyView.Rigidbody.linearVelocity.x, velocity);
             EnemyView.Rigidbody.linearVelocity = velocityWorkSpace;
         }
 
-        private Transform PlayerPosition()
+        public Transform PlayerPosition()
         {
-            return GameObject.FindGameObjectWithTag("Player")?.transform;
+            return playerTransform;
         }
 
         public bool CheckIsHittingWall() => AllChecks(EnemyView.CastPosition, enemyData.castDistance, 0, Color.blue, enemyData.groundLayer);
@@ -116,12 +123,18 @@ namespace ForgottonChambers.Enemy
 
         public void AnimationAttackTrigger()
         {
-            MeleeAttackState.AnimationAttackTrigger();
+            if (stateMachine.CurrentState is EnemyAttackState attackState)
+            {
+                attackState.AnimationAttackTrigger();
+            }
         }
 
         public void AnimationFinishedTrigger()
         {
-            MeleeAttackState.AnimationFinishedTrigger();
+            if (stateMachine.CurrentState is EnemyAttackState attackState)
+            {
+                attackState.AnimationFinishedTrigger();
+            }
         }
     }
 }

@@ -9,15 +9,8 @@ namespace ForgottonChambers.Enemy
         protected bool isPlayerInMinRange;
         protected bool isPlayerInMaxRange;
 
-        public EnemyAttackState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, string animBoolName) : base(stateMachine, enemyController, enemyData, animBoolName)
+        public EnemyAttackState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, int animBoolHash) : base(stateMachine, enemyController, enemyData, animBoolHash)
         {
-        }
-
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
-            isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
-            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
         }
 
         public override void OnStateEnter()
@@ -29,24 +22,28 @@ namespace ForgottonChambers.Enemy
             enemy.SetVelocity(0f);
         }
 
-        public override void OnStateExit()
-        {
-            base.OnStateExit();
-        }
-
         public override void OnUpdate()
         {
-            base.OnUpdate();
+        }
+
+        public override void OnFixedUpdate()
+        {
+            isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
+            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
         }
 
         public virtual void AnimationAttackTrigger()
         {
-
         }
 
         public virtual void AnimationFinishedTrigger()
         {
             isAnimationFinished = true;
+        }
+
+        public override void OnStateExit()
+        {
+            base.OnStateExit();
         }
     }
 }

@@ -10,16 +10,8 @@ namespace ForgottonChambers.Enemy
         protected bool performLongRangeAction;
         protected bool performCloseRangeAction;
 
-        public EnemyPlayerDetectedState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, string animBoolName) : base(stateMachine, enemyController, enemyData, animBoolName)
+        public EnemyPlayerDetectedState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, int animBoolHash) : base(stateMachine, enemyController, enemyData, animBoolHash)
         {
-        }
-
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
-            isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
-            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
-            performCloseRangeAction = enemy.CheckIsPlayerInCloseRange();
         }
 
         public override void OnStateEnter()
@@ -32,15 +24,8 @@ namespace ForgottonChambers.Enemy
             performCloseRangeAction = enemy.CheckIsPlayerInCloseRange();
         }
 
-        public override void OnStateExit()
-        {
-            base.OnStateExit();
-        }
-
         public override void OnUpdate()
         {
-            base.OnUpdate();
-
             if (Time.time >= startTime + enemyData.longRangeActionTime)
             {
                 performLongRangeAction = true;
@@ -58,6 +43,18 @@ namespace ForgottonChambers.Enemy
             {
                 stateMachine.ChangeState(enemy.LookForPlayerState);
             }
+        }
+
+        public override void OnFixedUpdate()
+        {
+            isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
+            isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
+            performCloseRangeAction = enemy.CheckIsPlayerInCloseRange();
+        }
+
+        public override void OnStateExit()
+        {
+            base.OnStateExit();
         }
     }
 }

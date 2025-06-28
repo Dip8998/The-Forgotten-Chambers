@@ -8,6 +8,7 @@ public class EnemyView : MonoBehaviour
     [SerializeField] private Transform castPosition;
     [SerializeField] private Transform playerCheck;
     [SerializeField] private Transform attackPosition;
+    [SerializeField] private Transform playerTransform;
 
     private Animator enemyAnimator;
     private Rigidbody2D rb2D;
@@ -20,6 +21,7 @@ public class EnemyView : MonoBehaviour
     public Transform PlayerCheck => playerCheck;
     public Transform AttackPosition => attackPosition;
     public EnemyController Controller => controller;
+    public Transform PlayerTransform => playerTransform;
 
     private void Start()
     {
@@ -27,7 +29,7 @@ public class EnemyView : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
         baseScale = transform.localScale;
 
-        controller = new EnemyController(this, enemyData);
+        controller = new EnemyController(this, enemyData, playerTransform);
     }
 
     private void Update()
@@ -48,14 +50,12 @@ public class EnemyView : MonoBehaviour
         Debug.Log("FlipDirection: " + (faceRight ? "Right" : "Left"));
     }
 
-    public void SetEnemyController(EnemyController controller)
-    {
-        this.controller = controller;
-    }
-
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(attackPosition.position, enemyData.attackRadius);
+        if (enemyData != null && attackPosition != null)
+        {
+            Gizmos.DrawWireSphere(attackPosition.position, enemyData.attackRadius);
+        }
     }
 
     public void AnimationAttackTrigger()

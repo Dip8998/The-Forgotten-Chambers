@@ -300,7 +300,7 @@ MonoBehaviour:
   castPosition: {fileID: 5017811834864808979}
   playerCheck: {fileID: 382117906171866273}
   attackPosition: {fileID: 2627787087876293028}
-  groundCheck: {fileID: 1920736394657279864}
+  playerTransform: {fileID: 2566598940408557728, guid: e02d2ff5f691ced499d14037da904f48, type: 3}
 --- !u!114 &4601292380591427136
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,21 +10,18 @@ namespace ForgottonChambers.Enemy
         protected bool isIdleTimeOver;
         protected bool isPlayerInMinRange;
 
-        public EnemyIdleState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, string animBoolName) : base(stateMachine, enemyController, enemyData, animBoolName) { }
+        public EnemyIdleState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, int animBoolHash) : base(stateMachine, enemyController, enemyData, animBoolHash) { }
 
         public override void OnStateEnter()
         {
             base.OnStateEnter();
             enemy.SetVelocity(0);
             isIdleTimeOver = false;
-            isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
             SetRandomIdleTime();
         }
 
         public override void OnUpdate()
         {
-            base.OnUpdate();
-
             if (isPlayerInMinRange)
             {
                 stateMachine.ChangeState(enemy.PlayerDetectedState);
@@ -34,6 +31,11 @@ namespace ForgottonChambers.Enemy
                 isIdleTimeOver = true;
                 stateMachine.ChangeState(enemy.MoveState);
             }
+        }
+
+        public override void OnFixedUpdate()
+        {
+            isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
         }
 
         public override void OnStateExit()
@@ -56,12 +58,6 @@ namespace ForgottonChambers.Enemy
         private void SetRandomIdleTime()
         {
             idleTime = Random.Range(enemyData.minIdleTime, enemyData.maxIdleTime);
-        }
-
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
-            isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
         }
     }
 }

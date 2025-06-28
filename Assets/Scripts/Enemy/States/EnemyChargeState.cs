@@ -11,8 +11,8 @@ namespace ForgottonChambers.Enemy
         protected bool isNearLedge;
         protected bool performCloseRangeAction;
 
-        public EnemyChargeState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, string animBoolName)
-            : base(stateMachine, enemyController, enemyData, animBoolName)
+        public EnemyChargeState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, int animBoolHash)
+            : base(stateMachine, enemyController, enemyData, animBoolHash)
         {
         }
 
@@ -30,36 +30,8 @@ namespace ForgottonChambers.Enemy
             enemy.SetVelocity(enemyData.chargeSpeed);
         }
 
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
-
-            isHittingWall = enemy.CheckIsHittingWall();
-            isNearLedge = enemy.CheckIsNearEdge();
-            isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
-            performCloseRangeAction = enemy.CheckIsPlayerInCloseRange();
-
-            if (isHittingWall || isNearLedge)
-            {
-                enemy.SetVelocity(0);
-                stateMachine.ChangeState(enemy.LookForPlayerState);
-                return;
-            }
-
-            if (isPlayerInMinRange)
-            {
-                enemy.SetVelocity(0);
-                stateMachine.ChangeState(enemy.PlayerDetectedState);
-                return;
-            }
-
-            enemy.SetVelocity(enemyData.chargeSpeed);
-        }
-
         public override void OnUpdate()
         {
-            base.OnUpdate();
-
             if (Time.time >= startTime + enemyData.chargeTime)
             {
                 isChargeTimeOver = true;
@@ -81,6 +53,30 @@ namespace ForgottonChambers.Enemy
                     stateMachine.ChangeState(enemy.LookForPlayerState);
                 }
             }
+        }
+
+        public override void OnFixedUpdate()
+        {
+            isHittingWall = enemy.CheckIsHittingWall();
+            isNearLedge = enemy.CheckIsNearEdge();
+            isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
+            performCloseRangeAction = enemy.CheckIsPlayerInCloseRange();
+
+            if (isHittingWall || isNearLedge)
+            {
+                enemy.SetVelocity(0);
+                stateMachine.ChangeState(enemy.LookForPlayerState);
+                return;
+            }
+
+            if (isPlayerInMinRange)
+            {
+                enemy.SetVelocity(0);
+                stateMachine.ChangeState(enemy.PlayerDetectedState);
+                return;
+            }
+
+            enemy.SetVelocity(enemyData.chargeSpeed);
         }
 
         public override void OnStateExit()
