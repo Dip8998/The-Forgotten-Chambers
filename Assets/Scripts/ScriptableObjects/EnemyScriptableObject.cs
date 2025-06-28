@@ -16,8 +16,11 @@ namespace ForgottonChambers.ScriptableObjects
         public float longRangeActionTime;
         public float minPlayerDetectedDistance;
         public float maxPlayerDetectedDistance;
+        public float closeRangeActionDistance;
+        public float attackRadius;
         public float castDistance;
         public int amountOfTurns;
+        public int attackDamage;
         public float timeBetweenTurns;
         public LayerMask groundLayer;
         public LayerMask playerLayer;

@@ -8,6 +8,7 @@ namespace ForgottonChambers.Enemy
         protected bool isPlayerInMinRange;
         protected bool isPlayerInMaxRange;
         protected bool performLongRangeAction;
+        protected bool performCloseRangeAction;
 
         public EnemyPlayerDetectedState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, string animBoolName) : base(stateMachine, enemyController, enemyData, animBoolName)
         {
@@ -18,6 +19,7 @@ namespace ForgottonChambers.Enemy
             base.OnFixedUpdate();
             isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
             isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
+            performCloseRangeAction = enemy.CheckIsPlayerInCloseRange();
         }
 
         public override void OnStateEnter()
@@ -27,6 +29,7 @@ namespace ForgottonChambers.Enemy
             enemy.SetVelocity(0);
             isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
             isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
+            performCloseRangeAction = enemy.CheckIsPlayerInCloseRange();
         }
 
         public override void OnStateExit()
@@ -43,7 +46,11 @@ namespace ForgottonChambers.Enemy
                 performLongRangeAction = true;
             }
 
-            if (performLongRangeAction)
+            if(performCloseRangeAction)
+            {
+                stateMachine.ChangeState(enemy.MeleeAttackState);
+            }
+            else if (performLongRangeAction)
             {
                 stateMachine.ChangeState(enemy.ChargeState);
             }

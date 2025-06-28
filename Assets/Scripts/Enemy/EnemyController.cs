@@ -14,6 +14,7 @@ namespace ForgottonChambers.Enemy
         public EnemyPlayerDetectedState PlayerDetectedState { get; private set; }
         public EnemyChargeState ChargeState { get; private set; }
         public EnemyLookForPlayerState LookForPlayerState { get; private set; }
+        public EnemyMeleeAttackState MeleeAttackState { get; private set; }
 
         private Vector2 velocityWorkSpace;
 
@@ -39,6 +40,7 @@ namespace ForgottonChambers.Enemy
             PlayerDetectedState = new EnemyPlayerDetectedState(stateMachine, this, enemyData, "PlayerDetected");
             ChargeState = new EnemyChargeState(stateMachine, this, enemyData, "Charge");
             LookForPlayerState = new EnemyLookForPlayerState(stateMachine, this, enemyData, "LookForPlayer");
+            MeleeAttackState = new EnemyMeleeAttackState(stateMachine, this, enemyData, "MeleeAttack");
         }
 
         public void UpdateController()
@@ -57,41 +59,37 @@ namespace ForgottonChambers.Enemy
             EnemyView.Rigidbody.linearVelocity = velocityWorkSpace;
         }
 
-        public bool CheckIsHittingWall()
+        public bool CheckIsHittingWall() => AllChecks(EnemyView.CastPosition, enemyData.castDistance, 0, Color.blue, enemyData.groundLayer);
+
+        public bool CheckIsNearEdge() => !AllChecks(EnemyView.CastPosition, 0, -enemyData.castDistance, Color.red, enemyData.groundLayer);
+
+        public bool CheckIsPlayerInMinRange() => AllChecks(EnemyView.PlayerCheck, enemyData.minPlayerDetectedDistance, 0, Color.green, enemyData.playerLayer);
+
+        public bool CheckIsPlayerInMaxRange() => AllChecks(EnemyView.PlayerCheck, enemyData.maxPlayerDetectedDistance, 0, Color.green, enemyData.playerLayer);
+
+        public bool CheckIsPlayerInCloseRange() => AllChecks(EnemyView.PlayerCheck, enemyData.closeRangeActionDistance, 0, Color.yellow, enemyData.playerLayer);
+
+        private bool AllChecks(Transform transform, float DistanceX, float DistanceY, Color color, LayerMask layer)
         {
-            float castDist = enemyData.castDistance * FacingDirection;
-            Vector3 target = EnemyView.CastPosition.position + new Vector3(castDist, 0, 0);
-
-            Debug.DrawLine(EnemyView.CastPosition.position, target, Color.blue);
-            return Physics2D.Linecast(EnemyView.CastPosition.position, target, enemyData.groundLayer);
-        }
-
-        public bool CheckIsNearEdge()
-        {
-            Vector3 target = EnemyView.CastPosition.position + new Vector3(0, -enemyData.castDistance, 0);
-
-            Debug.DrawLine(EnemyView.CastPosition.position, target, Color.red);
-            return !Physics2D.Linecast(EnemyView.CastPosition.position, target, enemyData.groundLayer);
-        }
-
-        public bool CheckIsPlayerInMinRange()
-        {
-            Vector3 target = EnemyView.PlayerCheck.position + new Vector3(enemyData.minPlayerDetectedDistance * FacingDirection, 0, 0);
-            Debug.DrawLine(EnemyView.PlayerCheck.position, target, Color.green);
-            return Physics2D.Linecast(EnemyView.PlayerCheck.position, target, enemyData.playerLayer);
-        }
-
-        public bool CheckIsPlayerInMaxRange()
-        {
-            Vector3 target = EnemyView.PlayerCheck.position + new Vector3(enemyData.maxPlayerDetectedDistance * FacingDirection, 0, 0);
-            Debug.DrawLine(EnemyView.PlayerCheck.position, target, Color.green);
-            return Physics2D.Linecast(EnemyView.PlayerCheck.position, target, enemyData.playerLayer);
+            Vector3 target = transform.position + new Vector3(DistanceX * FacingDirection, DistanceY, 0);
+            Debug.DrawLine(transform.position, target, color);
+            return Physics2D.Linecast(transform.position, target, layer);
         }
 
         public void Flip()
         {
             FacingDirection *= -1;
             EnemyView.FlipDirection(FacingDirection == 1);
+        }
+
+        public void AnimationAttackTrigger()
+        {
+            MeleeAttackState.AnimationAttackTrigger();
+        }
+
+        public void AnimationFinishedTrigger()
+        {
+            MeleeAttackState.AnimationFinishedTrigger();
         }
     }
 }

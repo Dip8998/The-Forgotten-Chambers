@@ -7,6 +7,7 @@ public class EnemyView : MonoBehaviour
     [SerializeField] private EnemyScriptableObject enemyData;
     [SerializeField] private Transform castPosition;
     [SerializeField] private Transform playerCheck;
+    [SerializeField] private Transform attackPosition;
 
     private Animator enemyAnimator;
     private Rigidbody2D rb2D;
@@ -17,6 +18,7 @@ public class EnemyView : MonoBehaviour
     public Rigidbody2D Rigidbody => rb2D;
     public Animator EnemyAnimator => enemyAnimator;
     public Transform PlayerCheck => playerCheck;
+    public Transform AttackPosition => attackPosition;
 
     private void Start()
     {
@@ -48,5 +50,20 @@ public class EnemyView : MonoBehaviour
     public void SetEnemyController(EnemyController controller)
     {
         this.controller = controller;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(attackPosition.position, enemyData.attackRadius);
+    }
+
+    public void AnimationAttackTrigger()
+    {
+        controller.AnimationAttackTrigger();
+    }
+
+    public void AnimationFinishedTrigger()
+    {
+        controller.AnimationFinishedTrigger();
     }
 }

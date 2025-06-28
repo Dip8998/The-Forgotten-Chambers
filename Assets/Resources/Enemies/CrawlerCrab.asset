@@ -20,11 +20,14 @@ MonoBehaviour:
   maxIdleTime: 4
   chargeTime: 2
   longRangeActionTime: 1.5
-  minPlayerDetectedDistance: 3
+  minPlayerDetectedDistance: 0.75
   maxPlayerDetectedDistance: 4
+  closeRangeActionDistance: 0.75
+  attackRadius: 0.55
   castDistance: 0.5
-  amountOfTurns: 0
-  timeBetweenTurns: 0
+  amountOfTurns: 2
+  attackDamage: 10
+  timeBetweenTurns: 0.75
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

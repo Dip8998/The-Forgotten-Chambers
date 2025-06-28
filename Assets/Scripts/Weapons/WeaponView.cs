@@ -31,8 +31,11 @@ namespace ForgottonChambers.Weapons
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.TryGetComponent(out IHealth health))
+            Debug.Log("Weapon Hit: " + collision.name);
+
+            if (collision.TryGetComponent<IHealth>(out var health))
             {
+                Debug.Log("Enemy has IHealth, applying damage.");
                 health.TakeDamage(WeaponController.WeaponData.attackDamage);
             }
         }
