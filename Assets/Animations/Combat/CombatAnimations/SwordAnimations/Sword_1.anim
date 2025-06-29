@@ -22,15 +22,15 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: -1515443327239590886, guid: c326b301229c764468116431bf693e5f, type: 3}
-    - time: 0.11666667
+    - time: 0.083333336
       value: {fileID: -3574147864103055168, guid: c326b301229c764468116431bf693e5f, type: 3}
-    - time: 0.23333333
+    - time: 0.16666667
       value: {fileID: 1616662706333002066, guid: c326b301229c764468116431bf693e5f, type: 3}
-    - time: 0.35
+    - time: 0.25
       value: {fileID: -8155977850592641670, guid: c326b301229c764468116431bf693e5f, type: 3}
-    - time: 0.46666667
+    - time: 0.33333334
       value: {fileID: -7448696295597032750, guid: c326b301229c764468116431bf693e5f, type: 3}
-    - time: 0.5833333
+    - time: 0.41666666
       value: {fileID: -6644054657070424833, guid: c326b301229c764468116431bf693e5f, type: 3}
     attribute: m_Sprite
     path: 
@@ -65,7 +65,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6
+    m_StopTime: 0.45
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -85,49 +85,49 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.11666667
+  - time: 0.083333336
     functionName: AnimationStartMovementTrigger
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.11666667
+  - time: 0.083333336
     functionName: AnimationTurnOnFlipTrigger
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.33333334
+  - time: 0.16666667
     functionName: AnimationTurnOnWeapon1HitBoxTrigger
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.46666667
+  - time: 0.33333334
     functionName: AnimationStopMovementTrigger
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.5833333
-    functionName: AnimationTurnOffWeapon1HitBoxTrigger
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.5833333
+  - time: 0.41666666
     functionName: AnimationTurnOnFlipTrigger
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.6
+  - time: 0.41666666
+    functionName: AnimationTurnOffWeapon1HitBoxTrigger
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.45
     functionName: AnimationFinishTrigger
     data: 
     objectReferenceParameter: {fileID: 0}

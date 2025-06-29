@@ -9,6 +9,7 @@ namespace ForgottonChambers.ScriptableObjects
         [Header("Prefab & Type")]
         public EnemyView enemyPrefab;
         public EnemyType enemyType;
+        public int enemyHealth;
 
         #region Movement
         [Header("Movement Settings")]

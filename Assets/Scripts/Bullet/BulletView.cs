@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using ForgottonChambers.HealthSystem;
 
 namespace ForgottonChambers.Bullets
 {
@@ -40,11 +39,6 @@ namespace ForgottonChambers.Bullets
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.TryGetComponent(out IHealth health))
-            {
-                health.TakeDamage(controller.GetDamage());
-            }
-
             controller.ReturnToPool();
         }
     }

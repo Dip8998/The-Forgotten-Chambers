@@ -29,7 +29,7 @@ namespace ForgottonChambers.Enemy
         public virtual void OnStateEnter()
         {
             startTime = Time.time;
-            enemy.EnemyView.EnemyAnimator.SetBool(animBoolHash, true);
+            enemy.Enemy.EnemyAnimator.SetBool(animBoolHash, true);
         }
 
         public virtual void OnUpdate() { }
@@ -38,7 +38,7 @@ namespace ForgottonChambers.Enemy
 
         public virtual void OnStateExit()
         {
-            enemy.EnemyView.EnemyAnimator.SetBool(animBoolHash, false);
+            enemy.Enemy.EnemyAnimator.SetBool(animBoolHash, false);
         }
     }
 }

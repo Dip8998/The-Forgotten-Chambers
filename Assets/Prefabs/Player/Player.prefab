@@ -291,7 +291,6 @@ GameObject:
   - component: {fileID: 809188218221754051}
   - component: {fileID: 2693393838901908044}
   - component: {fileID: 4763981773313067328}
-  - component: {fileID: -4730855831567577791}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -504,23 +503,12 @@ MonoBehaviour:
   boxLayer:
     serializedVersion: 2
     m_Bits: 256
+  hitParticle: {fileID: 6240072112886026631, guid: 97521db4cd434f44ab964a5c22ff5181, type: 3}
+  deathParticle: {fileID: 3320026819422103453, guid: bc10d63e8b90b224bb2dffe5d99582c5, type: 3}
   _weapons:
   - {fileID: 6540622224358209510}
   - {fileID: 4230045784960543942}
   - {fileID: 5799620146049012508}
---- !u!114 &-4730855831567577791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2908003249114103679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fbfef3da93a70d4eb3c43091d3233a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHealth: 100
 --- !u!1 &3921552140226435468
 GameObject:
   m_ObjectHideFlags: 0

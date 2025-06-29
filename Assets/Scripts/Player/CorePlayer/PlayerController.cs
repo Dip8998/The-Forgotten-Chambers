@@ -48,6 +48,8 @@ namespace ForgottonChambers.Player
         public int FacingDirection { get; private set; } = 1;
         #endregion
 
+        private int currentHealth;
+
         #region Player Callbacks
         public PlayerController(PlayerScriptableObject playerConfig)
         {
@@ -55,6 +57,7 @@ namespace ForgottonChambers.Player
             StateMachine = new PlayerStateMachine();
             InputHandler = new InputHandler();
             _workSpace = Vector2.zero;
+            currentHealth = playerConfig.playerMaxHealth;
 
             InitializePlayerView();
             InitializePlayerStates();
@@ -237,5 +240,23 @@ namespace ForgottonChambers.Player
             _currentWeaponType = type;
         }
         #endregion
+
+        public void Damage(int damage)
+        {
+            currentHealth -= damage;
+
+            GameObject.Instantiate(PlayerView.HitParticle, PlayerView.transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+
+            if(currentHealth <= 0)
+            {
+                Die();
+            }
+        }
+
+        private void Die()
+        {
+            GameObject.Instantiate(PlayerView.DeathParticle, PlayerView.transform.position, PlayerView.DeathParticle.transform.rotation);
+            GameObject.Destroy(PlayerView.gameObject);
+        }
     }
 }

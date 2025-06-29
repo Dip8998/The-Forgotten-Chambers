@@ -1,31 +1,43 @@
 fileFormatVersion: 2
-guid: 5055c9e8293111541a7b3588867994e8
+guid: 5bdd1dda8c866e74ab373030dbce4de4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8906723684019341842
-    second: player push idle 48x48_0
+      213: -394149566237495720
+    second: HitParticles_0
   - first:
-      213: 2199648499799039523
-    second: player push idle 48x48_1
+      213: 6043571966939568975
+    second: HitParticles_1
   - first:
-      213: 1155140891240619852
-    second: player push idle 48x48_2
+      213: 3382208953917745935
+    second: HitParticles_2
   - first:
-      213: 8987819547446975162
-    second: player push idle 48x48_3
+      213: 6050179118216840291
+    second: HitParticles_3
   - first:
-      213: -363234378581496173
-    second: player push idle 48x48_4
+      213: 5300991080589818092
+    second: HitParticles_4
   - first:
-      213: 982383940341470727
-    second: player push idle 48x48_5
+      213: 911251995444912611
+    second: HitParticles_5
   - first:
-      213: 7625019934632639405
-    second: player push idle 48x48_6
+      213: -9212346190575718671
+    second: HitParticles_6
   - first:
-      213: -4357697831067915106
-    second: player push idle 48x48_7
+      213: -1072289121049517907
+    second: HitParticles_7
+  - first:
+      213: -1158021886700275654
+    second: HitParticles_8
+  - first:
+      213: 2497474638058476361
+    second: HitParticles_9
+  - first:
+      213: -6842756709923607076
+    second: HitParticles_10
+  - first:
+      213: 2201241332052883693
+    second: HitParticles_11
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -58,7 +70,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -96,7 +108,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -134,177 +146,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player push idle 48x48_0
+      name: HitParticles_0
       rect:
         serializedVersion: 2
-        x: 17
-        y: 9
-        width: 20
-        height: 24
+        x: 0
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ee5f77dcff5f46480800000000000000
-      internalID: -8906723684019341842
+      spriteID: 85e2a0cce03b78af0800000000000000
+      internalID: -394149566237495720
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player push idle 48x48_1
+      name: HitParticles_1
       rect:
         serializedVersion: 2
-        x: 65
-        y: 9
-        width: 20
-        height: 23
+        x: 128
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 32e1e3508a8b68e10800000000000000
-      internalID: 2199648499799039523
+      spriteID: f4b11f70fa41fd350800000000000000
+      internalID: 6043571966939568975
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player push idle 48x48_2
+      name: HitParticles_2
       rect:
         serializedVersion: 2
-        x: 113
-        y: 9
-        width: 20
-        height: 23
+        x: 256
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c4fdce73582e70010800000000000000
-      internalID: 1155140891240619852
+      spriteID: f0ba966bf1500fe20800000000000000
+      internalID: 3382208953917745935
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player push idle 48x48_3
+      name: HitParticles_3
       rect:
         serializedVersion: 2
-        x: 161
-        y: 9
-        width: 20
-        height: 23
+        x: 384
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aba93e642462bbc70800000000000000
-      internalID: 8987819547446975162
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player push idle 48x48_4
-      rect:
-        serializedVersion: 2
-        x: 209
-        y: 9
-        width: 20
-        height: 23
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 39ea076d14885faf0800000000000000
-      internalID: -363234378581496173
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player push idle 48x48_5
-      rect:
-        serializedVersion: 2
-        x: 257
-        y: 9
-        width: 20
-        height: 23
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7061a152df022ad00800000000000000
-      internalID: 982383940341470727
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player push idle 48x48_6
-      rect:
-        serializedVersion: 2
-        x: 305
-        y: 9
-        width: 20
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: dabfc014b3381d960800000000000000
-      internalID: 7625019934632639405
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player push idle 48x48_7
-      rect:
-        serializedVersion: 2
-        x: 353
-        y: 9
-        width: 20
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e9ce4b429e85683c0800000000000000
-      internalID: -4357697831067915106
+      spriteID: 3640dc05add86f350800000000000000
+      internalID: 6050179118216840291
       vertices: []
       indices: 
       edges: []
@@ -313,7 +237,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 362b60041ebd82942a89a0fc7c103456
     internalID: 0
     vertices: []
     indices: 
@@ -323,14 +247,18 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      player push idle 48x48_0: -8906723684019341842
-      player push idle 48x48_1: 2199648499799039523
-      player push idle 48x48_2: 1155140891240619852
-      player push idle 48x48_3: 8987819547446975162
-      player push idle 48x48_4: -363234378581496173
-      player push idle 48x48_5: 982383940341470727
-      player push idle 48x48_6: 7625019934632639405
-      player push idle 48x48_7: -4357697831067915106
+      HitParticles_0: -394149566237495720
+      HitParticles_1: 6043571966939568975
+      HitParticles_10: -6842756709923607076
+      HitParticles_11: 2201241332052883693
+      HitParticles_2: 3382208953917745935
+      HitParticles_3: 6050179118216840291
+      HitParticles_4: 5300991080589818092
+      HitParticles_5: 911251995444912611
+      HitParticles_6: -9212346190575718671
+      HitParticles_7: -1072289121049517907
+      HitParticles_8: -1158021886700275654
+      HitParticles_9: 2497474638058476361
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,4 +1,3 @@
-using ForgottonChambers.HealthSystem;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
 
@@ -39,15 +38,11 @@ namespace ForgottonChambers.Enemy
         {
             base.AnimationAttackTrigger();
 
-            Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(enemy.EnemyView.AttackPosition.position, enemyData.attackRadius, enemyData.playerLayer);
+            Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(enemy.Enemy.AttackPosition.position, enemyData.attackRadius, enemyData.playerLayer);
 
             foreach (Collider2D obj in detectedObjects)
             {
-                IHealth health = obj.GetComponent<IHealth>();
-                if (health != null)
-                {
-                    health.TakeDamage(enemyData.attackDamage);
-                }
+                enemy.Attack(enemyData.attackDamage);
             }
         }
 
