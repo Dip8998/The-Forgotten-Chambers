@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6240072112886026650}
   - component: {fileID: 6240072112886026649}
   - component: {fileID: 6240072112886026648}
-  - component: {fileID: 6240072112886026651}
+  - component: {fileID: 2726571584815091662}
   m_Layer: 0
   m_Name: EnemyHitParticle
   m_TagString: Untagged
@@ -111,7 +111,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6240072112886026651
+--- !u!114 &2726571584815091662
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,6 +120,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6240072112886026631}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9696aaf47bc56ce499d81a06b557233b, type: 3}
+  m_Script: {fileID: 11500000, guid: f1fc0050eef3e5a48a88a05fbf040b3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

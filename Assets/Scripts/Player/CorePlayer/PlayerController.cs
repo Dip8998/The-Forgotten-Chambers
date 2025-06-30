@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using ForgottonChambers.Player.Interfaces;
 using ForgottonChambers.Inputs;
 using ForgottonChambers.Main;
+using ForgottonChambers.Particles;
+using UnityEngine.UIElements;
 
 namespace ForgottonChambers.Player
 {
@@ -245,9 +247,9 @@ namespace ForgottonChambers.Player
         {
             currentHealth -= damage;
 
-            GameObject.Instantiate(PlayerView.HitParticle, PlayerView.transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+            GameService.Instance.ParticleService.PlayParticle(ParticleType.PlayerHit, PlayerView.transform.position, Quaternion.identity);
 
-            if(currentHealth <= 0)
+            if (currentHealth <= 0)
             {
                 Die();
             }
@@ -255,7 +257,7 @@ namespace ForgottonChambers.Player
 
         private void Die()
         {
-            GameObject.Instantiate(PlayerView.DeathParticle, PlayerView.transform.position, PlayerView.DeathParticle.transform.rotation);
+            GameService.Instance.ParticleService.PlayParticle(ParticleType.PlayerDeath, PlayerView.transform.position, Quaternion.identity);
             GameObject.Destroy(PlayerView.gameObject);
         }
     }

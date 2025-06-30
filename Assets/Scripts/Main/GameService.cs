@@ -3,6 +3,8 @@ using UnityEngine;
 using ForgottonChambers.ScriptableObjects;
 using ForgottonChambers.Utilities;
 using ForgottonChambers.Events;
+using System.Collections.Generic;
+using ForgottonChambers.Particles;
 
 namespace ForgottonChambers.Main
 {
@@ -10,8 +12,12 @@ namespace ForgottonChambers.Main
     {
         public PlayerService PlayerService { get; private set; }
         public EventService EventService { get; private set; }
+        public ParticleService ParticleService { get; private set; }
 
         [SerializeField] private PlayerScriptableObject playerScriptableObject;
+        [SerializeField] private List<ParticleScriptableObject> allParticles;
+
+
 
         protected override void Awake()
         {
@@ -31,6 +37,7 @@ namespace ForgottonChambers.Main
             }
             PlayerService = new PlayerService(playerScriptableObject);
             EventService = new EventService();
+            ParticleService = new ParticleService(allParticles);
         }
     }
 }

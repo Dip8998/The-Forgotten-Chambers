@@ -1,4 +1,6 @@
 using ForgottonChambers.Main;
+using ForgottonChambers.Particles;
+using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -87,13 +89,13 @@ namespace ForgottonChambers.Enemy
 
         public void Die()
         {
-            GameObject.Instantiate(Enemy.DeathParticles, Enemy.transform.position, Enemy.DeathParticles.transform.rotation);
+            GameService.Instance.ParticleService.PlayParticle(ParticleType.EnemyDeath, Enemy.transform.position, Quaternion.identity);
             Enemy.DestroyGameObject();
         }
 
         private void SetDamageDirection()
         {
-            GameObject.Instantiate(Enemy.HitParticle, Enemy.transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+            GameService.Instance.ParticleService.PlayParticle(ParticleType.EnemyHit, Enemy.transform.position, Quaternion.identity);
 
             DamageHop(enemyData.damageHopSpeed);
 

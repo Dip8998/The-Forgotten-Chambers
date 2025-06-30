@@ -27,10 +27,6 @@ namespace ForgottonChambers.Player
         [SerializeField] private LayerMask boxLayer;
         #endregion
 
-        [SerializeField] private GameObject hitParticle, deathParticle;
-
-        public GameObject HitParticle => hitParticle;
-        public GameObject DeathParticle => deathParticle;
 
         #region Weapons
         [SerializeField] private WeaponView[] _weapons;

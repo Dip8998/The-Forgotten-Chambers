@@ -1401,6 +1401,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerScriptableObject: {fileID: 11400000, guid: b8360764a36ddff4e8cfc242318494c8, type: 2}
+  allParticles:
+  - {fileID: 11400000, guid: e263e1fa77d79a1409d4b5261d140c44, type: 2}
+  - {fileID: 11400000, guid: e3fd71c82b1b3084c837257db6743aed, type: 2}
+  - {fileID: 11400000, guid: 6c4466a256dede9409f89e68df8385ef, type: 2}
+  - {fileID: 11400000, guid: 02a4aa55c30b629479a8fc72329cd78c, type: 2}
 --- !u!1001 &1783222904
 PrefabInstance:
   m_ObjectHideFlags: 0

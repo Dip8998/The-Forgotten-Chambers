@@ -1,11 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using ForgottonChambers.ScriptableObjects;
 
-public class ParticleController : MonoBehaviour
+namespace ForgottonChambers.Particles
 {
-    private void FinishAnim()
+    public class ParticleController
     {
-        Destroy(gameObject);
+        public ParticleView View { get; private set; }
+
+        private readonly ParticleScriptableObject _data;
+        private readonly ParticlePool _pool;
+
+        public ParticleController(ParticleView view, ParticleScriptableObject data, ParticlePool pool)
+        {
+            View = view;
+            _data = data;
+            _pool = pool;
+            View.SetController(this);
+        }
+
+        public void Play(Vector3 position, Quaternion rotation)
+        {
+            View.transform.position = position;
+            View.transform.rotation = rotation;
+            View.gameObject.SetActive(true);
+            View.DeactivateAfter(_data.lifetime);
+        }
+
+        public void ReturnToPool()
+        {
+            View.gameObject.SetActive(false);
+        }
     }
 }

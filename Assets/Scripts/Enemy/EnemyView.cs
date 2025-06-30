@@ -9,8 +9,6 @@ public class EnemyView : MonoBehaviour
     [SerializeField] private Transform playerCheck;
     [SerializeField] private Transform attackPosition;
     [SerializeField] private Transform playerTransform;
-    [SerializeField] private GameObject hitParticle;
-    [SerializeField] private GameObject deathParticles;
 
     private Animator enemyAnimator;
     private Rigidbody2D rb2D;
@@ -24,8 +22,7 @@ public class EnemyView : MonoBehaviour
     public Transform AttackPosition => attackPosition;
     public EnemyController Controller => controller;
     public Transform PlayerTransform => playerTransform;
-    public GameObject HitParticle => hitParticle;
-    public GameObject DeathParticles => deathParticles;
+
 
     private void Start()
     {
