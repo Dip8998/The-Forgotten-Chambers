@@ -3,26 +3,26 @@ using ForgottonChambers.Particles;
 using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace ForgottonChambers.Enemy
 {
     public class EnemyController
     {
         public EnemyView Enemy { get; private set; }
-        private EnemyScriptableObject enemyData;
-        private EnemyStateMachine stateMachine;
-        private Transform playerTransform;
+        protected EnemyScriptableObject enemyData; 
+        protected EnemyStateMachine stateMachine; 
+        protected Transform playerTransform; 
         private int currentHealth;
 
-        public EnemyIdleState IdleState { get; private set; }
-        public EnemyMoveState MoveState { get; private set; }
-        public EnemyPlayerDetectedState PlayerDetectedState { get; private set; }
-        public EnemyChargeState ChargeState { get; private set; }
-        public EnemyLookForPlayerState LookForPlayerState { get; private set; }
-        public EnemyMeleeAttackState MeleeAttackState { get; private set; }
+        public EnemyIdleState IdleState { get; protected set; }
+        public EnemyMoveState MoveState { get; protected set; } 
+        public EnemyPlayerDetectedState PlayerDetectedState { get; protected set; } 
+        public EnemyChargeState ChargeState { get; protected set; } 
+        public EnemyLookForPlayerState LookForPlayerState { get; protected set; } 
+        public EnemyMeleeAttackState MeleeAttackState { get; protected set; } 
+        public EnemyKnockbackState KnockbackState { get; protected set; } 
 
-        private Vector2 velocityWorkSpace;
+        protected Vector2 velocityWorkSpace; 
 
         public int FacingDirection { get; private set; }
         public int LastDamageDirection { get; private set; }
@@ -35,11 +35,11 @@ namespace ForgottonChambers.Enemy
             this.playerTransform = playerTransform;
             currentHealth = enemyData.enemyHealth;
             stateMachine = new EnemyStateMachine();
-            InitializeStates();
+            InitializeStates(); 
             stateMachine.Initialize(MoveState);
         }
 
-        private void InitializeStates()
+        protected virtual void InitializeStates() 
         {
             IdleState = new EnemyIdleState(stateMachine, this, enemyData, EnemyState.ANIM_IDLE);
             MoveState = new EnemyMoveState(stateMachine, this, enemyData, EnemyState.ANIM_MOVE);
@@ -47,6 +47,7 @@ namespace ForgottonChambers.Enemy
             ChargeState = new EnemyChargeState(stateMachine, this, enemyData, EnemyState.ANIM_CHARGE);
             LookForPlayerState = new EnemyLookForPlayerState(stateMachine, this, enemyData, EnemyState.ANIM_LOOK_FOR_PLAYER);
             MeleeAttackState = new EnemyMeleeAttackState(stateMachine, this, enemyData, EnemyState.ANIM_MELEE_ATTACK);
+            KnockbackState = new EnemyKnockbackState(stateMachine, this, enemyData, 0);
         }
 
         public void UpdateController()
@@ -65,40 +66,31 @@ namespace ForgottonChambers.Enemy
             Enemy.Rigidbody.linearVelocity = velocityWorkSpace;
         }
 
-        public void SetVelocity(float velocity, Vector2 angle, int direction)
+        public void SetVelocity(Vector2 velocity)
         {
-            angle.Normalize();
-            velocityWorkSpace.Set(angle.x * velocity * direction, angle.y * velocity);
-            Enemy.Rigidbody.linearVelocity = velocityWorkSpace;
-        }
-
-        public void Attack(int damage)
-        {
-            GameService.Instance.PlayerService.GetPlayerController().Damage(damage);
+            Enemy.Rigidbody.linearVelocity = velocity;
         }
 
         public void Damage(int damage)
         {
             currentHealth -= damage;
-            if(currentHealth <= 0)
+
+            GameService.Instance.ParticleService.PlayParticle(ParticleType.EnemyHit, Enemy.transform.position, Quaternion.identity);
+
+            SetDamageDirection();
+
+            if (currentHealth <= 0)
             {
                 Die();
             }
-            SetDamageDirection();
-        }
-
-        public void Die()
-        {
-            GameService.Instance.ParticleService.PlayParticle(ParticleType.EnemyDeath, Enemy.transform.position, Quaternion.identity);
-            Enemy.DestroyGameObject();
+            else
+            {
+                stateMachine.ChangeState(KnockbackState);
+            }
         }
 
         private void SetDamageDirection()
         {
-            GameService.Instance.ParticleService.PlayParticle(ParticleType.EnemyHit, Enemy.transform.position, Quaternion.identity);
-
-            DamageHop(enemyData.damageHopSpeed);
-
             if (playerTransform != null)
             {
                 if (Enemy.transform.position.x < playerTransform.position.x)
@@ -108,16 +100,19 @@ namespace ForgottonChambers.Enemy
             }
             else
             {
-                Debug.LogError("Player Transform is not assigned to EnemyView or EnemyController.", Enemy);
                 LastDamageDirection = FacingDirection;
             }
-
-            SetVelocity(enemyData.knockBackSpeed, -enemyData.knockBackAngle * FacingDirection, LastDamageDirection);
         }
 
-        public void DamageHop(float velocity)
+        public void Die()
         {
-            velocityWorkSpace.Set(Enemy.Rigidbody.linearVelocity.x, velocity);
+            GameService.Instance.ParticleService.PlayParticle(ParticleType.EnemyDeath, Enemy.transform.position, Quaternion.identity);
+            Enemy.DestroyGameObject();
+        }
+
+        public void DamageHop(float velocityX, float velocityY)
+        {
+            velocityWorkSpace.Set(velocityX, velocityY);
             Enemy.Rigidbody.linearVelocity = velocityWorkSpace;
         }
 
@@ -136,7 +131,7 @@ namespace ForgottonChambers.Enemy
 
         public bool CheckIsPlayerInCloseRange() => AllChecks(Enemy.PlayerCheck, enemyData.closeRangeActionDistance, 0, Color.yellow, enemyData.playerLayer);
 
-        private bool AllChecks(Transform transform, float DistanceX, float DistanceY, Color color, LayerMask layer)
+        protected bool AllChecks(Transform transform, float DistanceX, float DistanceY, Color color, LayerMask layer) 
         {
             Vector3 target = transform.position + new Vector3(DistanceX * FacingDirection, DistanceY, 0);
             Debug.DrawLine(transform.position, target, color);

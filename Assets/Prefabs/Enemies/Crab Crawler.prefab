@@ -31,37 +31,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2124133901750243159}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3960585195174826401
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1920736394657279864}
-  m_Layer: 11
-  m_Name: GroundCheck
-  m_TagString: Untagged
-  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1920736394657279864
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3960585195174826401}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.447, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2124133901750243159}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5711616264515051810
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,13 +93,12 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8.9, y: -5.5, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5017811834864808979}
   - {fileID: 382117906171866273}
   - {fileID: 2627787087876293028}
-  - {fileID: 1920736394657279864}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &9000925176902947384
@@ -300,8 +268,6 @@ MonoBehaviour:
   playerCheck: {fileID: 382117906171866273}
   attackPosition: {fileID: 2627787087876293028}
   playerTransform: {fileID: 2566598940408557728, guid: e02d2ff5f691ced499d14037da904f48, type: 3}
-  hitParticle: {fileID: 6240072112886026631, guid: b3936962964aaae41aa76565dbeb42a0, type: 3}
-  deathParticles: {fileID: 3320026819422103453, guid: 98ba4334b4783b2418b2d3ae795ca9cf, type: 3}
 --- !u!1 &8579499961071959794
 GameObject:
   m_ObjectHideFlags: 0

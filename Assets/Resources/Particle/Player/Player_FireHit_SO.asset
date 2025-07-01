@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96b5f9395b471744a8d36e517b7729a6, type: 3}
-  m_Name: Bullet_SO
+  m_Script: {fileID: 11500000, guid: 227df64fb270b734a9ac46093560460a, type: 3}
+  m_Name: Player_FireHit_SO
   m_EditorClassIdentifier: 
-  speed: 10
-  damage: 1
+  particleType: 4
+  prefab: {fileID: 6240072112886026631, guid: 89a25d3d52a8281418bb0ba13cb96282, type: 3}
+  lifetime: 0.2

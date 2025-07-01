@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 6108961597350736386, guid: caa52245f05059a42975f7dc981a77ce, type: 3}
   enemyType: 0
-  enemyHealth: 20
+  enemyHealth: 50
   movementSpeed: 3
   chargeSpeed: 6
   castDistance: 0.5
@@ -31,8 +31,8 @@ MonoBehaviour:
   amountOfTurns: 2
   timeBetweenTurns: 1
   damageHopSpeed: 3
-  knockBackSpeed: 2.5
-  knockBackAngle: {x: 1.5, y: 1}
+  knockBackSpeed: 10
+  knockBackTime: 0.2
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

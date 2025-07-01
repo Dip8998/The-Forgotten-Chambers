@@ -1,3 +1,6 @@
+using ForgottonChambers.Main;
+using ForgottonChambers.Particles;
+using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
 
@@ -42,7 +45,9 @@ namespace ForgottonChambers.Enemy
 
             foreach (Collider2D obj in detectedObjects)
             {
-                enemy.Attack(enemyData.attackDamage);
+                PlayerController Player = GameService.Instance.PlayerService.GetPlayerController();
+                Player.Damage(enemyData.attackDamage);
+                GameService.Instance.ParticleService.PlayParticle(ParticleType.PlayerHit, Player.PlayerView.transform.position, Quaternion.identity);
             }
         }
 

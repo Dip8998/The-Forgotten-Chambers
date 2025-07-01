@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class EnemyView : MonoBehaviour
 {
-    [SerializeField] private EnemyScriptableObject enemyData;
-    [SerializeField] private Transform castPosition;
-    [SerializeField] private Transform playerCheck;
-    [SerializeField] private Transform attackPosition;
-    [SerializeField] private Transform playerTransform;
+    [SerializeField] protected EnemyScriptableObject enemyData;
+    [SerializeField] protected Transform castPosition;
+    [SerializeField] protected Transform playerCheck;
+    [SerializeField] protected Transform attackPosition;
+    [SerializeField] protected Transform playerTransform;
 
-    private Animator enemyAnimator;
-    private Rigidbody2D rb2D;
-    private Vector3 baseScale;
-    private EnemyController controller;
+    protected Animator enemyAnimator;
+    protected Rigidbody2D rb2D;
+    protected Vector3 baseScale;
+    protected EnemyController controller;
 
     public Transform CastPosition => castPosition;
     public Rigidbody2D Rigidbody => rb2D;
@@ -24,7 +24,7 @@ public class EnemyView : MonoBehaviour
     public Transform PlayerTransform => playerTransform;
 
 
-    private void Start()
+    protected virtual void Start()
     {
         enemyAnimator = GetComponent<Animator>();
         rb2D = GetComponent<Rigidbody2D>();
@@ -33,12 +33,12 @@ public class EnemyView : MonoBehaviour
         controller = new EnemyController(this, enemyData, playerTransform);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         controller.UpdateController();
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         controller.FixedUpdateController();
     }
@@ -48,10 +48,9 @@ public class EnemyView : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x = faceRight ? Mathf.Abs(baseScale.x) : -Mathf.Abs(baseScale.x);
         transform.localScale = scale;
-        Debug.Log("FlipDirection: " + (faceRight ? "Right" : "Left"));
     }
 
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         if (enemyData != null && attackPosition != null)
         {

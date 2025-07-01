@@ -17,13 +17,15 @@ MonoBehaviour:
   playerJumpForce: 15
   playerDoubleJumpForce: 12
   playerCrouchMovementSpeed: 5
-  playerCrouchColliderHeight: 0.8
-  playerStandColliderHeight: 1.8
+  playerStandColliderSize: {x: 1, y: 1.8}
+  playerStandColliderOffset: {x: 0, y: 0}
+  playerCrouchColliderSize: {x: 1, y: 0.5}
+  playerCrouchColliderOffset: {x: 0, y: -0.25}
   playerWallSlideSpeed: 3
   playerWallClimbSpeed: 3
   playerWallJumpSpeed: 20
   playerWallJumpTime: 0.4
   playerWallJumpAngle: {x: 1, y: 2}
   coyoteTime: 0.2
-  playerMaxHealth: 100
   amountOfJumps: 1
+  playerMaxHealth: 1000

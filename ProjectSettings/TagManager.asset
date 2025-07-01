@@ -17,10 +17,10 @@ TagManager:
   - Wall
   - 'Box '
   - Player
-  - Bullet
+  - EnemyBullet
   - Enemy
   - Weapon
-  - 
+  - PlayerBullet
   - 
   - 
   - 

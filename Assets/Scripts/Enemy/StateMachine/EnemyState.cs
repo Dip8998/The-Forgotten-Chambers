@@ -11,6 +11,7 @@ namespace ForgottonChambers.Enemy
         public static readonly int ANIM_CHARGE = Animator.StringToHash("Charge");
         public static readonly int ANIM_LOOK_FOR_PLAYER = Animator.StringToHash("LookForPlayer");
         public static readonly int ANIM_MELEE_ATTACK = Animator.StringToHash("MeleeAttack");
+        public static readonly int ANIM_FIREBALL_ATTACK = Animator.StringToHash("FireballAttack"); 
 
         protected EnemyStateMachine stateMachine;
         protected EnemyController enemy;
@@ -29,7 +30,11 @@ namespace ForgottonChambers.Enemy
         public virtual void OnStateEnter()
         {
             startTime = Time.time;
-            enemy.Enemy.EnemyAnimator.SetBool(animBoolHash, true);
+
+            if (animBoolHash != 0)
+            {
+                enemy.Enemy.EnemyAnimator.SetBool(animBoolHash, true);
+            }
         }
 
         public virtual void OnUpdate() { }
@@ -38,7 +43,10 @@ namespace ForgottonChambers.Enemy
 
         public virtual void OnStateExit()
         {
-            enemy.Enemy.EnemyAnimator.SetBool(animBoolHash, false);
+            if (animBoolHash != 0)
+            {
+                enemy.Enemy.EnemyAnimator.SetBool(animBoolHash, false);
+            }
         }
     }
 }

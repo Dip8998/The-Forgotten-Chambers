@@ -53,7 +53,7 @@ namespace ForgottonChambers.ScriptableObjects
         #region Knockback
         public float damageHopSpeed;
         public float knockBackSpeed;
-        public Vector2 knockBackAngle;
+        public float knockBackTime;
         #endregion
 
         #region Layers
@@ -61,5 +61,12 @@ namespace ForgottonChambers.ScriptableObjects
         public LayerMask groundLayer;
         public LayerMask playerLayer;
         #endregion
+
+        [Header("Fire Worm - Ranged Attack")]
+        public GameObject fireballPrefab;
+        public float fireballSpeed = 8f;
+        public float fireballCooldown = 1.5f;
+        public float rangedAttackDistance = 4f; // New range for fireball
+        public int fireballDamage = 15;
     }
 }

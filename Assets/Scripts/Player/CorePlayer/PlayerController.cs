@@ -7,6 +7,7 @@ using ForgottonChambers.Inputs;
 using ForgottonChambers.Main;
 using ForgottonChambers.Particles;
 using UnityEngine.UIElements;
+using ForgottonChambers.Bullets;
 
 namespace ForgottonChambers.Player
 {
@@ -29,7 +30,7 @@ namespace ForgottonChambers.Player
         #endregion
 
         #region Dependencies & Components
-        private readonly PlayerScriptableObject playerConfig;
+        public PlayerScriptableObject PlayerData { get; private set; }
         public InputHandler InputHandler { get; private set; }
         public PlayerView PlayerView { get; private set; } 
         public BoxCollider2D MovementCollider { get; private set; } 
@@ -51,11 +52,12 @@ namespace ForgottonChambers.Player
         #endregion
 
         private int currentHealth;
+        private BulletView bullet;
 
         #region Player Callbacks
         public PlayerController(PlayerScriptableObject playerConfig)
         {
-            this.playerConfig = playerConfig;
+            this.PlayerData = playerConfig;
             StateMachine = new PlayerStateMachine();
             InputHandler = new InputHandler();
             _workSpace = Vector2.zero;
@@ -116,31 +118,31 @@ namespace ForgottonChambers.Player
         #region Initialization
         private void InitializePlayerView()
         {
-            if (playerConfig.playerPrefab == null)
+            if (PlayerData.playerPrefab == null)
             {
                 Debug.LogError("Player Prefab is null in PlayerConfig!");
                 return;
             }
-            PlayerView = Object.Instantiate(playerConfig.playerPrefab);
+            PlayerView = Object.Instantiate(PlayerData.playerPrefab);
             PlayerView.SetPlayerController(this);
         }
 
         private void InitializePlayerStates()
         {
-            IdleState = new PlayerIdleState(this, StateMachine, playerConfig, "idle");
-            MoveState = new PlayerMoveState(this, StateMachine, playerConfig, "move");
-            JumpState = new PlayerJumpState(this, StateMachine, playerConfig, "inAir");
-            AirState = new PlayerInAirState(this, StateMachine, playerConfig, "inAir");
-            LandState = new PlayerLandState(this, StateMachine, playerConfig, "land");
-            WallSlideState = new PlayerWallSlideState(this, StateMachine, playerConfig, "wallSlide");
-            WallGrabState = new PlayerWallGrabState(this, StateMachine, playerConfig, "wallGrab");
-            WallClimbState = new PlayerWallClimbState(this, StateMachine, playerConfig, "wallClimb");
-            WallJumpState = new PlayerWallJumpState(this, StateMachine, playerConfig, "inAir");
-            CrouchIdleState = new PlayerCrouchIdleState(this, StateMachine, playerConfig, "crouchIdle");
-            CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerConfig, "crouchMove");
+            IdleState = new PlayerIdleState(this, StateMachine, PlayerData, "idle");
+            MoveState = new PlayerMoveState(this, StateMachine, PlayerData, "move");
+            JumpState = new PlayerJumpState(this, StateMachine, PlayerData, "inAir");
+            AirState = new PlayerInAirState(this, StateMachine, PlayerData, "inAir");
+            LandState = new PlayerLandState(this, StateMachine, PlayerData, "land");
+            WallSlideState = new PlayerWallSlideState(this, StateMachine, PlayerData, "wallSlide");
+            WallGrabState = new PlayerWallGrabState(this, StateMachine, PlayerData, "wallGrab");
+            WallClimbState = new PlayerWallClimbState(this, StateMachine, PlayerData, "wallClimb");
+            WallJumpState = new PlayerWallJumpState(this, StateMachine, PlayerData, "inAir");
+            CrouchIdleState = new PlayerCrouchIdleState(this, StateMachine, PlayerData, "crouchIdle");
+            CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, PlayerData, "crouchMove");
 
             string attackAnimBool = "attack";
-            AttackState = new PlayerAttackState(this, StateMachine, playerConfig, attackAnimBool);
+            AttackState = new PlayerAttackState(this, StateMachine, PlayerData, attackAnimBool);
         }
 
         private void InitializeWeaponControllers()
@@ -246,8 +248,6 @@ namespace ForgottonChambers.Player
         public void Damage(int damage)
         {
             currentHealth -= damage;
-
-            GameService.Instance.ParticleService.PlayParticle(ParticleType.PlayerHit, PlayerView.transform.position, Quaternion.identity);
 
             if (currentHealth <= 0)
             {

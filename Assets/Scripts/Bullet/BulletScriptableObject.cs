@@ -8,5 +8,6 @@ namespace ForgottonChambers.Bullets
         public float speed = 10f;
         public int damage = 1;
         public float destroyingTime = 3f;
+        public float bulletRotation = 90;
     }
 }

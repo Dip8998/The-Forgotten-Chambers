@@ -6,5 +6,6 @@
         PlayerDeath,
         EnemyHit,
         EnemyDeath,
+        FireHit
     }
 }
