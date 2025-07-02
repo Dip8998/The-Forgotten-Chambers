@@ -6,6 +6,9 @@
         PlayerDeath,
         EnemyHit,
         EnemyDeath,
-        FireHit
+        FireHit,
+        EnemyCrabDeath,
+        EnemyFireWormDeath,
+        EnemySkeletonDeath
     }
 }

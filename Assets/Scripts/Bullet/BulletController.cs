@@ -8,7 +8,7 @@ namespace ForgottonChambers.Bullets
         private BulletScriptableObject bulletData;
         private BulletPool bulletPool;
 
-        public BulletView View => bulletView; 
+        public BulletView View => bulletView;
 
         public BulletController(BulletView view, BulletScriptableObject data, BulletPool pool)
         {

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 227df64fb270b734a9ac46093560460a, type: 3}
   m_Name: Enemy_Death_SO
   m_EditorClassIdentifier: 
-  particleType: 3
+  particleType: 5
   prefab: {fileID: 3320026819422103453, guid: 98ba4334b4783b2418b2d3ae795ca9cf, type: 3}
   lifetime: 6

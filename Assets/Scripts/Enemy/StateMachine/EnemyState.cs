@@ -11,7 +11,8 @@ namespace ForgottonChambers.Enemy
         public static readonly int ANIM_CHARGE = Animator.StringToHash("Charge");
         public static readonly int ANIM_LOOK_FOR_PLAYER = Animator.StringToHash("LookForPlayer");
         public static readonly int ANIM_MELEE_ATTACK = Animator.StringToHash("MeleeAttack");
-        public static readonly int ANIM_FIREBALL_ATTACK = Animator.StringToHash("FireballAttack"); 
+        public static readonly int ANIM_FIREBALL_ATTACK = Animator.StringToHash("FireballAttack");
+        public static readonly int ANIM_HIT = Animator.StringToHash("Hit");
 
         protected EnemyStateMachine stateMachine;
         protected EnemyController enemy;

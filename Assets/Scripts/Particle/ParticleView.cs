@@ -1,29 +1,67 @@
 using UnityEngine;
+using System.Collections;
 
 namespace ForgottonChambers.Particles
 {
     public class ParticleView : MonoBehaviour
     {
         private ParticleController controller;
+        private ParticleSystem particleSystemComponent;
+
+        private void Awake()
+        {
+            particleSystemComponent = GetComponent<ParticleSystem>();
+        }
 
         public void SetController(ParticleController controller)
         {
             this.controller = controller;
         }
 
-        private void OnEnable()
+        public void ActivateAndPlay()
         {
+            gameObject.SetActive(true);
+
+            if (particleSystemComponent != null)
+            {
+                particleSystemComponent.Play();
+                StartCoroutine(DeactivateAfterParticleSystemDuration(particleSystemComponent.main.duration));
+            }
+            else if (controller != null)
+            {
+                StartCoroutine(DeactivateRoutine(controller.GetDataLifetime()));
+            }
+            else
+            {
+                Debug.LogError("ParticleView: Cannot play or deactivate without a ParticleSystem or a valid controller and data.", this);
+            }
         }
 
-        public void DeactivateAfter(float time)
+        private IEnumerator DeactivateAfterParticleSystemDuration(float duration)
         {
-            StartCoroutine(DeactivateRoutine(time));
+            yield return new WaitForSeconds(duration);
+
+            if (controller != null)
+            {
+                controller.ReturnToPool();
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
 
-        private System.Collections.IEnumerator DeactivateRoutine(float time)
+        private IEnumerator DeactivateRoutine(float time)
         {
             yield return new WaitForSeconds(time);
-            controller.ReturnToPool();
+            if (controller != null)
+            {
+                controller.ReturnToPool();
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }

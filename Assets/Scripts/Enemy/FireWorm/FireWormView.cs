@@ -1,14 +1,19 @@
-﻿using ForgottonChambers.Bullets;
+﻿// === FireWormView.cs ===
 using ForgottonChambers.Enemy;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
 
-public class FireWormView : EnemyView
+namespace ForgottonChambers.Enemy
 {
-    protected override void Start()
+    public class FireWormView : EnemyView
     {
-        base.Start();
+        [SerializeField] private EnemyScriptableObject fireWormData;
 
-        controller = new FireWormController(this, enemyData, playerTransform);
+        protected override void Start()
+        {
+            base.Start();
+
+            controller = new FireWormController(this, fireWormData, playerTransform);
+        }
     }
 }

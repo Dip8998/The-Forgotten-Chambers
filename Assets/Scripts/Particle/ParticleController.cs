@@ -22,13 +22,14 @@ namespace ForgottonChambers.Particles
         {
             View.transform.position = position;
             View.transform.rotation = rotation;
-            View.gameObject.SetActive(true);
-            View.DeactivateAfter(_data.lifetime);
+            View.ActivateAndPlay();
         }
 
         public void ReturnToPool()
         {
             View.gameObject.SetActive(false);
         }
+
+        public float GetDataLifetime() => _data.lifetime;
     }
 }

@@ -15,7 +15,14 @@ namespace ForgottonChambers.Particles
         public ParticlePool(ParticleScriptableObject data, int count = 5, Transform parent = null)
         {
             this.data = data;
-            this.parent = parent;
+            if (parent == null)
+            {
+                this.parent = new GameObject($"ParticlePool_{data.particleType}").transform;
+            }
+            else
+            {
+                this.parent = parent;
+            }
 
             for (int i = 0; i < count; i++)
             {
@@ -26,6 +33,11 @@ namespace ForgottonChambers.Particles
         private ParticleController CreateNewParticle()
         {
             ParticleView view = Object.Instantiate(data.prefab, parent).GetComponent<ParticleView>();
+            if (view == null)
+            {
+                Debug.LogError($"ParticlePool: Prefab for {data.particleType} does not have a ParticleView component on its root! Make sure the prefab itself is the ParticleView.", data.prefab);
+                return null;
+            }
             view.gameObject.SetActive(false);
             var controller = new ParticleController(view, data, this);
             pool.Add(controller);

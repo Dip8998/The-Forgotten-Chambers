@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0eb98efb7443c44987a8ad2a235561, type: 3}
+  m_Name: Skeleton
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 3602527368406290162, guid: ce9beb5978962e540b0b56fa225c0992, type: 3}
+  enemyType: 2
+  enemyHealth: 50
+  movementSpeed: 4
+  chargeSpeed: 8
+  castDistance: 0.5
+  groundCheckRadius: 0
+  minIdleTime: 2
+  maxIdleTime: 4
+  chargeTime: 2
+  longRangeActionTime: 1.5
+  minPlayerDetectedDistance: 0
+  maxPlayerDetectedDistance: 0
+  closeRangeActionDistance: 2
+  attackRadius: 0.55
+  attackDamage: 10
+  amountOfTurns: 2
+  timeBetweenTurns: 1
+  damageHopSpeed: 0
+  knockBackSpeed: 5
+  knockBackTime: 0.1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  fireballPrefab: {fileID: 8480682939005239768, guid: b712bb7841759a541a89a05f2c9221fc, type: 3}
+  fireballSpeed: 8
+  fireballCooldown: 1.5
+  rangedAttackDistance: 10
+  fireballDamage: 15

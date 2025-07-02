@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using ForgottonChambers.ScriptableObjects;
 
 namespace ForgottonChambers.Bullets
 {
@@ -46,7 +47,7 @@ namespace ForgottonChambers.Bullets
 
         public void ReturnBullet(BulletController bullet)
         {
-            // Deactivation is already handled in controller
+
         }
     }
 }

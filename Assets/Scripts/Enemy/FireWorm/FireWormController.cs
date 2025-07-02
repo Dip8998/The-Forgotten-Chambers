@@ -1,6 +1,6 @@
-﻿using ForgottonChambers.Main;
+﻿using ForgottonChambers.Bullets;
+using ForgottonChambers.Main;
 using ForgottonChambers.Particles;
-using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
 
@@ -24,7 +24,6 @@ namespace ForgottonChambers.Enemy
             PlayerDetectedState = new FireWormPlayerDetectedState(stateMachine, this, enemyData, EnemyState.ANIM_PLAYER_DETECTED);
             ChargeState = new EnemyChargeState(stateMachine, this, enemyData, EnemyState.ANIM_CHARGE);
             LookForPlayerState = new EnemyLookForPlayerState(stateMachine, this, enemyData, EnemyState.ANIM_LOOK_FOR_PLAYER);
-            MeleeAttackState = new EnemyMeleeAttackState(stateMachine, this, enemyData, EnemyState.ANIM_MELEE_ATTACK);
             KnockbackState = new EnemyKnockbackState(stateMachine, this, enemyData, 0);
 
             FireballAttackState = new EnemyFireballAttackState(stateMachine, this, enemyData, EnemyState.ANIM_FIREBALL_ATTACK);
@@ -33,9 +32,7 @@ namespace ForgottonChambers.Enemy
         public bool CanShootFireball()
         {
             bool cooldownReady = Time.time >= lastFireballTime + enemyData.fireballCooldown;
-
-            bool notInKnockback = stateMachine != null && stateMachine.CurrentState != KnockbackState;
-
+            bool notInKnockback = stateMachine.CurrentState != KnockbackState;
             return cooldownReady && notInKnockback;
         }
 
@@ -52,7 +49,5 @@ namespace ForgottonChambers.Enemy
                 }
             }
         }
-
-        public bool CheckIsPlayerInRangedAttackRange() => AllChecks(Enemy.PlayerCheck, enemyData.rangedAttackDistance, 0, Color.magenta, enemyData.playerLayer);
     }
 }

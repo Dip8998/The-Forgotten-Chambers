@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using ForgottonChambers.Bullets;
+using ForgottonChambers.Main;
+using ForgottonChambers.Particles;
+using ForgottonChambers.Player;
+using UnityEngine;
 
 public class FireballProjectile : MonoBehaviour
 {
@@ -21,17 +25,18 @@ public class FireballProjectile : MonoBehaviour
         damage = projectileDamage;
         lifetime = projectileLifetime;
 
-        rb.linearVelocity = new Vector2(speed * facingDirection, 0);
+        rb.linearVelocity = new Vector2(speed * facingDirection, 0f);
         Destroy(gameObject, lifetime);
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player")) 
+        if (other.TryGetComponent(out PlayerView playerView))
         {
-            Debug.Log("Trigger entered with: " + other.name);
-            ForgottonChambers.Main.GameService.Instance.PlayerService.GetPlayerController().Damage(damage);
+            GameService.Instance.PlayerService.GetPlayerController().Damage(damage);
+            GameService.Instance?.ParticleService?.PlayParticle(ParticleType.FireHit, playerView.transform.position, Quaternion.identity);
         }
+
         Destroy(gameObject);
     }
 }

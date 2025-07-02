@@ -3,26 +3,27 @@ using ForgottonChambers.Particles;
 using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
+using ForgottonChambers.Enemy; // Ensure this is present for EnemyType
 
 namespace ForgottonChambers.Enemy
 {
     public class EnemyController
     {
         public EnemyView Enemy { get; private set; }
-        protected EnemyScriptableObject enemyData; 
-        protected EnemyStateMachine stateMachine; 
-        protected Transform playerTransform; 
+        protected EnemyScriptableObject enemyData;
+        protected EnemyStateMachine stateMachine;
+        protected Transform playerTransform;
         private int currentHealth;
 
         public EnemyIdleState IdleState { get; protected set; }
-        public EnemyMoveState MoveState { get; protected set; } 
-        public EnemyPlayerDetectedState PlayerDetectedState { get; protected set; } 
-        public EnemyChargeState ChargeState { get; protected set; } 
-        public EnemyLookForPlayerState LookForPlayerState { get; protected set; } 
-        public EnemyMeleeAttackState MeleeAttackState { get; protected set; } 
-        public EnemyKnockbackState KnockbackState { get; protected set; } 
+        public EnemyMoveState MoveState { get; protected set; }
+        public EnemyPlayerDetectedState PlayerDetectedState { get; protected set; }
+        public EnemyChargeState ChargeState { get; protected set; }
+        public EnemyLookForPlayerState LookForPlayerState { get; protected set; }
+        public EnemyMeleeAttackState MeleeAttackState { get; protected set; }
+        public EnemyKnockbackState KnockbackState { get; protected set; }
 
-        protected Vector2 velocityWorkSpace; 
+        protected Vector2 velocityWorkSpace;
 
         public int FacingDirection { get; private set; }
         public int LastDamageDirection { get; private set; }
@@ -35,11 +36,14 @@ namespace ForgottonChambers.Enemy
             this.playerTransform = playerTransform;
             currentHealth = enemyData.enemyHealth;
             stateMachine = new EnemyStateMachine();
-            InitializeStates(); 
+
+            Debug.Log($"EnemyController initialized for {enemyData.enemyType} enemy."); // Keep this for now for debug
+
+            InitializeStates();
             stateMachine.Initialize(MoveState);
         }
 
-        protected virtual void InitializeStates() 
+        protected virtual void InitializeStates()
         {
             IdleState = new EnemyIdleState(stateMachine, this, enemyData, EnemyState.ANIM_IDLE);
             MoveState = new EnemyMoveState(stateMachine, this, enemyData, EnemyState.ANIM_MOVE);
@@ -106,7 +110,25 @@ namespace ForgottonChambers.Enemy
 
         public void Die()
         {
-            GameService.Instance.ParticleService.PlayParticle(ParticleType.EnemyDeath, Enemy.transform.position, Quaternion.identity);
+            ParticleType deathParticleType = ParticleType.EnemyDeath; // Default particle
+
+            switch (enemyData.enemyType)
+            {
+                case EnemyType.CrawlerCrab:
+                    deathParticleType = ParticleType.EnemyCrabDeath;
+                    break;
+                case EnemyType.FireSplitterWorm:
+                    deathParticleType = ParticleType.EnemyFireWormDeath;
+                    break;
+                case EnemyType.GroundedSkeleton:
+                    deathParticleType = ParticleType.EnemySkeletonDeath;
+                    break;
+                default:
+                    Debug.LogWarning($"No specific death particle defined for enemy type: {enemyData.enemyType}. Using default EnemyDeath particle.");
+                    break;
+            }
+
+            GameService.Instance.ParticleService.PlayParticle(deathParticleType, Enemy.transform.position, Quaternion.identity);
             Enemy.DestroyGameObject();
         }
 
@@ -131,7 +153,7 @@ namespace ForgottonChambers.Enemy
 
         public bool CheckIsPlayerInCloseRange() => AllChecks(Enemy.PlayerCheck, enemyData.closeRangeActionDistance, 0, Color.yellow, enemyData.playerLayer);
 
-        protected bool AllChecks(Transform transform, float DistanceX, float DistanceY, Color color, LayerMask layer) 
+        protected bool AllChecks(Transform transform, float DistanceX, float DistanceY, Color color, LayerMask layer)
         {
             Vector3 target = transform.position + new Vector3(DistanceX * FacingDirection, DistanceY, 0);
             Debug.DrawLine(transform.position, target, color);

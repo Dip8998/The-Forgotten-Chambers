@@ -28,4 +28,4 @@ MonoBehaviour:
   playerWallJumpAngle: {x: 1, y: 2}
   coyoteTime: 0.2
   amountOfJumps: 1
-  playerMaxHealth: 1000
+  playerMaxHealth: 100
