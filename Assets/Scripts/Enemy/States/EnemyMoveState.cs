@@ -31,6 +31,8 @@ namespace ForgottonChambers.Enemy
         {
             if (isPlayerInMinRange || isPlayerInMaxRange)
             {
+                enemy.ResetFacingFlag();
+                enemy.FacePlayerIfNeeded();
                 stateMachine.ChangeState(enemy.PlayerDetectedState);
             }
             else if (isHittingWall || isNearEdge)

@@ -20,7 +20,7 @@ namespace ForgottonChambers.Player
         public override void OnStateEnter()
         {
             base.OnStateEnter();
-            
+            Player.StartAttackCooldown();
             if (Player.PlayerView.HasBoxAttached())
             {
                 isAbilityDone = true;

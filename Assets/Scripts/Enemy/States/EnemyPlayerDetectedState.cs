@@ -19,6 +19,8 @@ namespace ForgottonChambers.Enemy
             base.OnStateEnter();
             performLongRangeAction = false;
             enemy.SetVelocity(0);
+            enemy.ResetFacingFlag();
+            enemy.FacePlayerIfNeeded();
             isPlayerInMinRange = enemy.CheckIsPlayerInMinRange();
             isPlayerInMaxRange = enemy.CheckIsPlayerInMaxRange();
             performCloseRangeAction = enemy.CheckIsPlayerInCloseRange();

@@ -34,5 +34,6 @@ namespace ForgottonChambers.ScriptableObjects
 
         [Header("Combat")]
         public int playerMaxHealth;
+        public float attackCooldownTime = 0.5f;
     }
 }

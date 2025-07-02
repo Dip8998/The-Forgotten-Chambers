@@ -35,7 +35,7 @@ namespace ForgottonChambers.Weapons
 
             if (collision.TryGetComponent<EnemyView>(out var enemy))
             {
-                enemy.Controller.Damage(10);
+                enemy.Controller.Damage(10, transform.position);
             }
         }
 

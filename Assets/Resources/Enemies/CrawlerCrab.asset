@@ -22,15 +22,15 @@ MonoBehaviour:
   minIdleTime: 2
   maxIdleTime: 4
   chargeTime: 1
-  longRangeActionTime: 1.5
-  minPlayerDetectedDistance: 0.75
+  longRangeActionTime: 0.5
+  minPlayerDetectedDistance: 0.5
   maxPlayerDetectedDistance: 5
-  closeRangeActionDistance: 0.75
+  closeRangeActionDistance: 0.5
   attackRadius: 0.55
   attackDamage: 10
   amountOfTurns: 2
   timeBetweenTurns: 1
-  damageHopSpeed: 2
+  damageHopSpeed: 1
   knockBackSpeed: 7
   knockBackTime: 0.2
   groundLayer:

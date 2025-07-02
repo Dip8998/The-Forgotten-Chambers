@@ -32,7 +32,7 @@ namespace ForgottonChambers.Player
 
             if (isExitingState) return;
 
-            if (Player.InputHandler.AttackInput)
+            if (Player.InputHandler.AttackInput && Player.CanAttack())
             {
                 StateMachine.ChangeState(Player.AttackState);
             }

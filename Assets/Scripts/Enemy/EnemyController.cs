@@ -3,7 +3,6 @@ using ForgottonChambers.Particles;
 using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
-using ForgottonChambers.Enemy; // Ensure this is present for EnemyType
 
 namespace ForgottonChambers.Enemy
 {
@@ -25,8 +24,10 @@ namespace ForgottonChambers.Enemy
 
         protected Vector2 velocityWorkSpace;
 
+        public Vector2 LastHitSource { get; private set; }
         public int FacingDirection { get; private set; }
         public int LastDamageDirection { get; private set; }
+        private bool hasFacedPlayerThisState;
 
         public EnemyController(EnemyView enemyView, EnemyScriptableObject enemyData, Transform playerTransform)
         {
@@ -37,7 +38,7 @@ namespace ForgottonChambers.Enemy
             currentHealth = enemyData.enemyHealth;
             stateMachine = new EnemyStateMachine();
 
-            Debug.Log($"EnemyController initialized for {enemyData.enemyType} enemy."); // Keep this for now for debug
+            Debug.Log($"EnemyController initialized for {enemyData.enemyType} enemy.");
 
             InitializeStates();
             stateMachine.Initialize(MoveState);
@@ -75,8 +76,9 @@ namespace ForgottonChambers.Enemy
             Enemy.Rigidbody.linearVelocity = velocity;
         }
 
-        public void Damage(int damage)
+        public void Damage(int damage, Vector2 hitSourcePosition)
         {
+            LastHitSource = hitSourcePosition;
             currentHealth -= damage;
 
             GameService.Instance.ParticleService.PlayParticle(ParticleType.EnemyHit, Enemy.transform.position, Quaternion.identity);
@@ -110,7 +112,7 @@ namespace ForgottonChambers.Enemy
 
         public void Die()
         {
-            ParticleType deathParticleType = ParticleType.EnemyDeath; // Default particle
+            ParticleType deathParticleType = ParticleType.EnemyDeath; 
 
             switch (enemyData.enemyType)
             {
@@ -147,11 +149,45 @@ namespace ForgottonChambers.Enemy
 
         public bool CheckIsNearEdge() => !AllChecks(Enemy.CastPosition, 0, -enemyData.castDistance, Color.red, enemyData.groundLayer);
 
-        public bool CheckIsPlayerInMinRange() => AllChecks(Enemy.PlayerCheck, enemyData.minPlayerDetectedDistance, 0, Color.green, enemyData.playerLayer);
+        public bool CheckIsPlayerInMinRange() =>
+            CheckBothSides(Enemy.PlayerCheck, enemyData.minPlayerDetectedDistance, 0, Color.green, enemyData.playerLayer);
 
-        public bool CheckIsPlayerInMaxRange() => AllChecks(Enemy.PlayerCheck, enemyData.maxPlayerDetectedDistance, 0, Color.green, enemyData.playerLayer);
+        public bool CheckIsPlayerInMaxRange() =>
+            CheckBothSides(Enemy.PlayerCheck, enemyData.maxPlayerDetectedDistance, 0, Color.cyan, enemyData.playerLayer);
 
-        public bool CheckIsPlayerInCloseRange() => AllChecks(Enemy.PlayerCheck, enemyData.closeRangeActionDistance, 0, Color.yellow, enemyData.playerLayer);
+        public bool CheckIsPlayerInCloseRange() =>
+            CheckBothSides(Enemy.PlayerCheck, enemyData.closeRangeActionDistance, 0, Color.yellow, enemyData.playerLayer);
+
+        private bool CheckBothSides(Transform origin, float distanceX, float distanceY, Color color, LayerMask layer)
+        {
+            Vector3 rightTarget = origin.position + new Vector3(distanceX, distanceY, 0);
+            Vector3 leftTarget = origin.position - new Vector3(distanceX, -distanceY, 0);
+
+            Debug.DrawLine(origin.position, rightTarget, color);
+            Debug.DrawLine(origin.position, leftTarget, color);
+
+            bool hitRight = Physics2D.Linecast(origin.position, rightTarget, layer);
+            bool hitLeft = Physics2D.Linecast(origin.position, leftTarget, layer);
+
+            return hitRight || hitLeft;
+        }
+
+        public void FacePlayerIfNeeded()
+        {
+            if (hasFacedPlayerThisState) return;
+
+            Transform player = GameService.Instance.PlayerService.GetPlayerController().PlayerView.transform;
+            if (player.position.x < Enemy.transform.position.x && FacingDirection == 1)
+                Flip();
+            else if (player.position.x > Enemy.transform.position.x && FacingDirection == -1)
+                Flip();
+
+            hasFacedPlayerThisState = true;
+        }
+
+
+
+        public void ResetFacingFlag() => hasFacedPlayerThisState = false;
 
         protected bool AllChecks(Transform transform, float DistanceX, float DistanceY, Color color, LayerMask layer)
         {

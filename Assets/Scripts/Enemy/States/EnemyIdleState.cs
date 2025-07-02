@@ -24,6 +24,8 @@ namespace ForgottonChambers.Enemy
         {
             if (isPlayerInMinRange)
             {
+                enemy.ResetFacingFlag();
+                enemy.FacePlayerIfNeeded();
                 stateMachine.ChangeState(enemy.PlayerDetectedState);
             }
             else if (Time.time >= startTime + idleTime)

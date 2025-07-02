@@ -52,7 +52,9 @@ namespace ForgottonChambers.Player
         #endregion
 
         private int currentHealth;
-        private BulletView bullet;
+        private float attackCooldownTimer = 0f;
+        private bool isAttackOnCooldown = false;
+        public float AttackCooldownDuration => PlayerData.attackCooldownTime;
 
         #region Player Callbacks
         public PlayerController(PlayerScriptableObject playerConfig)
@@ -106,6 +108,15 @@ namespace ForgottonChambers.Player
             if (InputHandler.SwitchWeaponInput)
             {
                 SwitchWeapon();
+            }
+
+            if (isAttackOnCooldown)
+            {
+                attackCooldownTimer -= Time.deltaTime;
+                if (attackCooldownTimer <= 0)
+                {
+                    isAttackOnCooldown = false;
+                }
             }
         }
 
@@ -253,6 +264,17 @@ namespace ForgottonChambers.Player
             {
                 Die();
             }
+        }
+
+        public bool CanAttack()
+        {
+            return !isAttackOnCooldown;
+        }
+
+        public void StartAttackCooldown()
+        {
+            isAttackOnCooldown = true;
+            attackCooldownTimer = AttackCooldownDuration;
         }
 
         private void Die()

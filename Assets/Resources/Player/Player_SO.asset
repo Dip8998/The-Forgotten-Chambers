@@ -29,3 +29,4 @@ MonoBehaviour:
   coyoteTime: 0.2
   amountOfJumps: 1
   playerMaxHealth: 100
+  attackCooldownTime: 2

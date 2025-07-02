@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace ForgottonChambers.Enemy
 {
-    public class FireWormView : EnemyView
+    public class CrabView : EnemyView
     {
         protected override void Start()
         {
             base.Start();
 
-            controller = new FireWormController(this, enemyData, playerTransform);
+            controller = new CrabController(this, enemyData, playerTransform);
         }
     }
 }

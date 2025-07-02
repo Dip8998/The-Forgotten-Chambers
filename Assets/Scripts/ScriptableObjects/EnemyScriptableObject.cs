@@ -66,7 +66,7 @@ namespace ForgottonChambers.ScriptableObjects
         public GameObject fireballPrefab;
         public float fireballSpeed = 8f;
         public float fireballCooldown = 1.5f;
-        public float rangedAttackDistance = 4f; 
+        public float rangedAttackDistance = 4f;
         public int fireballDamage = 15;
     }
 }

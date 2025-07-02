@@ -1,3 +1,4 @@
+// EnemyView.cs
 using ForgottonChambers.Enemy;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;

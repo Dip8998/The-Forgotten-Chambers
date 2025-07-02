@@ -39,7 +39,7 @@ namespace ForgottonChambers.Player
             _jumpInput = Player.InputHandler.JumpInput;
             _grabInput = Player.InputHandler.GrabInput;
 
-            if (Player.InputHandler.AttackInput && !Player.CheckIsCeiling())
+            if (Player.InputHandler.AttackInput && Player.CanAttack() && !Player.CheckIsCeiling())
             {
                 StateMachine.ChangeState(Player.AttackState);
             }

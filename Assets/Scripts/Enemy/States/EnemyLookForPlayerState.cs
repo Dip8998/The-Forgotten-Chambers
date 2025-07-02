@@ -61,6 +61,7 @@ namespace ForgottonChambers.Enemy
 
             if (isPlayerInMinRange || isPlayerInMaxRange)
             {
+                enemy.FacePlayerIfNeeded();
                 stateMachine.ChangeState(enemy.PlayerDetectedState);
             }
             else if (isAllTurnsTimeDone && !hasMoved)

@@ -15,6 +15,7 @@ namespace ForgottonChambers.Enemy
         public override void OnStateEnter()
         {
             base.OnStateEnter();
+            enemy.SetVelocity(0f);
         }
 
         public override void OnUpdate()

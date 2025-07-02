@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 2673776513641136337}
   - component: {fileID: 1813323087788625138}
   - component: {fileID: 5948189739450908613}
-  - component: {fileID: 6108961597350736386}
+  - component: {fileID: 4482085981571253167}
   m_Layer: 11
   m_Name: Crab Crawler
   m_TagString: Untagged
@@ -251,7 +251,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6108961597350736386
+--- !u!114 &4482085981571253167
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -260,7 +260,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6428048101327056282}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6ac3606ec8dac84996fab459a2c9485, type: 3}
+  m_Script: {fileID: 11500000, guid: c4c7c2ab97d3c5e4bbcb3b1e29bfb9fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: be16179a424420845a57006eb7408102, type: 2}
