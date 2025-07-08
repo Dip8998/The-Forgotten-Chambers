@@ -9,10 +9,10 @@ namespace ForgottonChambers.Enemy
     public class EnemyController
     {
         public EnemyView Enemy { get; private set; }
-        protected EnemyScriptableObject enemyData;
+        public EnemyScriptableObject enemyData{ get; private set; }
         protected EnemyStateMachine stateMachine;
         protected Transform playerTransform;
-        private int currentHealth;
+        public int CurrentHealth;
 
         public EnemyIdleState IdleState { get; protected set; }
         public EnemyMoveState MoveState { get; protected set; }
@@ -24,7 +24,7 @@ namespace ForgottonChambers.Enemy
 
         protected Vector2 velocityWorkSpace;
 
-        public Vector2 LastHitSource { get; private set; }
+        public Vector2 LastHitSource { get; set; }
         public int FacingDirection { get; private set; }
         public int LastDamageDirection { get; private set; }
         private bool hasFacedPlayerThisState;
@@ -35,7 +35,7 @@ namespace ForgottonChambers.Enemy
             this.Enemy = enemyView;
             this.enemyData = enemyData;
             this.playerTransform = playerTransform;
-            currentHealth = enemyData.enemyHealth;
+            CurrentHealth = enemyData.enemyHealth;
             stateMachine = new EnemyStateMachine();
 
             Debug.Log($"EnemyController initialized for {enemyData.enemyType} enemy.");
@@ -76,16 +76,16 @@ namespace ForgottonChambers.Enemy
             Enemy.Rigidbody.linearVelocity = velocity;
         }
 
-        public void Damage(int damage, Vector2 hitSourcePosition)
+        public virtual void Damage(int damage, Vector2 hitSourcePosition)
         {
             LastHitSource = hitSourcePosition;
-            currentHealth -= damage;
+            CurrentHealth -= damage;
 
             GameService.Instance.ParticleService.PlayParticle(ParticleType.EnemyHit, Enemy.transform.position, Quaternion.identity);
 
             SetDamageDirection();
 
-            if (currentHealth <= 0)
+            if (CurrentHealth <= 0)
             {
                 Die();
             }
@@ -95,7 +95,7 @@ namespace ForgottonChambers.Enemy
             }
         }
 
-        private void SetDamageDirection()
+        protected void SetDamageDirection()
         {
             if (playerTransform != null)
             {
@@ -125,12 +125,15 @@ namespace ForgottonChambers.Enemy
                 case EnemyType.GroundedSkeleton:
                     deathParticleType = ParticleType.EnemySkeletonDeath;
                     break;
+                case EnemyType.Boss:
+                    deathParticleType = ParticleType.BossDeath;
+                    break;
                 default:
                     Debug.LogWarning($"No specific death particle defined for enemy type: {enemyData.enemyType}. Using default EnemyDeath particle.");
                     break;
             }
 
-            GameService.Instance.ParticleService.PlayParticle(deathParticleType, Enemy.transform.position, Quaternion.identity);
+            GameService.Instance.ParticleService.PlayParticle(deathParticleType, Enemy.ParticleTransform.transform.position, Quaternion.identity);
             Enemy.DestroyGameObject();
         }
 
@@ -149,14 +152,19 @@ namespace ForgottonChambers.Enemy
 
         public bool CheckIsNearEdge() => !AllChecks(Enemy.CastPosition, 0, -enemyData.castDistance, Color.red, enemyData.groundLayer);
 
-        public bool CheckIsPlayerInMinRange() =>
-            CheckBothSides(Enemy.PlayerCheck, enemyData.minPlayerDetectedDistance, 0, Color.green, enemyData.playerLayer);
+        public bool CheckIsPlayerInMinRange()
+        {
+            return OverlapPlayerRange(enemyData.minPlayerDetectedDistance, Color.green);
+        }
+
+        public bool CheckIsPlayerInCloseRange()
+        {
+            return OverlapPlayerRange(enemyData.closeRangeActionDistance, Color.yellow);
+        }
 
         public bool CheckIsPlayerInMaxRange() =>
             CheckBothSides(Enemy.PlayerCheck, enemyData.maxPlayerDetectedDistance, 0, Color.cyan, enemyData.playerLayer);
 
-        public bool CheckIsPlayerInCloseRange() =>
-            CheckBothSides(Enemy.PlayerCheck, enemyData.closeRangeActionDistance, 0, Color.yellow, enemyData.playerLayer);
 
         private bool CheckBothSides(Transform origin, float distanceX, float distanceY, Color color, LayerMask layer)
         {
@@ -217,5 +225,30 @@ namespace ForgottonChambers.Enemy
                 attackState.AnimationFinishedTrigger();
             }
         }
+
+        private bool OverlapPlayerRange(float radius, Color debugColor)
+        {
+            Vector2 origin = Enemy.PlayerCheck.position;
+
+            DebugDrawCircle(origin, radius, debugColor);
+
+            Collider2D hit = Physics2D.OverlapCircle(origin, radius, enemyData.playerLayer);
+            return hit != null;
+        }
+
+        private void DebugDrawCircle(Vector2 center, float radius, Color color, int segments = 32)
+        {
+            float angle = 0f;
+            Vector3 prevPoint = center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+
+            for (int i = 1; i <= segments; i++)
+            {
+                angle = 2 * Mathf.PI * i / segments;
+                Vector3 newPoint = center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+                Debug.DrawLine(prevPoint, newPoint, color);
+                prevPoint = newPoint;
+            }
+        }
+
     }
 }

@@ -10,6 +10,7 @@ public class EnemyView : MonoBehaviour
     [SerializeField] protected Transform playerCheck;
     [SerializeField] protected Transform attackPosition;
     [SerializeField] protected Transform playerTransform;
+    [SerializeField] protected Transform particle;
 
     protected Animator enemyAnimator;
     protected Rigidbody2D rb2D;
@@ -23,6 +24,8 @@ public class EnemyView : MonoBehaviour
     public Transform AttackPosition => attackPosition;
     public EnemyController Controller => controller;
     public Transform PlayerTransform => playerTransform;
+    public Transform ParticleTransform => particle;
+    public EnemyScriptableObject EnemyData => enemyData;
 
 
     protected virtual void Start()
@@ -42,6 +45,11 @@ public class EnemyView : MonoBehaviour
     protected virtual void FixedUpdate()
     {
         controller.FixedUpdateController();
+    }
+
+    public void SetController(EnemyController controller)
+    {
+        this.controller = controller;
     }
 
     public void FlipDirection(bool faceRight)

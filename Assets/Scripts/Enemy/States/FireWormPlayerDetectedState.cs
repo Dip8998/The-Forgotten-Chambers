@@ -24,10 +24,6 @@ namespace ForgottonChambers.Enemy
             {
                 stateMachine.ChangeState(fireWormController.FireballAttackState);
             }
-            else if (performCloseRangeAction)
-            {
-                stateMachine.ChangeState(enemy.MeleeAttackState);
-            }
             else if (performLongRangeAction)
             {
                 stateMachine.ChangeState(enemy.ChargeState);

@@ -68,5 +68,7 @@ namespace ForgottonChambers.ScriptableObjects
         public float fireballCooldown = 1.5f;
         public float rangedAttackDistance = 4f;
         public int fireballDamage = 15;
+
+        public GameObject crabPrefab; 
     }
 }

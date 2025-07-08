@@ -26,6 +26,12 @@ public class FireballProjectile : MonoBehaviour
         lifetime = projectileLifetime;
 
         rb.linearVelocity = new Vector2(speed * facingDirection, 0f);
+
+        float angle = Mathf.Atan2(rb.linearVelocity.y, rb.linearVelocity.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+
+
+        rb.linearVelocity = new Vector2(speed * facingDirection, 0f);
         Destroy(gameObject, lifetime);
     }
 

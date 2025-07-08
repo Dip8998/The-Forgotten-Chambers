@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ForgottonChambers.Enemy
 {
-    public class FireWormController : EnemyController
+    public class FireWormController : EnemyController, IFireballShooter
     {
         public  EnemyFireballAttackState FireballAttackState { get; private set; }
         private float lastFireballTime;

@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 199621984862658759}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.53, y: 0.39, z: 0}
+  m_LocalPosition: {x: 0.82, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -87,7 +87,38 @@ Transform:
   m_GameObject: {fileID: 5850583257897352768}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.45, y: 0.039, z: 0}
+  m_LocalPosition: {x: 1.41, y: 0.51, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6700267780204454277}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7091641739707941699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8838261558138187400}
+  m_Layer: 11
+  m_Name: ParticlePosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8838261558138187400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7091641739707941699}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -130,6 +161,7 @@ Transform:
   - {fileID: 3228137356659844071}
   - {fileID: 8084858547554617913}
   - {fileID: 5047181209081675179}
+  - {fileID: 8838261558138187400}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4454560897704724243
@@ -270,7 +302,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.37047577, y: 0}
+  m_Offset: {x: 0.22082484, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -280,7 +312,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.4465485, y: 2.1875}
+  m_Size: {x: 1.6799047, y: 2.1875}
   m_EdgeRadius: 0
 --- !u!114 &4883612284260327986
 MonoBehaviour:
@@ -299,3 +331,4 @@ MonoBehaviour:
   playerCheck: {fileID: 8084858547554617913}
   attackPosition: {fileID: 5047181209081675179}
   playerTransform: {fileID: 2566598940408557728, guid: e02d2ff5f691ced499d14037da904f48, type: 3}
+  particle: {fileID: 8838261558138187400}

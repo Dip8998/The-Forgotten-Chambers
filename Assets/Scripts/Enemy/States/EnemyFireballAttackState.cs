@@ -5,12 +5,16 @@ namespace ForgottonChambers.Enemy
 {
     public class EnemyFireballAttackState : EnemyAttackState
     {
-        private FireWormController fireWorm;
+        private IFireballShooter fireballShooter;
 
         public EnemyFireballAttackState(EnemyStateMachine stateMachine, EnemyController enemyController, EnemyScriptableObject enemyData, int animBoolHash)
             : base(stateMachine, enemyController, enemyData, animBoolHash)
         {
-            fireWorm = (FireWormController)enemyController;
+            fireballShooter = enemyController as IFireballShooter;
+            if (fireballShooter == null)
+            {
+                Debug.LogError($"{enemyController.GetType().Name} does not implement IFireballShooter");
+            }
         }
 
         public override void OnStateEnter()
@@ -37,7 +41,8 @@ namespace ForgottonChambers.Enemy
         public override void AnimationAttackTrigger()
         {
             base.AnimationAttackTrigger();
-            fireWorm.ShootFireball();
+            Debug.Log("Fireball Attack Trigger");
+            fireballShooter?.ShootFireball();
         }
     }
 }

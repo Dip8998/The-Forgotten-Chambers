@@ -10,7 +10,7 @@ namespace ForgottonChambers.Enemy
         {
             base.Start();
 
-            controller = new CrabController(this, enemyData, playerTransform);
+            controller = new SkeletonController(this, enemyData, playerTransform);
         }
     }
 }

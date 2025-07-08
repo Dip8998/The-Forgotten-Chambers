@@ -9,6 +9,7 @@
         FireHit,
         EnemyCrabDeath,
         EnemyFireWormDeath,
-        EnemySkeletonDeath
+        EnemySkeletonDeath,
+        BossDeath
     }
 }

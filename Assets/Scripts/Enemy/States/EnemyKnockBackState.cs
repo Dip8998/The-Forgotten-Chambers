@@ -53,7 +53,7 @@ namespace ForgottonChambers.Enemy
                 }
                 else
                 {
-                    stateMachine.ChangeState(enemy.LookForPlayerState);
+                    stateMachine.ChangeState(enemy.MoveState);
                 }
             }
         }
