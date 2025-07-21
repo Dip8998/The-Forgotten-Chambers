@@ -6,6 +6,12 @@ namespace ForgottonChambers.Enemy
 {
     public class SkeletonView : EnemyView
     {
+        [SerializeField] protected GameObject itemDrop;
+        [SerializeField] protected Transform itemDropPos;
+
+        public Transform ItemDropPos => itemDropPos;
+        public GameObject ItemDrop => itemDrop;
+
         protected override void Start()
         {
             base.Start();

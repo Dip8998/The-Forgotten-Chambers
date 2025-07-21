@@ -6,6 +6,9 @@ using ForgottonChambers.Events;
 using System.Collections.Generic;
 using ForgottonChambers.Particles;
 using ForgottonChambers.Bullets;
+using ForgottonChambers.UI;
+using ForgottonChambers.Level;
+using ForgottonChambers.KeyandDoor;
 
 namespace ForgottonChambers.Main
 {
@@ -16,7 +19,14 @@ namespace ForgottonChambers.Main
         public ParticleService ParticleService { get; private set; }
         public BulletService BulletService { get; private set; }
         public PlayerController PlayerController { get; private set; }
+        public LevelService LevelService { get; private set; }
+        public KeyAndDoorService KeyAndDoorService { get; private set; }
 
+        [Header("UI")]
+        [SerializeField] private UIService uiService;
+        public UIService UIService => uiService;
+
+        [Header("PlayerSO")]
         [SerializeField] private PlayerScriptableObject playerScriptableObject;
         [Header("Particle Service Config")]
         [SerializeField] private List<ParticleScriptableObject> allParticleData;
@@ -25,6 +35,9 @@ namespace ForgottonChambers.Main
         [SerializeField] private BulletView defaultBulletPrefab;
         [SerializeField] private BulletScriptableObject defaultBulletData;
         [SerializeField] private int defaultBulletPoolSize = 10;
+
+        [Header("Level")]
+        [SerializeField] private LevelView levelView;
 
         protected override void Awake()
         {
@@ -40,12 +53,28 @@ namespace ForgottonChambers.Main
         {
             if (playerScriptableObject == null)
             {
+                Debug.LogError("PlayerScriptableObject not assigned in GameService.");
                 return;
             }
-            PlayerService = new PlayerService(playerScriptableObject);
+
             EventService = new EventService();
+
+            if (uiService == null)
+            {
+                Debug.LogError("UIService reference is missing in GameService.");
+            }
+            else
+            {
+                uiService.Initialize();
+            }
+
+            PlayerService = new PlayerService(playerScriptableObject);
+
             ParticleService = new ParticleService(allParticleData);
             BulletService = new BulletService(defaultBulletPrefab, defaultBulletData, defaultBulletPoolSize);
+            KeyAndDoorService = new KeyAndDoorService();
+            LevelService = new LevelService();
+            LevelService.Initialize(levelView);
         }
 
         public void RegisterPlayerController(PlayerController playerController)

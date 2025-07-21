@@ -32,8 +32,6 @@ AnimationClip:
       value: {fileID: 5161187548481875975, guid: 78c838b4f761b6b4cbe280670f055b1a, type: 3}
     - time: 0.41666666
       value: {fileID: 6225700723224678848, guid: 78c838b4f761b6b4cbe280670f055b1a, type: 3}
-    - time: 0.5
-      value: {fileID: 1349274582653079552, guid: 78c838b4f761b6b4cbe280670f055b1a, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -62,13 +60,12 @@ AnimationClip:
     - {fileID: -1216246304953843119, guid: 78c838b4f761b6b4cbe280670f055b1a, type: 3}
     - {fileID: 5161187548481875975, guid: 78c838b4f761b6b4cbe280670f055b1a, type: 3}
     - {fileID: 6225700723224678848, guid: 78c838b4f761b6b4cbe280670f055b1a, type: 3}
-    - {fileID: 1349274582653079552, guid: 78c838b4f761b6b4cbe280670f055b1a, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.51666665
+    m_StopTime: 0.43333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -88,7 +85,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.51666665
+  - time: 0.41666666
     functionName: OnAnimationFinished
     data: 
     objectReferenceParameter: {fileID: 0}

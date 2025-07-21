@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using ForgottonChambers.ScriptableObjects;
+using UnityEngine.UIElements;
 
 namespace ForgottonChambers.Player
 {
@@ -7,7 +8,7 @@ namespace ForgottonChambers.Player
     {
         private float _xInput;
         private bool _jumpInput;
-        private bool _grabInput;
+        private bool _wallJumpInput;
         private bool _coyoteTimeActive;
         private bool _wallJumpCoyoteTimeActive;
         private float _startWallJumpCoyoteTime;
@@ -37,7 +38,7 @@ namespace ForgottonChambers.Player
 
             _xInput = Player.InputHandler.MoveInput;
             _jumpInput = Player.InputHandler.JumpInput;
-            _grabInput = Player.InputHandler.GrabInput;
+            _wallJumpInput = Player.InputHandler.WallJumpInput;
 
             if (Player.InputHandler.AttackInput && Player.CanAttack() && !Player.CheckIsCeiling())
             {
@@ -47,9 +48,9 @@ namespace ForgottonChambers.Player
             {
                 StateMachine.ChangeState(Player.LandState);
             }
-            else if (_jumpInput)
+            else if (_jumpInput && _wallJumpInput)
             {
-                if (Player.CheckIsWall() || Player.CheckIsWallBack() || _wallJumpCoyoteTimeActive)
+                if ((Player.CheckIsWall() && Player.CheckIsWallBack()))
                 {
                     StopWallCoyoteTime();
                     Player.WallJumpState.DetermineWallJumpDirection(Player.CheckIsWall());
@@ -64,14 +65,6 @@ namespace ForgottonChambers.Player
                 {
                     StateMachine.ChangeState(Player.JumpState);
                 }
-            }
-            else if (Player.CheckIsWall() && _grabInput)
-            {
-                StateMachine.ChangeState(Player.WallGrabState);
-            }
-            else if (Player.CheckIsWall() && _xInput == Player.FacingDirection && Player.CurrentVelocity.y <= 0)
-            {
-                StateMachine.ChangeState(Player.WallSlideState);
             }
             else
             {

@@ -1,5 +1,6 @@
 // EnemyView.cs
 using ForgottonChambers.Enemy;
+using ForgottonChambers.Main;
 using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class EnemyView : MonoBehaviour
     [SerializeField] protected Transform attackPosition;
     [SerializeField] protected Transform playerTransform;
     [SerializeField] protected Transform particle;
+    [SerializeField] protected Transform HP;
 
     protected Animator enemyAnimator;
     protected Rigidbody2D rb2D;
@@ -65,6 +67,17 @@ public class EnemyView : MonoBehaviour
         {
             Gizmos.DrawWireSphere(attackPosition.position, enemyData.attackRadius);
         }
+    }
+
+    public void SetHealthBar(int currentHealth, int maxHealth)
+    {
+        float normalized = Mathf.Clamp01((float)currentHealth / maxHealth);
+
+        Vector3 scale = HP.localScale;
+        scale.x = normalized;
+        HP.localScale = scale;
+
+        HP.localPosition = Vector3.zero;
     }
 
     public void AnimationAttackTrigger()

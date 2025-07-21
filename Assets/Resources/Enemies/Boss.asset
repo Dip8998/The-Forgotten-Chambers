@@ -15,6 +15,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 2995984844995682646, guid: 77c67827db2ec4343a53c64a036c7f26, type: 3}
   enemyType: 4
   enemyHealth: 500
+  deathScore: 60
   movementSpeed: 4
   chargeSpeed: 8
   castDistance: 0.5

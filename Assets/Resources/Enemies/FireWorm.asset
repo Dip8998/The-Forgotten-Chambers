@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: FireWorm
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 2284550335109533296, guid: b9992999eb08c964280611617da3ffa0, type: 3}
-  enemyType: 1
-  enemyHealth: 50
+  enemyType: 2
+  enemyHealth: 100
+  deathScore: 30
   movementSpeed: 2
   chargeSpeed: 6
   castDistance: 0.5

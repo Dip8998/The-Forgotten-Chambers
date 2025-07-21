@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Box
   - Sword1
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

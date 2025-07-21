@@ -8,6 +8,7 @@ namespace ForgottonChambers.Inputs
         public float MoveInput { get; private set; }
         public float UpInput { get; private set; }
         public bool JumpInput { get; private set; }
+        public bool WallJumpInput { get; private set; }
         public bool GrabInput { get; private set; }
         public bool BoxPushPullInput { get; private set; }
         public bool BoxDropInput { get; private set; }
@@ -19,7 +20,7 @@ namespace ForgottonChambers.Inputs
             MoveInput = Input.GetAxisRaw("Horizontal");
             UpInput = Input.GetAxisRaw("Vertical");
             JumpInput = Input.GetKeyDown(KeyCode.Space);
-            GrabInput = Input.GetKey(KeyCode.LeftShift);
+            WallJumpInput = Input.GetKey(KeyCode.LeftShift);
             BoxPushPullInput = Input.GetKey(KeyCode.E);
             BoxDropInput = Input.GetKeyUp(KeyCode.E);
             AttackInput= Input.GetMouseButton(0);

@@ -45,10 +45,6 @@ namespace ForgottonChambers.Player
                 Player.AirState.StartCoyoteTime();
                 StateMachine.ChangeState(Player.AirState);
             }
-            else if (Player.CheckIsWall() && grabInput)
-            {
-                StateMachine.ChangeState(Player.WallGrabState);
-            }
         }
     }
 }

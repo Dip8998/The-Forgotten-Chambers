@@ -10,6 +10,7 @@ namespace ForgottonChambers.ScriptableObjects
         public EnemyView enemyPrefab;
         public EnemyType enemyType;
         public int enemyHealth;
+        public float deathScore;
 
         #region Movement
         [Header("Movement Settings")]
@@ -69,6 +70,6 @@ namespace ForgottonChambers.ScriptableObjects
         public float rangedAttackDistance = 4f;
         public int fireballDamage = 15;
 
-        public GameObject crabPrefab; 
+        public GameObject crabPrefab;
     }
 }

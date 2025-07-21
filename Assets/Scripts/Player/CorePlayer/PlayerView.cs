@@ -40,6 +40,8 @@ namespace ForgottonChambers.Player
         private GameObject _attachedBox;
         private Rigidbody2D _playerRb;
         private FixedJoint2D _boxFixedJoint;
+        public Transform currentCheckpoint;
+
         #endregion
 
         #region Other Variables
@@ -155,14 +157,14 @@ namespace ForgottonChambers.Player
                 joint.connectedBody = _playerRb;
                 joint.enabled = true;
 
-                _attachedBox.GetComponent<boxpull>().beingPushed = true;
+                _attachedBox.GetComponent<BoxController>().beingPushed = true;
             }
             else if (_playerController.InputHandler.BoxDropInput)
             {
                 if (_attachedBox != null)
                 {
                     var joint = _attachedBox.GetComponent<FixedJoint2D>();
-                    var boxScript = _attachedBox.GetComponent<boxpull>();
+                    var boxScript = _attachedBox.GetComponent<BoxController>();
 
                     if (joint != null)
                     {
@@ -235,5 +237,14 @@ namespace ForgottonChambers.Player
             }
         }
         #endregion
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if(collision.gameObject.tag == "Checkpoint")
+            {
+                currentCheckpoint = collision.transform;
+                collision.GetComponent<Collider2D>().enabled = false;
+            }
+        }
     }
 }

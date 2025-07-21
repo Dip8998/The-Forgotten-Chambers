@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 748608741251171790}
   - component: {fileID: 9068181745579792259}
   - component: {fileID: 89847957007775969}
-  - component: {fileID: 1289269887474089617}
   - component: {fileID: 5072860367882271421}
+  - component: {fileID: 133805566090642476}
   m_Layer: 10
   m_Name: FireSuriken
   m_TagString: Untagged
@@ -164,21 +164,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.1, y: 0.23}
   m_EdgeRadius: 0
---- !u!114 &1289269887474089617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2134372964471193474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e467d500f9630345b902496e7db83b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  damage: 10
-  lifetime: 3
 --- !u!95 &5072860367882271421
 Animator:
   serializedVersion: 7
@@ -201,3 +186,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &133805566090642476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134372964471193474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e467d500f9630345b902496e7db83b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  damage: 10
+  lifetime: 3

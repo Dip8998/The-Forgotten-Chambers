@@ -8,6 +8,9 @@ using ForgottonChambers.Main;
 using ForgottonChambers.Particles;
 using UnityEngine.UIElements;
 using ForgottonChambers.Bullets;
+using ForgottonChambers.UI;
+using Unity.IO.LowLevel.Unsafe;
+using System.Collections;
 
 namespace ForgottonChambers.Player
 {
@@ -20,9 +23,6 @@ namespace ForgottonChambers.Player
         public PlayerJumpState JumpState { get; private set; }
         public PlayerInAirState AirState { get; private set; }
         public PlayerLandState LandState { get; private set; }
-        public PlayerWallSlideState WallSlideState { get; private set; }
-        public PlayerWallGrabState WallGrabState { get; private set; }
-        public PlayerWallClimbState WallClimbState { get; private set; }
         public PlayerWallJumpState WallJumpState { get; private set; }
         public PlayerCrouchIdleState CrouchIdleState { get; private set; }
         public PlayerCrouchMoveState CrouchMoveState { get; private set; }
@@ -33,7 +33,9 @@ namespace ForgottonChambers.Player
         public PlayerScriptableObject PlayerData { get; private set; }
         public InputHandler InputHandler { get; private set; }
         public PlayerView PlayerView { get; private set; } 
-        public BoxCollider2D MovementCollider { get; private set; } 
+        public BoxCollider2D MovementCollider { get; private set; }
+        public bool HasKey { get; set; }
+        public UIService UIService => GameService.Instance.UIService;
 
         private IPlayerMover _playerMover;
         private Vector2 _workSpace;
@@ -64,7 +66,9 @@ namespace ForgottonChambers.Player
             InputHandler = new InputHandler();
             _workSpace = Vector2.zero;
             currentHealth = playerConfig.playerMaxHealth;
-
+            UIService.SetPlayerMaxHealth(playerConfig.playerMaxHealth);
+            HasKey = false;
+            UIService.SetKeyIcon(HasKey,false);
             InitializePlayerView();
             InitializePlayerStates();
             InitializeWeaponControllers();
@@ -145,9 +149,6 @@ namespace ForgottonChambers.Player
             JumpState = new PlayerJumpState(this, StateMachine, PlayerData, "inAir");
             AirState = new PlayerInAirState(this, StateMachine, PlayerData, "inAir");
             LandState = new PlayerLandState(this, StateMachine, PlayerData, "land");
-            WallSlideState = new PlayerWallSlideState(this, StateMachine, PlayerData, "wallSlide");
-            WallGrabState = new PlayerWallGrabState(this, StateMachine, PlayerData, "wallGrab");
-            WallClimbState = new PlayerWallClimbState(this, StateMachine, PlayerData, "wallClimb");
             WallJumpState = new PlayerWallJumpState(this, StateMachine, PlayerData, "inAir");
             CrouchIdleState = new PlayerCrouchIdleState(this, StateMachine, PlayerData, "crouchIdle");
             CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, PlayerData, "crouchMove");
@@ -253,6 +254,8 @@ namespace ForgottonChambers.Player
 
             AttackState.SetWeapon(_weaponControllers[type].WeaponView);
             _currentWeaponType = type;
+
+            UIService?.SetPlayerWeaponIcon(_currentWeaponType);
         }
         #endregion
 
@@ -264,6 +267,25 @@ namespace ForgottonChambers.Player
             {
                 Die();
             }
+
+            UIService.SetPlayerHealth(currentHealth);
+        }
+
+        public IEnumerator Respawn()
+        {
+            GameService.Instance.ParticleService.PlayParticle(
+                ParticleType.PlayerDeath,
+                PlayerView.transform.position,
+                Quaternion.identity
+            );
+
+            PlayerView.gameObject.SetActive(false);
+
+            yield return new WaitForSeconds(2f); 
+
+            PlayerView.transform.position = PlayerView.currentCheckpoint.position;
+            PlayerView.gameObject.SetActive(true);
+            StateMachine.ChangeState(IdleState);
         }
 
         public bool CanAttack()
@@ -281,6 +303,7 @@ namespace ForgottonChambers.Player
         {
             GameService.Instance.ParticleService.PlayParticle(ParticleType.PlayerDeath, PlayerView.transform.position, Quaternion.identity);
             GameObject.Destroy(PlayerView.gameObject);
+            GameService.Instance.LevelService.RestartLevel();
         }
     }
 }

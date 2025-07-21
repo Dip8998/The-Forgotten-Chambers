@@ -12,21 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0eb98efb7443c44987a8ad2a235561, type: 3}
   m_Name: CrawlerCrab
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 6108961597350736386, guid: caa52245f05059a42975f7dc981a77ce, type: 3}
+  enemyPrefab: {fileID: 4482085981571253167, guid: caa52245f05059a42975f7dc981a77ce, type: 3}
   enemyType: 0
-  enemyHealth: 50
+  enemyHealth: 40
+  deathScore: 5
   movementSpeed: 5
   chargeSpeed: 8
   castDistance: 0.5
   groundCheckRadius: 0
-  minIdleTime: 2
-  maxIdleTime: 4
+  minIdleTime: 1
+  maxIdleTime: 3
   chargeTime: 1
   longRangeActionTime: 0.5
   minPlayerDetectedDistance: 0.5
   maxPlayerDetectedDistance: 5
   closeRangeActionDistance: 0.5
-  attackRadius: 0.55
+  attackRadius: 1
   attackDamage: 10
   amountOfTurns: 2
   timeBetweenTurns: 1
@@ -35,7 +36,7 @@ MonoBehaviour:
   knockBackTime: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 448
   playerLayer:
     serializedVersion: 2
     m_Bits: 512

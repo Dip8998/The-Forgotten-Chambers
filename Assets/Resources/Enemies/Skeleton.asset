@@ -12,21 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0eb98efb7443c44987a8ad2a235561, type: 3}
   m_Name: Skeleton
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 3602527368406290162, guid: ce9beb5978962e540b0b56fa225c0992, type: 3}
-  enemyType: 2
+  enemyPrefab: {fileID: 0}
+  enemyType: 1
   enemyHealth: 50
+  deathScore: 15
   movementSpeed: 4
   chargeSpeed: 8
   castDistance: 0.5
   groundCheckRadius: 0
-  minIdleTime: 2
-  maxIdleTime: 4
+  minIdleTime: 1
+  maxIdleTime: 3
   chargeTime: 1
   longRangeActionTime: 0.1
   minPlayerDetectedDistance: 0.5
   maxPlayerDetectedDistance: 7
   closeRangeActionDistance: 0.5
-  attackRadius: 0.55
+  attackRadius: 1.8
   attackDamage: 10
   amountOfTurns: 2
   timeBetweenTurns: 0.5
@@ -35,7 +36,7 @@ MonoBehaviour:
   knockBackTime: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 448
   playerLayer:
     serializedVersion: 2
     m_Bits: 512

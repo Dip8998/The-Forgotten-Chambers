@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5841f3002e2c07d42b37da981c56acf4, type: 3}
+  m_Name: WallJump_Instruction_SO
+  m_EditorClassIdentifier: 
+  instructionKey: WallJump
+  instructionLines:
+  - Stuck between walls? Press [LeftShift + Space] to wall jump!
+  - Run up walls like a ninja! Hold [LeftShift], then tap [Space]!
+  - 'Bounce off that wall: [LeftShift + Space] does the trick!'
+  - Use [LeftShift] to grip, then [Space] to soar!

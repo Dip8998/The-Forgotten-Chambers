@@ -2,6 +2,7 @@ using ForgottonChambers.Main;
 using ForgottonChambers.Particles;
 using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
+using ForgottonChambers.UI;
 using UnityEngine;
 
 namespace ForgottonChambers.Enemy
@@ -28,6 +29,7 @@ namespace ForgottonChambers.Enemy
         public int FacingDirection { get; private set; }
         public int LastDamageDirection { get; private set; }
         private bool hasFacedPlayerThisState;
+        public UIService UIService => GameService.Instance.UIService;
 
         public EnemyController(EnemyView enemyView, EnemyScriptableObject enemyData, Transform playerTransform)
         {
@@ -42,6 +44,7 @@ namespace ForgottonChambers.Enemy
 
             InitializeStates();
             stateMachine.Initialize(MoveState);
+            Enemy.SetHealthBar(CurrentHealth, enemyData.enemyHealth);
         }
 
         protected virtual void InitializeStates()
@@ -80,7 +83,7 @@ namespace ForgottonChambers.Enemy
         {
             LastHitSource = hitSourcePosition;
             CurrentHealth -= damage;
-
+            Enemy.SetHealthBar(CurrentHealth, enemyData.enemyHealth);
             GameService.Instance.ParticleService.PlayParticle(ParticleType.EnemyHit, Enemy.transform.position, Quaternion.identity);
 
             SetDamageDirection();
@@ -88,6 +91,7 @@ namespace ForgottonChambers.Enemy
             if (CurrentHealth <= 0)
             {
                 Die();
+                UIService.AddScore(enemyData.deathScore);
             }
             else
             {
@@ -134,6 +138,23 @@ namespace ForgottonChambers.Enemy
             }
 
             GameService.Instance.ParticleService.PlayParticle(deathParticleType, Enemy.ParticleTransform.transform.position, Quaternion.identity);
+
+            SkeletonView skeletonView = Enemy as SkeletonView;
+            CrabView crabView = Enemy as CrabView;
+
+            if (skeletonView != null && skeletonView.ItemDrop != null)
+            {
+                Object.Instantiate(skeletonView.ItemDrop, skeletonView.ItemDropPos.position, Quaternion.identity);
+            }
+            else if(crabView != null && crabView.ItemDrop != null)
+            {
+                Object.Instantiate(crabView.ItemDrop, crabView.ItemDropPos.position, Quaternion.identity);
+            }
+            if (crabView != null && crabView.SwitchActive != null)
+            {
+                crabView.SwitchActive.gameObject.SetActive(true);
+            }
+
             Enemy.DestroyGameObject();
         }
 
@@ -192,8 +213,6 @@ namespace ForgottonChambers.Enemy
 
             hasFacedPlayerThisState = true;
         }
-
-
 
         public void ResetFacingFlag() => hasFacedPlayerThisState = false;
 
