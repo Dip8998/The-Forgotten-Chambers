@@ -1,18 +1,29 @@
-﻿using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine;
+using ForgottonChambers.Main;
+using ForgottonChambers.ScriptableObjects;
 
-namespace ForgottonChambers.Level
+namespace StatePattern.Level
 {
     public class LevelService
     {
-        private LevelController levelController;
+        private List<LevelScriptableObject> levelScriptableObjects;
 
-        public void Initialize(LevelView view)
+        public LevelService(List<LevelScriptableObject> levelScriptableObjects)
         {
-            levelController = new LevelController(view);
+            this.levelScriptableObjects = levelScriptableObjects;
+            SubscribeToEvents();
         }
 
-        public void LoadNextLevel() => levelController?.OnPlayerReachedEnd();
+        private void SubscribeToEvents() => GameService.Instance.EventService.OnLevelSelected.AddListener(LoadLevel);
 
-        public void RestartLevel() => levelController?.RestartLevel();
+        private void UnsubscribeToEvents() => GameService.Instance.EventService.OnLevelSelected.RemoveListener(LoadLevel);
+
+        public void LoadLevel(int levelID)
+        {
+            var levelData = levelScriptableObjects.Find(levelSO => levelSO.ID == levelID);
+            Object.Instantiate(levelData.LevelPrefab);
+            UnsubscribeToEvents();
+        }
     }
 }

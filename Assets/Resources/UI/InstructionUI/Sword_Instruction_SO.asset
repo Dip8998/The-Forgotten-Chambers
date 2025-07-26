@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instructionKey: Sword
   instructionLines:
-  - 'Sword Collected! Press [Tab] to switch and Try out using [Left Click]'
+  - 'Sword Collected! Wants to switch weapons ? Press [Tab]'

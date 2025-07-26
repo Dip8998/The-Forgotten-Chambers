@@ -7,8 +7,9 @@ using System.Collections.Generic;
 using ForgottonChambers.Particles;
 using ForgottonChambers.Bullets;
 using ForgottonChambers.UI;
-using ForgottonChambers.Level;
 using ForgottonChambers.KeyandDoor;
+using StatePattern.Level;
+using UnityEngine.UI;
 
 namespace ForgottonChambers.Main
 {
@@ -28,16 +29,19 @@ namespace ForgottonChambers.Main
 
         [Header("PlayerSO")]
         [SerializeField] private PlayerScriptableObject playerScriptableObject;
+
         [Header("Particle Service Config")]
         [SerializeField] private List<ParticleScriptableObject> allParticleData;
+
+        [SerializeField] private List<LevelScriptableObject> levelScriptableObjects;
+        [SerializeField] private Button startButton;
 
         [Header("Bullet Service Config")]
         [SerializeField] private BulletView defaultBulletPrefab;
         [SerializeField] private BulletScriptableObject defaultBulletData;
         [SerializeField] private int defaultBulletPoolSize = 10;
 
-        [Header("Level")]
-        [SerializeField] private LevelView levelView;
+        public int CurrentLevelID { get; private set; }
 
         protected override void Awake()
         {
@@ -49,37 +53,32 @@ namespace ForgottonChambers.Main
             }
         }
 
+        private void Start()
+        {
+            UIService.Show();
+            startButton.onClick.AddListener(LevelSelection);
+        }
+
+        private void LevelSelection() => uiService.InvokStart(levelScriptableObjects.Count);
+
+
         private void InitializeServices()
         {
-            if (playerScriptableObject == null)
-            {
-                Debug.LogError("PlayerScriptableObject not assigned in GameService.");
-                return;
-            }
-
             EventService = new EventService();
-
-            if (uiService == null)
-            {
-                Debug.LogError("UIService reference is missing in GameService.");
-            }
-            else
-            {
-                uiService.Initialize();
-            }
-
+            uiService.Initialize();
+            LevelService = new LevelService(levelScriptableObjects);
             PlayerService = new PlayerService(playerScriptableObject);
-
             ParticleService = new ParticleService(allParticleData);
             BulletService = new BulletService(defaultBulletPrefab, defaultBulletData, defaultBulletPoolSize);
             KeyAndDoorService = new KeyAndDoorService();
-            LevelService = new LevelService();
-            LevelService.Initialize(levelView);
+
+            EventService.OnLevelSelected.AddListener(SetCurrentLevelID);
         }
 
-        public void RegisterPlayerController(PlayerController playerController)
+        private void SetCurrentLevelID(int levelID)
         {
-            PlayerController = playerController;
+            CurrentLevelID = levelID;
+            Debug.Log($"Current Level ID set to: {CurrentLevelID}");
         }
     }
 }

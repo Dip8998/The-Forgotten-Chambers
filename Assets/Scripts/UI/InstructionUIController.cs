@@ -13,6 +13,7 @@ namespace ForgottonChambers.UI
         {
             this.instructionUIView = instructionUIView;
 
+            instructionUIView.gameObject.SetActive(true);
             GameService.Instance.EventService.OnShowInstructionEvent.AddListener(ShowInstructionPanel);
         }
 

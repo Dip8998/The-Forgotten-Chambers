@@ -79,8 +79,13 @@ namespace ForgottonChambers.Enemy
             Enemy.Rigidbody.linearVelocity = velocity;
         }
 
-        public virtual void Damage(int damage, Vector2 hitSourcePosition)
+        public virtual void Damage(int damage, Vector2 hitSourcePosition, bool isBullet = false)
         {
+            if (enemyData.enemyType == EnemyType.FireSplitterWorm && !isBullet)
+            {
+                return;
+            }
+
             LastHitSource = hitSourcePosition;
             CurrentHealth -= damage;
             Enemy.SetHealthBar(CurrentHealth, enemyData.enemyHealth);
@@ -114,7 +119,7 @@ namespace ForgottonChambers.Enemy
             }
         }
 
-        public void Die()
+        public virtual void Die()
         {
             ParticleType deathParticleType = ParticleType.EnemyDeath; 
 
@@ -141,6 +146,8 @@ namespace ForgottonChambers.Enemy
 
             SkeletonView skeletonView = Enemy as SkeletonView;
             CrabView crabView = Enemy as CrabView;
+            FireWormView fireWormView = Enemy as FireWormView;
+            BossView bossView = Enemy as BossView;
 
             if (skeletonView != null && skeletonView.ItemDrop != null)
             {
@@ -149,6 +156,14 @@ namespace ForgottonChambers.Enemy
             else if(crabView != null && crabView.ItemDrop != null)
             {
                 Object.Instantiate(crabView.ItemDrop, crabView.ItemDropPos.position, Quaternion.identity);
+            }
+            else if(fireWormView != null && fireWormView.ItemDrop != null)
+            {
+                Object.Instantiate(fireWormView.ItemDrop, fireWormView.ItemDropPos.position, Quaternion.identity);
+            }
+            else if (bossView != null && bossView.ItemDrop != null)
+            {
+                Object.Instantiate(bossView.ItemDrop, bossView.ItemDropPos.position, Quaternion.identity);
             }
             if (crabView != null && crabView.SwitchActive != null)
             {

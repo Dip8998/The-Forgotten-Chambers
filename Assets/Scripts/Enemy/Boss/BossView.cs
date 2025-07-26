@@ -6,8 +6,16 @@ namespace ForgottonChambers.Enemy
 {
     public class BossView : EnemyView
     {
-        public Transform[] crabSummonPoints;
-        public Transform firePosition;
+        [SerializeField] private Transform[] crabSummonPoints;
+        [SerializeField] private Transform firePosition;
+        [SerializeField] private GameObject itemDrop;
+        [SerializeField] private Transform itemDropPos;
+
+        public Transform[] CrabSummonPoints => crabSummonPoints;
+        public Transform FirePosition => firePosition;
+        public GameObject ItemDrop => itemDrop;
+        public Transform ItemDropPos => itemDropPos;
+
 
         protected override void Start()
         {

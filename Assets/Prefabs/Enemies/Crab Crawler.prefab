@@ -385,7 +385,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 6197056623017412966, guid: ffc4cdd4a8f3d444ab755e1229ab49ba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -513,6 +513,7 @@ MonoBehaviour:
   HP: {fileID: 6712513752111372348}
   itemDrop: {fileID: 0}
   itemDropPos: {fileID: 0}
+  switchActive: {fileID: 0}
 --- !u!1 &7912782945319851793
 GameObject:
   m_ObjectHideFlags: 0

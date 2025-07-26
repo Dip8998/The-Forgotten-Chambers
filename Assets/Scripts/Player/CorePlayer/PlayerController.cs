@@ -32,7 +32,7 @@ namespace ForgottonChambers.Player
         #region Dependencies & Components
         public PlayerScriptableObject PlayerData { get; private set; }
         public InputHandler InputHandler { get; private set; }
-        public PlayerView PlayerView { get; private set; } 
+        public PlayerView PlayerView { get; private set; }
         public BoxCollider2D MovementCollider { get; private set; }
         public bool HasKey { get; set; }
         public UIService UIService => GameService.Instance.UIService;
@@ -68,7 +68,7 @@ namespace ForgottonChambers.Player
             currentHealth = playerConfig.playerMaxHealth;
             UIService.SetPlayerMaxHealth(playerConfig.playerMaxHealth);
             HasKey = false;
-            UIService.SetKeyIcon(HasKey,false);
+            UIService.SetKeyIcon(HasKey, false);
             InitializePlayerView();
             InitializePlayerStates();
             InitializeWeaponControllers();
@@ -78,12 +78,14 @@ namespace ForgottonChambers.Player
         {
             GameService.Instance.EventService.OnAnimationFinishedEvent.RemoveListener(AnimationFinishedTrigger);
             GameService.Instance.EventService.OnWeaponPickedUpEvent.RemoveListener(AddWeaponToInventory);
+            GameService.Instance.EventService.OnLevelSelected.RemoveListener(SetInitialWeaponsForLevel);
         }
 
         public void InitializeEvents()
         {
             GameService.Instance.EventService.OnAnimationFinishedEvent.AddListener(AnimationFinishedTrigger);
             GameService.Instance.EventService.OnWeaponPickedUpEvent.AddListener(AddWeaponToInventory);
+            GameService.Instance.EventService.OnLevelSelected.AddListener(SetInitialWeaponsForLevel);
         }
 
         public void SetupPlayer()
@@ -92,14 +94,6 @@ namespace ForgottonChambers.Player
             _playerMover = PlayerView;
 
             InitializeEvents();
-
-            _currentWeaponType = WeaponType.Punch;
-            WeaponController defaultWeaponController = _weaponControllers[_currentWeaponType];
-            AttackState.SetWeapon(defaultWeaponController.WeaponView);
-            PlayerView.SetWeaponGameObjectActive(_currentWeaponType, true);
-
-            _collectedWeapons = new List<WeaponType> { WeaponType.Punch };
-            _currentWeaponIndex = 0;
 
             StateMachine.InitializeState(IdleState);
         }
@@ -133,12 +127,7 @@ namespace ForgottonChambers.Player
         #region Initialization
         private void InitializePlayerView()
         {
-            if (PlayerData.playerPrefab == null)
-            {
-                Debug.LogError("Player Prefab is null in PlayerConfig!");
-                return;
-            }
-            PlayerView = Object.Instantiate(PlayerData.playerPrefab);
+            PlayerView = Object.Instantiate(PlayerData.playerPrefab).GetComponent<PlayerView>(); 
             PlayerView.SetPlayerController(this);
         }
 
@@ -218,6 +207,49 @@ namespace ForgottonChambers.Player
 
         #region Weapon switching Functions
 
+        public void SetInitialWeaponsForLevel(int levelID)
+        {
+            _collectedWeapons.Clear();
+
+            AddWeaponSilently(WeaponType.Punch);
+
+            if (levelID >= 2)
+            {
+                AddWeaponSilently(WeaponType.Sword);
+            }
+            if (levelID >= 3)
+            {
+                AddWeaponSilently(WeaponType.Gun);
+            }
+
+            if (_collectedWeapons.Count == 0)
+            {
+                AddWeaponSilently(WeaponType.Punch);
+            }
+
+            _currentWeaponIndex = 0; 
+
+            foreach (var weaponKvP in _weaponControllers)
+            {
+                PlayerView.SetWeaponGameObjectActive(weaponKvP.Key, false);
+            }
+
+            _currentWeaponType = _collectedWeapons[_currentWeaponIndex];
+            PlayerView.SetWeaponGameObjectActive(_currentWeaponType, true);
+
+            AttackState.SetWeapon(_weaponControllers[_currentWeaponType].WeaponView); 
+
+            UIService?.SetPlayerWeaponIcon(_currentWeaponType);
+        }
+
+        private void AddWeaponSilently(WeaponType newWeaponType)
+        {
+            if (!_collectedWeapons.Contains(newWeaponType))
+            {
+                _collectedWeapons.Add(newWeaponType);
+            }
+        }
+
         public void AddWeaponToInventory(WeaponType newWeaponType)
         {
             if (_collectedWeapons.Contains(newWeaponType)) return;
@@ -225,10 +257,7 @@ namespace ForgottonChambers.Player
             _collectedWeapons.Add(newWeaponType);
             Debug.Log($"Collected: {newWeaponType}");
 
-            if (_collectedWeapons.Count == 1 && newWeaponType != WeaponType.Punch)
-            {
-                SwitchWeaponTo(newWeaponType);
-            }
+            SwitchWeaponTo(newWeaponType);
         }
 
         private void SwitchWeapon()
@@ -249,7 +278,11 @@ namespace ForgottonChambers.Player
                 return;
             }
 
-            PlayerView.SetWeaponGameObjectActive(_currentWeaponType, false);
+            if (_currentWeaponType != default(WeaponType))
+            {
+                PlayerView.SetWeaponGameObjectActive(_currentWeaponType, false);
+            }
+
             PlayerView.SetWeaponGameObjectActive(type, true);
 
             AttackState.SetWeapon(_weaponControllers[type].WeaponView);
@@ -281,7 +314,10 @@ namespace ForgottonChambers.Player
 
             PlayerView.gameObject.SetActive(false);
 
-            yield return new WaitForSeconds(2f); 
+            yield return new WaitForSeconds(2f);
+
+            currentHealth = PlayerData.playerMaxHealth;
+            UIService.SetPlayerHealth(currentHealth);
 
             PlayerView.transform.position = PlayerView.currentCheckpoint.position;
             PlayerView.gameObject.SetActive(true);
@@ -302,8 +338,8 @@ namespace ForgottonChambers.Player
         private void Die()
         {
             GameService.Instance.ParticleService.PlayParticle(ParticleType.PlayerDeath, PlayerView.transform.position, Quaternion.identity);
-            GameObject.Destroy(PlayerView.gameObject);
-            GameService.Instance.LevelService.RestartLevel();
+            PlayerView.gameObject.SetActive(false);
+            GameService.Instance.PlayerService.TriggerRespawn();
         }
     }
 }

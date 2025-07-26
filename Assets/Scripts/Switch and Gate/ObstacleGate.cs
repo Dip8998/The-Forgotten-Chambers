@@ -24,8 +24,14 @@ namespace ForgottonChambers.Interactables
             if (!isOpen) 
             {
                 isOpen = true;
-                spriteRenderer.enabled = false;
-                gateCollider.enabled = false;
+                if (spriteRenderer != null)
+                {
+                    spriteRenderer.enabled = false;
+                }
+                if (gateCollider != null)
+                {
+                    gateCollider.enabled = false;
+                }
             }
         }
 
@@ -34,8 +40,14 @@ namespace ForgottonChambers.Interactables
             if (isOpen) 
             {
                 isOpen = false;
-                spriteRenderer.enabled = true;
-                gateCollider.enabled = true;
+                if(spriteRenderer != null)
+                {
+                    spriteRenderer.enabled = true;
+                }
+                if(gateCollider != null)
+                {
+                    gateCollider.enabled = true;
+                }
             }
         }
     }

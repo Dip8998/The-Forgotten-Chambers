@@ -9,6 +9,8 @@ namespace ForgottonChambers.Events
         public EventController<WeaponType> OnWeaponPickedUpEvent { get; private set; }
         public EventController OnKeyCollectedEvent { get; private set; }
         public EventController OnDoorOpenedEvent { get; private set; }
+        public EventController<int> OnLevelSelected { get; private set; }
+        public EventController<int> OnGameStart {  get; private set; }
 
         public EventController<int> OnPlayerHealthChangedEvent { get; private set; }
         public EventController<int> OnPlayerMaxHealthSetEvent { get; private set; }
@@ -24,6 +26,8 @@ namespace ForgottonChambers.Events
 
         public EventService()
         {
+            OnGameStart = new EventController<int>();
+            OnLevelSelected = new EventController<int>();
             OnAnimationFinishedEvent = new EventController();
             OnWeaponPickedUpEvent = new EventController<WeaponType>();
             OnKeyCollectedEvent = new EventController();

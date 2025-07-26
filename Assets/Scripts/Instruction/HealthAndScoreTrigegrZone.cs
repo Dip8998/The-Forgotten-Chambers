@@ -6,10 +6,8 @@ namespace ForgottonChambers.Instruction
 {
     public class HealthAndScoreTrigegrZone : InstructionTriggerZone
     {
-        protected override void Awake()
+        protected void Start()
         {
-            base.Awake();
-
             Main.GameService.Instance.EventService?.OnGameplayUIVisibilityChanged.InvokeEvent(false);
             Main.GameService.Instance.EventService?.OnWeaponUIVisibilityChanged.InvokeEvent(false);
             Main.GameService.Instance.EventService?.OnScoreUIVisibilityChanged.InvokeEvent(false);

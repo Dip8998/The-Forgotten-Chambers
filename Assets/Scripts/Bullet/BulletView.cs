@@ -62,9 +62,12 @@ namespace ForgottonChambers.Bullets
 
             controller.ReturnToPool();
 
+            Debug.Log($"Bullet collided with: {collision.name}");
+
             if (collision.TryGetComponent(out EnemyView enemyView))
             {
-                enemyView.Controller.Damage(controller.GetDamage(), transform.position);
+                Debug.Log($"Bullet hit: {enemyView.name} | Type: {enemyView.Controller.enemyData.enemyType}");
+                enemyView.Controller.Damage(controller.GetDamage(), transform.position, true);
                 GameService.Instance?.ParticleService?.PlayParticle(ParticleType.EnemyHit, enemyView.transform.position, Quaternion.identity);
             }
         }

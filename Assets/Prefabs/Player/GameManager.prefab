@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4335935118206275693
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5358486889527215216}
+  - component: {fileID: 2385045203313282383}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5358486889527215216
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4335935118206275693}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2385045203313282383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4335935118206275693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be04693d723148d499d14e6cd83a4606, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiService: {fileID: 0}
+  playerScriptableObject: {fileID: 11400000, guid: b8360764a36ddff4e8cfc242318494c8, type: 2}
+  allParticleData:
+  - {fileID: 11400000, guid: 6c4466a256dede9409f89e68df8385ef, type: 2}
+  - {fileID: 11400000, guid: e263e1fa77d79a1409d4b5261d140c44, type: 2}
+  - {fileID: 11400000, guid: 02a4aa55c30b629479a8fc72329cd78c, type: 2}
+  - {fileID: 11400000, guid: e3fd71c82b1b3084c837257db6743aed, type: 2}
+  - {fileID: 11400000, guid: fa033e4fdeec9664ebf0ac0517eb88fa, type: 2}
+  - {fileID: 11400000, guid: 58670b794c101e34f92d87b44974750d, type: 2}
+  - {fileID: 11400000, guid: b1000d454595d3949875517fbf5a2445, type: 2}
+  - {fileID: 11400000, guid: e4bdb68ae43c9f2418de6e73b3bd7241, type: 2}
+  defaultBulletPrefab: {fileID: 1580238549727494876, guid: da06e4dcc7d8abd44ab331ec2928f32d, type: 3}
+  defaultBulletData: {fileID: 11400000, guid: 67987e81e8dca534f84e4401f581a2f2, type: 2}
+  defaultBulletPoolSize: 10
+  allGameLevels:
+  - {fileID: 11400000, guid: 23d17d3149ab0dd4f93f3678726134d5, type: 2}
+  - {fileID: 11400000, guid: 18f758fa3192cfa4682faedbd7fbea51, type: 2}
+  - {fileID: 11400000, guid: d28cad1e3018dfd44885daec3e8b640b, type: 2}

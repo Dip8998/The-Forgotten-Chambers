@@ -14,7 +14,6 @@ namespace ForgottonChambers.UI
         {
             currentScore = 0;
             UpdateScoreDisplay();
-            scoreUIContainer.SetActive(false);
         }
 
         public void AddScore(float amount)

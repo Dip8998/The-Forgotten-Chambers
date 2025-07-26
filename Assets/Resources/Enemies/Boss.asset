@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 2995984844995682646, guid: 77c67827db2ec4343a53c64a036c7f26, type: 3}
   enemyType: 4
   enemyHealth: 500
-  deathScore: 60
+  deathScore: 100
   movementSpeed: 4
   chargeSpeed: 8
   castDistance: 0.5
@@ -25,7 +25,7 @@ MonoBehaviour:
   chargeTime: 1
   longRangeActionTime: 0.1
   minPlayerDetectedDistance: 2.5
-  maxPlayerDetectedDistance: 40
+  maxPlayerDetectedDistance: 30
   closeRangeActionDistance: 2.5
   attackRadius: 2.5
   attackDamage: 10

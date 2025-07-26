@@ -14,6 +14,12 @@ namespace ForgottonChambers.UI
             GameService.Instance.EventService.OnScoreUIVisibilityChanged.AddListener(scoreUIView.SetScoreUIVisibility);
         }
 
+        ~ScoreUIController()
+        {
+            GameService.Instance.EventService.OnScoreAddedEvent.RemoveListener(AddScore);
+            GameService.Instance.EventService.OnScoreUIVisibilityChanged.RemoveListener(scoreUIView.SetScoreUIVisibility);
+        }
+
         public void AddScore(float score) => scoreUIView.AddScore(score);
     }
 }

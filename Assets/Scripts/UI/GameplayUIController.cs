@@ -22,6 +22,17 @@ namespace ForgottonChambers.UI
             GameService.Instance.EventService.OnWeaponUIVisibilityChanged.AddListener(gameplayView.SetWeaponUIVisibility);
         }
 
+        ~GameplayUIController()
+        {
+            GameService.Instance.EventService.OnPlayerHealthChangedEvent.RemoveListener(SetPlayerHealth);
+            GameService.Instance.EventService.OnPlayerMaxHealthSetEvent.RemoveListener(SetPlayerMaxHealth);
+            GameService.Instance.EventService.OnWeaponPickedUpEvent.RemoveListener(SetWeaponIcon);
+            GameService.Instance.EventService.OnKeyCollectedEvent.RemoveListener(() => SetKeyIcon(true, true));
+            GameService.Instance.EventService.OnDoorOpenedEvent.RemoveListener(() => SetKeyIcon(false, false));
+            GameService.Instance.EventService.OnGameplayUIVisibilityChanged.RemoveListener(gameplayView.SetGameplayUIVisibility);
+            GameService.Instance.EventService.OnWeaponUIVisibilityChanged.RemoveListener(gameplayView.SetWeaponUIVisibility);
+        }
+
         public void SetPlayerHealth(int health) => gameplayView.SetHealth(health);
         
         public void SetPlayerMaxHealth(int health) => gameplayView.SetMaxHealth(health);
