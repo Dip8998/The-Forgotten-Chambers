@@ -25,7 +25,7 @@ namespace ForgottonChambers.Particles
             if (particleSystemComponent != null)
             {
                 particleSystemComponent.Play();
-                StartCoroutine(DeactivateAfterParticleSystemDuration(particleSystemComponent.main.duration));
+                StartCoroutine(DeactivateAfterParticleSystemDuration(controller.GetDataLifetime()));
             }
             else if (controller != null)
             {

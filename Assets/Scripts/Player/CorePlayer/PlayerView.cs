@@ -40,9 +40,12 @@ namespace ForgottonChambers.Player
         private GameObject _attachedBox;
         private Rigidbody2D _playerRb;
         private FixedJoint2D _boxFixedJoint;
-        public Transform currentCheckpoint;
+
+        public Transform CurrentCheckPoint { get; set; }
+        public Rigidbody2D RB => _playerRb;
 
         #endregion
+
 
         #region Other Variables
         public PlayerController PlayerController => _playerController;
@@ -242,9 +245,16 @@ namespace ForgottonChambers.Player
         {
             if(collision.gameObject.tag == "Checkpoint")
             {
-                currentCheckpoint = collision.transform;
+                CurrentCheckPoint = collision.transform;
                 collision.GetComponent<Collider2D>().enabled = false;
             }
         }
+
+
+        public void SetInitialPosition(Vector3 position)
+        {
+            transform.position = position;
+        }
+
     }
 }

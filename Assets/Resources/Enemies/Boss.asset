@@ -27,7 +27,7 @@ MonoBehaviour:
   minPlayerDetectedDistance: 2.5
   maxPlayerDetectedDistance: 30
   closeRangeActionDistance: 2.5
-  attackRadius: 2.5
+  attackRadius: 3
   attackDamage: 10
   amountOfTurns: 0
   timeBetweenTurns: 0.5

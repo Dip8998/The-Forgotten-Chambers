@@ -52,6 +52,7 @@ namespace ForgottonChambers.Interactables
             {
                 isActive = true;
                 UpdateSprite();
+                GameService.Instance.SoundService.Play(Sound.Sounds.SWITCHACTIVAT);
                 controlledGate.OpenGate();
             }
         }

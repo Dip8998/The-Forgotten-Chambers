@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleType: 1
   prefab: {fileID: 3320026819422103453, guid: bc10d63e8b90b224bb2dffe5d99582c5, type: 3}
-  lifetime: 7
+  lifetime: 2

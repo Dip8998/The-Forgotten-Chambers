@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Sword1_SO
   m_EditorClassIdentifier: 
   weaponType: 0
-  attackDamage: 50
+  attackDamage: 35
   attackMovementSpeeds:
   - 2

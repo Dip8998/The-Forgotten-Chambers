@@ -8,7 +8,6 @@ namespace ForgottonChambers.Player
         protected float xInput;
         protected float yInput;
         protected bool jumpInput;
-        protected bool grabInput;
         protected bool wallJumpInput;
 
         public PlayerTouchingWallState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
@@ -28,7 +27,6 @@ namespace ForgottonChambers.Player
 
             xInput = Player.InputHandler.MoveInput;
             yInput = Player.InputHandler.UpInput;
-            grabInput = Player.InputHandler.GrabInput;
             jumpInput = Player.InputHandler.JumpInput;
             wallJumpInput = Player.InputHandler.WallJumpInput;
 
@@ -40,11 +38,11 @@ namespace ForgottonChambers.Player
                 Player.WallJumpState.DetermineWallJumpDirection(Player.CheckIsWall());
                 StateMachine.ChangeState(Player.WallJumpState);
             }
-            else if (Player.CheckIsGround() && !grabInput)
+            else if (Player.CheckIsGround())
             {
                 StateMachine.ChangeState(Player.IdleState);
             }
-            else if (!Player.CheckIsWall() || (xInput != 0 && xInput != Player.FacingDirection && !grabInput))
+            else if (!Player.CheckIsWall() || (xInput != 0 && xInput != Player.FacingDirection))
             {
                 Player.AirState.StartWallCoyoteTime();
                 StateMachine.ChangeState(Player.AirState);

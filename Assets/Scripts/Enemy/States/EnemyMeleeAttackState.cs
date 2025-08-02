@@ -2,6 +2,7 @@ using ForgottonChambers.Main;
 using ForgottonChambers.Particles;
 using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
+using ForgottonChambers.Sound;
 using UnityEngine;
 
 namespace ForgottonChambers.Enemy
@@ -16,6 +17,7 @@ namespace ForgottonChambers.Enemy
         {
             base.OnStateEnter();
             enemy.SetVelocity(0f);
+            
         }
 
         public override void OnUpdate()
@@ -42,12 +44,26 @@ namespace ForgottonChambers.Enemy
         {
             base.AnimationAttackTrigger();
 
+            switch (enemyData.enemyType)
+            {
+                case EnemyType.CrawlerCrab:
+                    GameService.Instance.SoundService.Play(Sounds.CRABENEMYATTACK);
+                    break;
+                case EnemyType.GroundedSkeleton:
+                    GameService.Instance.SoundService.Play(Sounds.SKELETONATTACK);
+                    break;
+                case EnemyType.Boss:
+                    GameService.Instance.SoundService.Play(Sounds.BOSSMELEEATTACK);
+                    break;
+            }
+
             Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(enemy.Enemy.AttackPosition.position, enemyData.attackRadius, enemyData.playerLayer);
 
             foreach (Collider2D obj in detectedObjects)
             {
                 PlayerController Player = GameService.Instance.PlayerService.GetPlayerController();
                 Player.Damage(enemyData.attackDamage);
+                
                 GameService.Instance.ParticleService.PlayParticle(ParticleType.PlayerHit, Player.PlayerView.transform.position, Quaternion.identity);
             }
         }

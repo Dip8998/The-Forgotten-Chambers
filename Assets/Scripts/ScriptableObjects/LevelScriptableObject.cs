@@ -1,8 +1,6 @@
-﻿using ForgottonChambers.ScriptableObjects;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace StatePattern.Level
+namespace ForgottonChambers.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "LevelScriptableObject", menuName = "ScriptableObjects/LevelScriptableObject")]
     public class LevelScriptableObject : ScriptableObject

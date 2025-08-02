@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instructionKey: Crouch
   instructionLines:
-  - Need to sneak or crawl? Hold the [Down Arrow] to crouch!
-  - "Get low with [Down Arrow] \u2013 perfect for tight spaces."
-  - Combine [Down Arrow] with [A] or [D] to crouch-walk like a shadow!
-  - 'Slide into action: [Down Arrow + move with A/D]!'
-  - Low clearance? [Down Arrow] is your duck-and-go move!
+  - Need to sneak or crawl? Hold the [Down Arrow] or [S] to crouch!
+  - "Get low with [Down Arrow] or [S] \u2013 perfect for tight spaces."
+  - Combine [Down Arrow] or [S] with [A] or [D] to crouch-walk like a shadow!
+  - 'Slide into action: [[Down Arrow] or [S] + move with A/D]!'
+  - Low clearance?[Down Arrow] or [S] is your duck-and-go move!

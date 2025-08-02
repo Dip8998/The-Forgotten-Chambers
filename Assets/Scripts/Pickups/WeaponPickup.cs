@@ -22,6 +22,7 @@ namespace ForgottonChambers.Pickups
                     Instantiate(crabEnemy, crabSpawnPos.position, Quaternion.identity);
                 }
 
+                GameService.Instance.SoundService.Play(Sound.Sounds.WEAPONPICKUP);
 
                 Destroy(gameObject);
             }

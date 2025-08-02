@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 0}
   enemyType: 1
-  enemyHealth: 50
+  enemyHealth: 125
   deathScore: 15
   movementSpeed: 4
   chargeSpeed: 8

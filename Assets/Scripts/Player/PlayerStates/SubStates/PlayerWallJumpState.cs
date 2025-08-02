@@ -1,5 +1,7 @@
 using UnityEngine;
 using ForgottonChambers.ScriptableObjects;
+using ForgottonChambers.Main;
+using ForgottonChambers.Sound;
 
 namespace ForgottonChambers.Player
 {
@@ -18,6 +20,7 @@ namespace ForgottonChambers.Player
 
             Player.JumpState.ResetAmountJumpsLeft();
             Player.SetVelocity(PlayerData.playerWallJumpSpeed, PlayerData.playerWallJumpAngle, _wallJumpDir);
+            GameService.Instance.SoundService.Play(Sounds.PLAYERJUMP);
             Player.CheckIfShouldFlip(_wallJumpDir);
             Player.JumpState.DecreaseAmountOfJumpsLeft();
         }

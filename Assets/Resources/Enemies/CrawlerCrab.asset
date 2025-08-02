@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 4482085981571253167, guid: caa52245f05059a42975f7dc981a77ce, type: 3}
   enemyType: 0
-  enemyHealth: 40
+  enemyHealth: 100
   deathScore: 5
   movementSpeed: 5
   chargeSpeed: 8
@@ -25,7 +25,7 @@ MonoBehaviour:
   chargeTime: 1
   longRangeActionTime: 0.5
   minPlayerDetectedDistance: 0.5
-  maxPlayerDetectedDistance: 5
+  maxPlayerDetectedDistance: 30
   closeRangeActionDistance: 0.5
   attackRadius: 1
   attackDamage: 10

@@ -22,8 +22,6 @@ namespace ForgottonChambers.ScriptableObjects
         public Vector2 playerCrouchColliderOffset = new Vector2(0.0f, -0.25f);
 
         [Header("Wall Interaction")]
-        public float playerWallSlideSpeed;
-        public float playerWallClimbSpeed;
         public float playerWallJumpSpeed;
         public float playerWallJumpTime;
         public Vector2 playerWallJumpAngle = new Vector2(1, 2);

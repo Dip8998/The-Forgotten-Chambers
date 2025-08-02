@@ -1,4 +1,5 @@
-﻿using ForgottonChambers.ScriptableObjects;
+﻿using ForgottonChambers.Main;
+using ForgottonChambers.ScriptableObjects;
 using UnityEngine;
 
 namespace ForgottonChambers.Enemy
@@ -43,6 +44,7 @@ namespace ForgottonChambers.Enemy
             base.AnimationAttackTrigger();
             Debug.Log("Fireball Attack Trigger");
             fireballShooter?.ShootFireball();
+            GameService.Instance.SoundService.Play(Sound.Sounds.FIREWORMATTACK);
         }
     }
 }

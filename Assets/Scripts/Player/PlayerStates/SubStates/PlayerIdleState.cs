@@ -4,7 +4,7 @@ using ForgottonChambers.ScriptableObjects;
 namespace ForgottonChambers.Player
 {
     public class PlayerIdleState : PlayerGroundedState
-    {
+    {        
         public PlayerIdleState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
             : base(player, stateMachine, playerData, animBoolName)
         {

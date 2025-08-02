@@ -100,6 +100,8 @@ namespace ForgottonChambers.Player
 
         public void OnPlayerUpdate()
         {
+            if (Time.timeScale == 0) return;
+
             InputHandler.UpdateInputs();
             StateMachine.currentState.OnUpdate();
 
@@ -107,6 +109,14 @@ namespace ForgottonChambers.Player
             {
                 SwitchWeapon();
             }
+
+            //if (InputHandler.PauseInput)
+            //{
+            //    if (Time.timeScale == 0f)
+            //        GameService.Instance.ResumeGame();
+            //    else
+            //        GameService.Instance.PauseGame();
+            //}
 
             if (isAttackOnCooldown)
             {
@@ -127,9 +137,24 @@ namespace ForgottonChambers.Player
         #region Initialization
         private void InitializePlayerView()
         {
-            PlayerView = Object.Instantiate(PlayerData.playerPrefab).GetComponent<PlayerView>(); 
-            PlayerView.SetPlayerController(this);
+            Vector3 spawnPosition = new Vector3(-44, -2, 0);
+
+            PlayerView playerObj = Object.Instantiate(PlayerData.playerPrefab, spawnPosition, Quaternion.identity);
+            PlayerView = playerObj.GetComponent<PlayerView>();
+
+            if (PlayerView != null)
+            {
+                PlayerView.transform.position = spawnPosition;
+                PlayerView.SetPlayerController(this);
+                PlayerView.CurrentCheckPoint = PlayerView.transform;
+            }
+            else
+            {
+                Debug.LogError("PlayerView component not found on PlayerPrefab.");
+            }
         }
+
+
 
         private void InitializePlayerStates()
         {
@@ -158,8 +183,17 @@ namespace ForgottonChambers.Player
 
         #region Movement and Velocity Application
         public void SetVelocityZero() => _playerMover.SetLinearVelocity(Vector2.zero);
-        public void SetVelocityX(float velocity) => _playerMover.SetVelocityX(velocity);
-        public void SetVelocityY(float velocity) => _playerMover.SetVelocityY(velocity);
+        public void SetVelocityX(float velocity) 
+        {
+            _playerMover.SetVelocityX(velocity);
+        }
+
+        public void SetVelocityY(float velocity)
+        {
+            GameService.Instance.SoundService.Play(Sound.Sounds.PLAYERJUMP);
+           _playerMover.SetVelocityY(velocity);
+        }
+
         public void SetVelocity(float speed, Vector2 angle, int dir)
         {
             angle.Normalize();
@@ -295,7 +329,6 @@ namespace ForgottonChambers.Player
         public void Damage(int damage)
         {
             currentHealth -= damage;
-
             if (currentHealth <= 0)
             {
                 Die();
@@ -304,8 +337,20 @@ namespace ForgottonChambers.Player
             UIService.SetPlayerHealth(currentHealth);
         }
 
+        public void ResetHealth()
+        {
+            currentHealth = PlayerData.playerMaxHealth;
+            UIService.SetPlayerHealth(currentHealth);
+        }
+
         public IEnumerator Respawn()
         {
+            if (PlayerView == null)
+            {
+                Debug.LogWarning("PlayerView is destroyed. Cannot respawn.");
+                yield break;
+            }
+
             GameService.Instance.ParticleService.PlayParticle(
                 ParticleType.PlayerDeath,
                 PlayerView.transform.position,
@@ -319,10 +364,18 @@ namespace ForgottonChambers.Player
             currentHealth = PlayerData.playerMaxHealth;
             UIService.SetPlayerHealth(currentHealth);
 
-            PlayerView.transform.position = PlayerView.currentCheckpoint.position;
-            PlayerView.gameObject.SetActive(true);
-            StateMachine.ChangeState(IdleState);
+            if (PlayerView != null && PlayerView.CurrentCheckPoint != null)
+            {
+                PlayerView.transform.position = PlayerView.CurrentCheckPoint.position;
+                PlayerView.gameObject.SetActive(true);
+                StateMachine.ChangeState(IdleState);
+            }
+            else
+            {
+                Debug.LogWarning("PlayerView or CurrentCheckPoint is null after wait.");
+            }
         }
+
 
         public bool CanAttack()
         {
@@ -337,9 +390,20 @@ namespace ForgottonChambers.Player
 
         private void Die()
         {
+            GameService.Instance.SoundService.Play(Sound.Sounds.PLAYERDEATH);
             GameService.Instance.ParticleService.PlayParticle(ParticleType.PlayerDeath, PlayerView.transform.position, Quaternion.identity);
             PlayerView.gameObject.SetActive(false);
+            GameService.Instance.StartCoroutine(DeathPanel());
             GameService.Instance.PlayerService.TriggerRespawn();
         }
+
+        private IEnumerator DeathPanel()
+        {
+            yield return new WaitForSeconds(2f);
+            GameService.Instance.GameOverUIView.gameObject.SetActive(true);
+            Time.timeScale = 0f;
+            UnityEngine.Cursor.visible = true;
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+        } 
     }
 }

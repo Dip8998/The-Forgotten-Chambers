@@ -53,8 +53,12 @@ namespace ForgottonChambers.Enemy
             Vector3 leftOffset = bossPos + new Vector3(-2f, 0f, 0f);
             Vector3 rightOffset = bossPos + new Vector3(2f, 0f, 0f);
 
+            Transform dropParent = GameService.Instance.LevelService.CurrentLevelParent?.transform;
+
             GameObject crab1 = Object.Instantiate(enemyData.crabPrefab, leftOffset, Quaternion.identity);
+            if (dropParent != null) crab1.transform.SetParent(dropParent);
             GameObject crab2 = Object.Instantiate(enemyData.crabPrefab, rightOffset, Quaternion.identity);
+            if (dropParent != null) crab2.transform.SetParent(dropParent);
 
             Debug.Log("Crab 1 spawned at: " + leftOffset);
             Debug.Log("Crab 2 spawned at: " + rightOffset);
@@ -110,8 +114,11 @@ namespace ForgottonChambers.Enemy
 
             if (CanShootFireball())
             {
+                GameService.Instance.SoundService.Play(Sound.Sounds.BOSSRANGEATTACK);
                 lastFireballTime = Time.time;
+                Transform dropParent = GameService.Instance.LevelService.CurrentLevelParent?.transform;
                 GameObject fireballGO = GameObject.Instantiate(enemyData.fireballPrefab, firePoint.transform.position, Quaternion.identity);
+                if (dropParent != null) fireballGO.transform.SetParent(dropParent);
                 FireballProjectile fireball = fireballGO.GetComponent<FireballProjectile>();
                 if (fireball != null)
                 {

@@ -1,3 +1,4 @@
+using ForgottonChambers.Main;
 using UnityEngine;
 
 namespace ForgottonChambers.Box

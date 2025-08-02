@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropForce: 6
-  groundDistance: 0.2
+  groundDistance: 0.5
   groundMask:
     serializedVersion: 2
     m_Bits: 64

@@ -21,5 +21,9 @@ namespace ForgottonChambers.UI
         }
 
         public void AddScore(float score) => scoreUIView.AddScore(score);
+
+        public void ResetScore() => scoreUIView.ResetCurrentLevelScore();
+
+        public void InitializeScore(int levelID) => scoreUIView.InitializeLevel(levelID);
     }
 }

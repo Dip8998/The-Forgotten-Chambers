@@ -1,7 +1,7 @@
-// In PlayerService.cs
 using ForgottonChambers.Main;
 using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
+using UnityEngine;
 
 public class PlayerService
 {
@@ -11,29 +11,32 @@ public class PlayerService
     public PlayerService(PlayerScriptableObject playerConfig)
     {
         this._playerConfig = playerConfig;
-        SubscribeToEvents(); 
     }
-
-    private void SubscribeToEvents() => GameService.Instance.EventService.OnLevelSelected.AddListener(SpawnPlayer);
-    private void UnsubscribeToEvents() => GameService.Instance.EventService.OnLevelSelected.RemoveListener(SpawnPlayer);
 
     public void SpawnPlayer(int levelId)
     {
-        if (_playerController == null)
+        if (_playerController != null && _playerController.PlayerView != null)
         {
-            _playerController = new PlayerController(_playerConfig);
+            Object.Destroy(_playerController.PlayerView.gameObject);
+            _playerController = null; 
+            Debug.Log("Old player destroyed.");
         }
 
-        _playerController.SetupPlayer();
 
+        _playerController = new PlayerController(_playerConfig);
+        _playerController.SetupPlayer();
         _playerController.SetInitialWeaponsForLevel(levelId);
-        UnsubscribeToEvents(); 
     }
+
 
     public PlayerController GetPlayerController() => _playerController;
 
     public void TriggerRespawn()
     {
+        if (_playerController == null || _playerController.PlayerView == null) return;
+
         GameService.Instance.StartCoroutine(_playerController.Respawn());
+        GameService.Instance.UIService.ResetScore();
     }
+
 }

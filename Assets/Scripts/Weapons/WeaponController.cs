@@ -1,6 +1,8 @@
 ﻿using ForgottonChambers.Bullets;
+using ForgottonChambers.Main;
 using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
+using ForgottonChambers.Sound;
 using UnityEngine;
 
 namespace ForgottonChambers.Weapons
@@ -63,6 +65,19 @@ namespace ForgottonChambers.Weapons
 
             _animator?.SetBool("attack", true);
             _animator?.SetInteger("attackCounter", _attackCounter);
+
+            switch (_weaponScriptableObject.weaponType)
+            {
+                case WeaponType.Punch:
+                    GameService.Instance.SoundService.Play(Sounds.PLAYERPUNCH);
+                    break;
+                case WeaponType.Sword:
+                    GameService.Instance.SoundService.Play(Sounds.PLAYERSWORDATTACK);
+                    break;
+                case WeaponType.Gun:
+                    GameService.Instance.SoundService.Play(Sounds.PLAYERGUNSHOT);
+                    break;
+            }
         }
 
         public void ExitWeapon()

@@ -2,6 +2,7 @@ using ForgottonChambers.Main;
 using ForgottonChambers.Particles;
 using ForgottonChambers.Player;
 using ForgottonChambers.ScriptableObjects;
+using ForgottonChambers.Sound;
 using ForgottonChambers.UI;
 using UnityEngine;
 
@@ -96,7 +97,6 @@ namespace ForgottonChambers.Enemy
             if (CurrentHealth <= 0)
             {
                 Die();
-                UIService.AddScore(enemyData.deathScore);
             }
             else
             {
@@ -149,26 +149,35 @@ namespace ForgottonChambers.Enemy
             FireWormView fireWormView = Enemy as FireWormView;
             BossView bossView = Enemy as BossView;
 
+            Transform dropParent = GameService.Instance.LevelService.CurrentLevelParent?.transform;
+
             if (skeletonView != null && skeletonView.ItemDrop != null)
             {
-                Object.Instantiate(skeletonView.ItemDrop, skeletonView.ItemDropPos.position, Quaternion.identity);
+                var drop = Object.Instantiate(skeletonView.ItemDrop, skeletonView.ItemDropPos.position, Quaternion.identity);
+                if (dropParent != null) drop.transform.SetParent(dropParent);
             }
-            else if(crabView != null && crabView.ItemDrop != null)
+            else if (crabView != null && crabView.ItemDrop != null)
             {
-                Object.Instantiate(crabView.ItemDrop, crabView.ItemDropPos.position, Quaternion.identity);
+                var drop = Object.Instantiate(crabView.ItemDrop, crabView.ItemDropPos.position, Quaternion.identity);
+                if (dropParent != null) drop.transform.SetParent(dropParent);
             }
-            else if(fireWormView != null && fireWormView.ItemDrop != null)
+            else if (fireWormView != null && fireWormView.ItemDrop != null)
             {
-                Object.Instantiate(fireWormView.ItemDrop, fireWormView.ItemDropPos.position, Quaternion.identity);
+                var drop = Object.Instantiate(fireWormView.ItemDrop, fireWormView.ItemDropPos.position, Quaternion.identity);
+                if (dropParent != null) drop.transform.SetParent(dropParent);
             }
             else if (bossView != null && bossView.ItemDrop != null)
             {
-                Object.Instantiate(bossView.ItemDrop, bossView.ItemDropPos.position, Quaternion.identity);
+                var drop = Object.Instantiate(bossView.ItemDrop, bossView.ItemDropPos.position, Quaternion.identity);
+                if (dropParent != null) drop.transform.SetParent(dropParent);
             }
             if (crabView != null && crabView.SwitchActive != null)
             {
                 crabView.SwitchActive.gameObject.SetActive(true);
             }
+            UIService.AddScore(enemyData.deathScore);
+
+            GameService.Instance.SoundService.Play(Sounds.ENEMYDEATH);
 
             Enemy.DestroyGameObject();
         }
@@ -249,6 +258,7 @@ namespace ForgottonChambers.Enemy
             if (stateMachine.CurrentState is EnemyAttackState attackState)
             {
                 attackState.AnimationAttackTrigger();
+              
             }
         }
 

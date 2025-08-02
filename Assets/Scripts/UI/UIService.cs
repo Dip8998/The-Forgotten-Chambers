@@ -8,12 +8,13 @@ namespace ForgottonChambers.UI
     public class UIService : MonoBehaviour
     {
         [Header("StartUIView")]
-        [SerializeField] private StartUIVIew startUIVIew;
+        [SerializeField] private StartUIView startUIVIew;
+        public StartUIView StartUIView => startUIVIew;
 
         [Header("LevelSelectionUI")]
         private LevelSelectionUIController levelSelectionController;
         [SerializeField] private LevelSelectionUIView levelSelectionView;
-        [SerializeField] private LevelButtonView levelButtonPrefab;
+        public LevelSelectionUIView LevelSelectionUIView => levelSelectionView;
 
         [Header("GameplayUI")]
         private GameplayUIController gameplayUIController;
@@ -30,7 +31,7 @@ namespace ForgottonChambers.UI
         public void Initialize()
         {
             startUIVIew.gameObject.SetActive(false);
-            levelSelectionController = new LevelSelectionUIController(levelSelectionView, levelButtonPrefab,startUIVIew);
+            levelSelectionController = new LevelSelectionUIController(levelSelectionView,startUIVIew);
             gameplayUIController = new GameplayUIController(gameplayUIView);
 
             if(instructionUIView != null)
@@ -49,8 +50,8 @@ namespace ForgottonChambers.UI
 
         public void InvokStart(int levelCount)
         {
-            GameService.Instance.EventService.OnGameStart.InvokeEvent(levelCount);
-            startUIVIew.gameObject.SetActive(false) ;
+            GameService.Instance.EventService.OnGameStart.InvokeEvent();
+            startUIVIew.gameObject.SetActive(false);
         }
 
         public void SetPlayerHealth(int health) => gameplayUIController.SetPlayerHealth(health);
@@ -63,6 +64,10 @@ namespace ForgottonChambers.UI
 
         public void ShowInstructionPanel(InstructionData data, float duration = 4f) => instructionUIController.ShowInstructionPanel(data, duration);
 
-        public void AddScore(float score) => scoreUIController.AddScore(score);
+        public void AddScore(float score) => GameService.Instance.EventService.OnScoreAddedEvent?.InvokeEvent(score);
+
+        public void ResetScore() => scoreUIController.ResetScore();
+
+        public void InitializeScoreUI(int levelID) => scoreUIController.InitializeScore(levelID);
     }
 }

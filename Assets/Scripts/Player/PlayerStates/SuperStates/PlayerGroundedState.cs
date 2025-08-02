@@ -8,7 +8,6 @@ namespace ForgottonChambers.Player
         protected float moveInput;
         protected float verticalInput;
         private bool jumpInput;
-        private bool grabInput;
 
         public PlayerGroundedState(PlayerController player, PlayerStateMachine stateMachine, PlayerScriptableObject playerData, string animBoolName)
             : base(player, stateMachine, playerData, animBoolName)
@@ -28,7 +27,6 @@ namespace ForgottonChambers.Player
             moveInput = Player.InputHandler.MoveInput;
             verticalInput = Player.InputHandler.UpInput;
             jumpInput = Player.InputHandler.JumpInput;
-            grabInput = Player.InputHandler.GrabInput;
 
             if (isExitingState) return;
 

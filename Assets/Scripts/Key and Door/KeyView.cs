@@ -41,6 +41,7 @@ namespace ForgottonChambers.KeyandDoor
             if (collision.TryGetComponent(out Player.PlayerView playerView))
             {
                 GameService.Instance.KeyAndDoorService.OnKeyCollected();
+                GameService.Instance.SoundService.Play(Sound.Sounds.KEYPICKUP);
                 Destroy(gameObject);
             }
         }

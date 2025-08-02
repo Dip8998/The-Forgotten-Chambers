@@ -8,8 +8,10 @@ using ForgottonChambers.Particles;
 using ForgottonChambers.Bullets;
 using ForgottonChambers.UI;
 using ForgottonChambers.KeyandDoor;
-using StatePattern.Level;
 using UnityEngine.UI;
+using ForgottonChambers.Level;
+using ForgottonChambers.Sound;
+using ForgottonChambers.Inputs;
 
 namespace ForgottonChambers.Main
 {
@@ -20,8 +22,16 @@ namespace ForgottonChambers.Main
         public ParticleService ParticleService { get; private set; }
         public BulletService BulletService { get; private set; }
         public PlayerController PlayerController { get; private set; }
-        public LevelService LevelService { get; private set; }
+        public LevelService LevelService { get; private set; } 
         public KeyAndDoorService KeyAndDoorService { get; private set; }
+        public SoundService SoundService { get; private set; }
+        public InputHandler InputHandler { get; private set; }
+        public GameWinUIView LevelWinUIView => levelWinUIView;
+        public GameOverUIView GameOverUIView => gameOverUIView;
+        public GameWinUIView GameWinUIView => gameWinUIView;
+        public PauseUIView PauseUIView => pauseUIView;
+        public SettingUIView SettingUIView => settingUIView;
+        private PauseService pauseService;
 
         [Header("UI")]
         [SerializeField] private UIService uiService;
@@ -41,6 +51,15 @@ namespace ForgottonChambers.Main
         [SerializeField] private BulletScriptableObject defaultBulletData;
         [SerializeField] private int defaultBulletPoolSize = 10;
 
+        [SerializeField] private GameWinUIView levelWinUIView;
+        [SerializeField] private GameWinUIView gameWinUIView;
+        [SerializeField] private GameOverUIView gameOverUIView;
+        [SerializeField] private PauseUIView pauseUIView;
+        [SerializeField] private SettingUIView settingUIView;
+
+        [SerializeField] private SoundService soundService;
+
+    
         public int CurrentLevelID { get; private set; }
 
         protected override void Awake()
@@ -55,30 +74,61 @@ namespace ForgottonChambers.Main
 
         private void Start()
         {
-            UIService.Show();
+            UIService.Show(); 
             startButton.onClick.AddListener(LevelSelection);
+
+            if (UIService != null && UIService.LevelSelectionUIView != null)
+            {
+                UIService.LevelSelectionUIView.UpdateLevelButtonStates();
+            }
         }
 
         private void LevelSelection() => uiService.InvokStart(levelScriptableObjects.Count);
 
+        private void Update()
+        {
+            pauseService.UpdatePause();
+        }
 
         private void InitializeServices()
         {
             EventService = new EventService();
-            uiService.Initialize();
-            LevelService = new LevelService(levelScriptableObjects);
+            LevelService = new LevelService(levelScriptableObjects); 
+            uiService.Initialize(); 
             PlayerService = new PlayerService(playerScriptableObject);
+            InputHandler = new InputHandler();
+            pauseService = new PauseService();
             ParticleService = new ParticleService(allParticleData);
             BulletService = new BulletService(defaultBulletPrefab, defaultBulletData, defaultBulletPoolSize);
             KeyAndDoorService = new KeyAndDoorService();
 
+            SoundService = soundService;
+
             EventService.OnLevelSelected.AddListener(SetCurrentLevelID);
+            EventService.OnLevelSelected.AddListener(LevelService.LoadLevel);
         }
 
         private void SetCurrentLevelID(int levelID)
         {
             CurrentLevelID = levelID;
-            Debug.Log($"Current Level ID set to: {CurrentLevelID}");
+        }
+
+        public void RestartCurrentLevel()
+        {
+            LevelService.LoadLevel(CurrentLevelID);
+        }
+
+        public void PauseGame()
+        {
+            pauseUIView.gameObject.SetActive(true);
+
+            Time.timeScale = 0f;
+        }
+
+        public void ResumeGame()
+        {
+            Debug.Log("Attempting to resume game...");
+            pauseUIView.Resume();
         }
     }
 }

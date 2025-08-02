@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using System.Collections;
+using ForgottonChambers.Main;
 
 namespace ForgottonChambers.UI
 {
